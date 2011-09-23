@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>game</title>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.js' type='text/javascript'></script>
+    <script src='/socket.io/socket.io.js' type='text/javascript'></script>   
+    <script src='/javascripts/client.js' type='text/javascript'></script>
+    <link   href='/stylesheets/style.css' media='screen' rel='stylesheet' type='text/css'/>
+		<script>
+			$(document).ready(function () { 
+				$('#connect').click(function() {
+					openConnection({ server: $("#server").val(), port: $("#port").val(), nickname: $("#nickname").val(), channel: $("#channel").val() });
+				});
+			});
+		</script>
+	</head>
+  <body>
+		<form id="connectForm" onSubmit="return false;">
+			<label for="server">Server *</label> <input type="text" id="server" placeholder="irc.freenode.net"/>
+			<label for="port">Port *</label> <input type="text" id="port" placeholder="6667"/>
+			<label for="nickname">Nickname *</label> <input type="text" id="nickname" placeholder="Gordon"/>
+			<label for="channel">Channel *</label> <input type="text" id="channel" placeholder="#halflife"/>
+			<input type="submit" id="connect" value="Connect"/>
+		</form>
+		
+		<div id="ircStuff">
+			<div id="chatLog"></div>
+			<input type="text" id="msgInput"/>
+		</div>
+  </body>
+</html>
