@@ -49,9 +49,10 @@ io.sockets.on('connection', function (client) {
 		client.on('sendMsg', function (data) {
 			ircClient.say(data.channel, data.message);
 		});
+
+		// client disconnected
+		client.on('disconnect', function () {
+			ircClient.disconnect();
+		});
 	});
-  
-  // client disconnected
-  client.on('disconnect', function () {
-  });
 });
