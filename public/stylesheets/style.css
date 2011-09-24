@@ -1,43 +1,79 @@
 body {
-	font-family:		Arial;
+	font-family:		Consolas;
+	font-size:			12px;
 }
 
 #connectForm {
-	width: 					300px;
+	width: 					160px;
 	margin: 				0 auto;
 	margin-top: 		150px;
-	border-radius: 	3px;
-	border: 				solid 1px #000;
 	padding:				10px 15px;
 }
-
+#connectForm h1 i {
+	color: blueViolet;
+}
 #connectForm input, label {
-	display:				block;
-	margin-bottom: 	5px;
+	display:	block;
+	width: 		151px;
+}
+#connectForm input {
+	margin-bottom: 	10px;
+	font-family:		Consolas;
+	font-size:			12px;
+	padding:				3px 5px;
+	border: 				solid 1px #ccc;
+}
+#connectForm input:focus {
+	outline: none;
+	border:	 solid 1px blueViolet;
+}
+#connectForm #connect {
+	border: 			none;
+	background: 	#000;
+	color:				#fff;
+	cursor: 			pointer;
+	width: 				auto;
+	padding: 			8px 15px;
+	margin-left:	0;
+}
+#connectForm #connect:hover, #connectForm #connect:focus {
+	-webkit-transition: background-color 0.25s linear;
+	background: 				blueViolet;
 }
 
 #ircStuff {
 	display: 	none;
 }
-
 #chatLog {
 	display: 	block;
 	position: absolute;
 	left: 		0px;
 	top: 			0px;
-	width: 		80%;
-	height: 	90%;
+	width: 		100%;
+	height: 	95%;
 	overflow: auto;
 }
 #chatLog .line {
 	display:	block;
+	width: 		100%;
+	padding: 	5px 0px;
+}
+#chatLog .line:nth-child(odd) {
+	background: #eee;
+}
+#chatLog b {
+	color: blueViolet;
 }
 
 #msgInput {
-	display: 	block;
-	position: absolute;
-	left: 		0px;
-	bottom: 	0px;
-	width: 		80%;
-	height: 	10%;
+	display: 			block;
+	position: 		absolute;
+	width: 				100%;
+	left: 				0px;
+	bottom: 			0px;
+	font-family: 	Consolas;
+	font-size:		12px;
+	border:				1px solid #ccc;
+	border-right: none;
+	border-left: 	none;
 }

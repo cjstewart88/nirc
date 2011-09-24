@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>game</title>
+    <title>nirc</title>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.js' type='text/javascript'></script>
     <script src='/socket.io/socket.io.js' type='text/javascript'></script>   
     <script src='/javascripts/client.js' type='text/javascript'></script>
@@ -9,17 +9,18 @@
 		<script>
 			$(document).ready(function () { 
 				$('#connect').click(function() {
-					openConnection({ server: $("#server").val(), port: $("#port").val(), nickname: $("#nickname").val(), channel: $("#channel").val() });
+					openConnection({ server: $("#server").val(), port: $("#port").val(), nickname: $("#nickname").val(), channels: $("#channels").val() });
 				});
 			});
 		</script>
 	</head>
   <body>
 		<form id="connectForm" onSubmit="return false;">
+			<h1><i>n</i>irc</h1>
 			<label for="server">Server *</label> <input type="text" id="server" placeholder="irc.freenode.net"/>
-			<label for="port">Port *</label> <input type="text" id="port" placeholder="6667"/>
+			<label for="port">Port</label> <input type="text" id="port" placeholder="6667"/>
 			<label for="nickname">Nickname *</label> <input type="text" id="nickname" placeholder="Gordon"/>
-			<label for="channel">Channel *</label> <input type="text" id="channel" placeholder="#halflife"/>
+			<label for="channels">Channels *</label> <input type="text" id="channels" placeholder="#halflife, #reddit"/>
 			<input type="submit" id="connect" value="Connect"/>
 		</form>
 		

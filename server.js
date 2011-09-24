@@ -26,35 +26,32 @@ server.get('/', function(req, res) {
 
 server.listen(port);
 
-/*    SOCKET.IO SHIT    */
 var io = io.listen(server);
 
-// handler for when a new client connects
 io.sockets.on('connection', function (client) {	
-	var channel = null;
-	
 	client.on('connectToIRC', function (data) {
-		channel = data.options.channel;
+		var channels = data.options.channels.replace(" ","").split(",");
 		
 		// initialize irc connection
 		var ircClient = new irc.Client(data.options.server, data.options.nickname, {
 			port: 		data.options.port || 6667,
-			channels: [channel]
-		});
-
-		// new message from channel
-		ircClient.addListener('message'+channel, function (from, message) {
-			client.emit('newMessage', { from: from, message: message });
+			channels: channels
 		});
 		
+		// listener for every channel
+		for (var i = 0; i < channels.length; ++i) {
+			ircClient.addListener('message'+channels[i], function (from, message) {
+				client.emit('newMessage', { channel: channels[i], from: from, message: message });
+			});
+		}
+
 		 // clients wanting to send a message
 		client.on('sendMsg', function (data) {
-			ircClient.say(channel, data.message);
+			ircClient.say(data.channel, data.message);
 		});
 	});
   
   // client disconnected
   client.on('disconnect', function () {
-		delete ircClient;
   });
 });

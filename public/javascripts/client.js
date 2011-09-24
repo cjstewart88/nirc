@@ -1,6 +1,6 @@
 function openConnection (options) {
-	if (options.server == "" || options.nickname == "" || options.channel == "") {
-		return error = "Fields marked with * are required";
+	if (options.server == "" || options.nickname == "" || options.channels == "") {
+		alert("Fields marked with * are required");
 	}
 	else {
 		var socket  		= io.connect(null);
@@ -10,8 +10,8 @@ function openConnection (options) {
 		var chatLog 		= $('#chatLog');
 		var msgInput 		= $('#msgInput');
 		
-		function newMsg (from, message) {
-			chatLog.append("<div class='line'>" + from + " => " + message + "</div>");
+		function newMsg (channel, from, message) {
+			chatLog.append("<div class='line'><i>" + channel + "</i> <b>" + from + ":</b> " + message + "</div>");
 			chatLog.scrollTop(chatLog.height());
 		}
 		
@@ -22,7 +22,7 @@ function openConnection (options) {
 			ircStuff.show();
 			
 			socket.on('newMessage', function (data) {
-				newMsg(data.from, data.message);
+				newMsg(data.channel, data.from, data.message);
 			});
 			
 			socket.on('clientDisconnected', function (data) {
@@ -37,7 +37,7 @@ function openConnection (options) {
 				console.log("safd");
 				if (msgInput.val() != "") {
 					socket.emit('sendMsg', { message: msgInput.val() });
-					newMsg("You", msgInput.val());
+					newMsg(channel, "You", msgInput.val());
 					msgInput.val('');
 				}
 			}
