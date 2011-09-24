@@ -40,8 +40,8 @@ io.sockets.on('connection', function (client) {
 		
 		// listener for every channel
 		for (var i = 0; i < channels.length; ++i) {
-			ircClient.addListener('message'+channels[i], function (from, message) {
-				client.emit('newMessage', { channel: channels[i], from: from, message: message });
+			ircClient.addListener('message'+channels[i], function (channel, from, message) {
+				client.emit('newMessage', { channel: channel, from: from, message: message });
 			});
 		}
 

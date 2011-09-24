@@ -34,11 +34,17 @@ function openConnection (options) {
 		msgInput.keypress(function (e) {
 			var code = (e.keyCode ? e.keyCode : e.which);
 			if (code == 13) { //Enter keycode  
-				console.log("safd");
-				if (msgInput.val() != "") {
-					socket.emit('sendMsg', { message: msgInput.val() });
-					newMsg(channel, "You", msgInput.val());
-					msgInput.val('');
+				var input = msgInput.val();
+				if (input != "") {
+					var args = input.split(" ");
+					if (args[0] == "/msg") {
+						socket.emit('sendMsg', { channel: args[1], message: input.slice(args[0].length+args[1].length+2) });
+						newMsg(args[1], "You", input.slice(args[0].length+args[1].length+2));
+						msgInput.val('');
+					}
+					else {
+						alert("You need to tell me what channel to send the message to! ex: /msg #chanName This is the message");
+					}
 				}
 			}
 		});
