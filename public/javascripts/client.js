@@ -12,7 +12,7 @@ function openConnection (options) {
 		
 		function newMsg (channel, from, message) {
 			chatLog.append("<div class='line'><i>" + channel + "</i> <b>" + from + ":</b> " + message + "</div>");
-			chatLog.scrollTop(chatLog.height());
+			chatLog.scrollTop(chatLog[0].scrollHeight);
 		}
 		
 		socket.on('connect', function () {	  
