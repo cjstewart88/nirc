@@ -1,5 +1,5 @@
 var express = require('express');
-var irc 		= require('irc');
+var irc 		= require('./irc.js');
 var io      = require('socket.io');
 
 var server  = express.createServer();
