@@ -28,6 +28,11 @@ server.listen(port);
 
 var io = io.listen(server);
 
+io.configure(function () { 
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 10); 
+});
+
 io.sockets.on('connection', function (client) {	
 	client.on('connectToIRC', function (data) {
 		var channels = data.options.channels.replace(" ","").split(",");
