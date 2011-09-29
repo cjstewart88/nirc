@@ -1,6 +1,8 @@
 body {
-	font-family:		Consolas;
-	font-size:			12px;
+  background:   #3F464C;
+	font-family:	Monaco, monospace;
+	font-size:		11px;
+	color:        #fff;
 }
 
 #connectForm {
@@ -10,7 +12,7 @@ body {
 	padding:				10px 15px;
 }
 #connectForm h1 i {
-	color: blueViolet;
+	color: #FBDE2D;
 }
 #connectForm input, label {
 	display:	block;
@@ -18,14 +20,14 @@ body {
 }
 #connectForm input {
 	margin-bottom: 	10px;
-	font-family:		Consolas;
-	font-size:			12px;
+	font-family:		Monaco, monospace;
+	font-size:			11px;
 	padding:				3px 5px;
 	border: 				solid 1px #ccc;
 }
 #connectForm input:focus {
 	outline: none;
-	border:	 solid 1px blueViolet;
+	border:	 solid 1px #FBDE2D;
 }
 #connectForm #connect {
 	border: 			none;
@@ -38,7 +40,7 @@ body {
 }
 #connectForm #connect:hover, #connectForm #connect:focus {
 	-webkit-transition: background-color 0.25s linear;
-	background: 				blueViolet;
+	background: 				#FBDE2D;
 }
 
 #ircStuff {
@@ -59,10 +61,13 @@ body {
 	padding: 	5px 0px;
 }
 #chatLog .line:nth-child(odd) {
-	background: #eee;
+	background: #383f44;
 }
 #chatLog b {
-	color: blueViolet;
+	color: #FBDE2D;
+}
+#chatLog i {
+  color: #8DA6CE;
 }
 
 #msgInput {
@@ -71,9 +76,10 @@ body {
 	width: 				100%;
 	left: 				0px;
 	bottom: 			0px;
-	font-family: 	Consolas;
-	font-size:		12px;
+	font-family: 	Monaco, monospace;
+	font-size:		11px;
 	border:				1px solid #ccc;
 	border-right: none;
 	border-left: 	none;
+	padding: 5px 0px;
 }
