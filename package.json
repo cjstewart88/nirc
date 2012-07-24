@@ -2,7 +2,7 @@
 	"name": "nirc",
 	"version": "0.0.1",
 	"dependencies": {
-		"express": "2.4.6",
-		"socket.io": "0.8.4"
+		"express": "2.5.11",
+		"socket.io": "0.9.6"
 	}
 }
