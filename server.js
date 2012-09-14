@@ -30,9 +30,14 @@ io.sockets.on('connection', function (client) {
 		// listener for every channel
 		for (var i = 0; i < channels.length; ++i) {
 			ircClient.addListener('message'+channels[i], function (from, text, message) {
-				client.emit('newMessage', { channel: message.args[0], from: from, message: text });
+				client.emit('newChannelMessage', { channel: message.args[0], from: from, message: text });
 			});
 		}
+
+    // add listener for private messages
+    ircClient.addListener('pm', function (from, text, message) {
+			client.emit('newPrivateMessage', { from: from, message: text });
+		});
 
 		// clients wanting to send a message
 		client.on('sendMsg', function (data) {

@@ -5,6 +5,6 @@
 		"express":    "3.0",
 		"ejs":        "0.8.3",
 		"socket.io":  "0.9.10",
-		"irc":        "0.3.4"
+		"irc":        "git://github.com/cjstewart88/node-irc.git#master"
 	}
 }

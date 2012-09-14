@@ -10,8 +10,9 @@ function openConnection (options) {
 		var chatLog 		= $('#chatLog');
 		var msgInput 		= $('#msgInput');
 		
-		function newMsg (channel, from, message) {
-			chatLog.append("<div class='line'><i>" + channel + "</i> <b>" + from + ":</b> " + message + "</div>");
+		function newMsg (msgData) {
+			chatLog.append("<div class='line'><i>" + msgData.receiver + "</i> <b>" + msgData.from + ":</b> " + msgData.message + "</div>");  
+			
 			chatLog.scrollTop(chatLog[0].scrollHeight);
 		}
 		
@@ -21,29 +22,50 @@ function openConnection (options) {
 			connectForm.hide();
 			ircStuff.show();
 			
-			socket.on('newMessage', function (data) {
-				newMsg(data.channel, data.from, data.message);
+			socket.on('newChannelMessage', function (data) {
+				newMsg({
+				  receiver: data.channel, 
+				  from:     data.from, 
+				  message:  data.message
+				});
 			});
 			
+			socket.on('newPrivateMessage', function (data) {
+				newMsg({
+				  receiver: 'pm to you from',
+				  from:     data.from, 
+				  message:  data.message
+				});
+			});
+
 			socket.on('clientDisconnected', function (data) {
 			
 			});
 		});
 		
-		// client is trying to send a message
+		// catch client is typing
 		msgInput.keypress(function (e) {
 			var code = (e.keyCode ? e.keyCode : e.which);
-			if (code == 13) { //Enter keycode  
+			
+			if (code == 13) { // user pressed enter
 				var input = msgInput.val();
-				if (input != "") {
-					var args = input.split(" ");
-					if (args[0] == "/msg") {
+				
+				if (input != '') {
+					var args = input.split(' ');
+					
+					if (args[0] == '/msg') {
 						socket.emit('sendMsg', { to: args[1], message: input.slice(args[0].length+args[1].length+2) });
-						newMsg(args[1], "You", input.slice(args[0].length+args[1].length+2));
+						
+						newMsg({
+						  receiver: args[1].search(/^[#]/) == 0 ? args[1] : 'pm to ' + args[1] + ' from', 
+						  from:     "you", 
+						  message:  input.slice(args[0].length+args[1].length+2)
+						});
+						
 						msgInput.val('');
 					}
 					else {
-						alert("You need to tell me what channel to send the message to! ex: /msg #chanName This is the message");
+						alert('You need to tell what user or channel to send the message to! ex: /msg #channame /msg username');
 					}
 				}
 			}
