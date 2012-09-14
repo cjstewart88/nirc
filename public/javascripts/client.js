@@ -38,7 +38,7 @@ function openConnection (options) {
 				if (input != "") {
 					var args = input.split(" ");
 					if (args[0] == "/msg") {
-						socket.emit('sendMsg', { channel: args[1], message: input.slice(args[0].length+args[1].length+2) });
+						socket.emit('sendMsg', { to: args[1], message: input.slice(args[0].length+args[1].length+2) });
 						newMsg(args[1], "You", input.slice(args[0].length+args[1].length+2));
 						msgInput.val('');
 					}

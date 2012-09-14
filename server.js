@@ -1,37 +1,21 @@
+var http    = require('http')
 var express = require('express');
 var irc 		= require('irc');
 var io      = require('socket.io');
 
-var server  = express.createServer();
-var port    = process.env.PORT || 3000;
+var app     = express().engine('html', require('ejs').renderFile)
+                       .set('view engine', 'html')
+                       .set('views', __dirname + '/views')
+                       .use(express.static(__dirname + '/public'));
 
-server.configure(function() {
-  server.set('view engine', 'html');
-  server.set('views', __dirname + '/views');
-  server.set('view options', {layout: false});
-  server.register('.html', {
-    compile: function(str, options){
-      return function(locals){
-        return str;
-      };
-    }
-  });
-  server.use(express.static(__dirname + '/public'));
-});
-
-// routes
-server.get('/', function(req, res) {
+app.get('/', function(req, res) {
   res.render('index');
 });
 
-server.listen(port);
+var server  = http.createServer(app)
+                  .listen(process.env.PORT || 3000);
 
-var io = io.listen(server);
-
-io.configure(function () { 
-  io.set("transports", ["xhr-polling"]); 
-  io.set("polling duration", 10); 
-});
+var io      = io.listen(server);
 
 io.sockets.on('connection', function (client) {	
 	client.on('connectToIRC', function (data) {
@@ -45,14 +29,14 @@ io.sockets.on('connection', function (client) {
 		
 		// listener for every channel
 		for (var i = 0; i < channels.length; ++i) {
-			ircClient.addListener('message'+channels[i], function (channel, from, message) {
-				client.emit('newMessage', { channel: channel, from: from, message: message });
+			ircClient.addListener('message'+channels[i], function (from, text, message) {
+				client.emit('newMessage', { channel: message.args[0], from: from, message: text });
 			});
 		}
 
-		 // clients wanting to send a message
+		// clients wanting to send a message
 		client.on('sendMsg', function (data) {
-			ircClient.say(data.channel, data.message);
+			ircClient.say(data.to, data.message);
 		});
 
 		// client disconnected
