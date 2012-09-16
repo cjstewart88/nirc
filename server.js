@@ -32,6 +32,10 @@ io.sockets.on('connection', function (client) {
 			ircClient.addListener('message'+channels[i], function (from, text, message) {
 				client.emit('newChannelMessage', { channel: message.args[0], from: from, message: text });
 			});
+			
+			ircClient.addListener('join'+channels[i], function (nick, message) {
+				client.emit('joinedChannel', { channel: message.args[0] });
+			});
 		}
 
     // add listener for private messages

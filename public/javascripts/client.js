@@ -3,17 +3,44 @@ function openConnection (options) {
 		alert("Fields marked with * are required");
 	}
 	else {
-		var socket  		= io.connect(null);
+		var socket  		  = io.connect(null);
 		
-		var connectForm = $('#connectForm');
-		var ircStuff		= $('#ircStuff');
-		var chatLog 		= $('#chatLog');
-		var msgInput 		= $('#msgInput');
+		var connectForm   = $('#connect-form');
+		var ircStuff		  = $('#irc-stuff');
+		var channelsList  = $('#channel-list');
+		var channelPanes 	= $('#channel-panes');
+		var msgInput 		  = $('#msg-input');
 		
 		function newMsg (msgData) {
-			chatLog.append("<div class='line'><i>" + msgData.receiver + "</i> <b>" + msgData.from + ":</b> " + msgData.message + "</div>");  
+		  var chatLog = $('.channel-log[title="'+msgData.receiver.toLowerCase()+'"]');
+		  
+		  chatLog.append("<div class='line'><b>" + msgData.from + ":</b> " + msgData.message + "</div>");
 			
 			chatLog.scrollTop(chatLog[0].scrollHeight);
+		}
+		
+		function joinedChannel (channel) {
+		  var firstChannel = (channelsList.children().length > 0 ? false : true);
+		  
+		  if ($('.channel-list-channel-item[title="'+channel.toLowerCase()+'"]').length == 0) {
+  		  var channelListItem = $('<li>').attr('title', channel.toLowerCase())
+  		                                 .addClass('channel-list-channel-item ' + (firstChannel ? 'active' : ''))
+  		                                 .text(channel);
+                                       
+        channelListItem.click(function () {
+          $('.channel-list-channel-item').removeClass('active');
+          $(this).addClass('active');
+          $('.channel-log').removeClass('active');
+          $('.channel-log[title="'+$(this).attr('title')+'"]').addClass('active');
+        });
+        
+    	  channelsList.append(channelListItem);
+
+        var channelLog = $('<div>').attr('title', channel.toLowerCase())
+                                   .addClass('channel-log ' + (firstChannel ? 'active' : ''));
+                                   
+        channelPanes.append(channelLog);
+		  }
 		}
 		
 		socket.on('connect', function () {	  
@@ -21,6 +48,10 @@ function openConnection (options) {
 			
 			connectForm.hide();
 			ircStuff.show();
+			
+			socket.on('joinedChannel', function (data) {
+				joinedChannel(data.channel);
+			});
 			
 			socket.on('newChannelMessage', function (data) {
 				newMsg({

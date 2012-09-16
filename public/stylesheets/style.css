@@ -1,35 +1,36 @@
-body {
+body {	
+  margin:       0;
   background:   #3F464C;
 	font-family:	Monaco, monospace;
 	font-size:		11px;
 	color:        #fff;
 }
 
-#connectForm {
+#connect-form {
 	width: 					160px;
 	margin: 				0 auto;
 	margin-top: 		150px;
 	padding:				10px 15px;
 }
-#connectForm h1 i {
+#connect-form h1 i {
 	color: #FBDE2D;
 }
-#connectForm input, label {
+#connect-form input, label {
 	display:	block;
 	width: 		151px;
 }
-#connectForm input {
+#connect-form input {
 	margin-bottom: 	10px;
 	font-family:		Monaco, monospace;
 	font-size:			11px;
 	padding:				3px 5px;
 	border: 				solid 1px #ccc;
 }
-#connectForm input:focus {
+#connect-form input:focus {
 	outline: none;
 	border:	 solid 1px #FBDE2D;
 }
-#connectForm #connect {
+#connect-form #connect {
 	border: 			none;
 	background: 	#000;
 	color:				#fff;
@@ -38,48 +39,80 @@ body {
 	padding: 			8px 15px;
 	margin-left:	0;
 }
-#connectForm #connect:hover, #connectForm #connect:focus {
+#connect-form #connect:hover, #connect-form #connect:focus {
 	-webkit-transition: background-color 0.25s linear;
 	background: 				#FBDE2D;
 }
 
-#ircStuff {
+#irc-stuff {
 	display: 	none;
 }
-#chatLog {
-	display: 	block;
-	position: absolute;
-	left: 		0px;
-	top: 			0px;
-	width: 		100%;
-	height: 	95%;
-	overflow: auto;
-}
-#chatLog .line {
-	display:	block;
-	width: 		100%;
-	padding: 	5px 0px;
-}
-#chatLog .line:nth-child(odd) {
-	background: #383f44;
-}
-#chatLog b {
-	color: #FBDE2D;
-}
-#chatLog i {
-  color: #8DA6CE;
-}
 
-#msgInput {
+#msg-input {
 	display: 			block;
-	position: 		absolute;
+  position:     fixed;
+  bottom:       0;
+  left:         0;
 	width: 				100%;
-	left: 				0px;
-	bottom: 			0px;
 	font-family: 	Monaco, monospace;
 	font-size:		11px;
 	border:				1px solid #ccc;
 	border-right: none;
 	border-left: 	none;
-	padding: 5px 0px;
+	padding:      5px 0px;
+}
+
+.channel-list-channel-item {
+  display: inline-block;
+  margin: 0;
+  padding: 6px 10px;
+  color: #ccc;
+  cursor: pointer;
+  border-right: solid 1px #ccc;
+}
+
+.channel-list-channel-item:last-child {
+  border-right: none;
+}
+
+.channel-list-channel-item.active {
+  color: #fff;
+  cursor: normal;
+}
+
+.channel-log {
+  position: fixed;
+  display:  none;
+	top: 			28px;
+	bottom:   28px;
+  left: 		0px;
+	width: 		100%;
+	overflow: auto;
+}
+.channel-log.active {
+  display: block;
+}
+
+.channel-log .line {
+	display:	block;
+	width: 		100%;
+	padding: 	5px 0px;
+}
+.channel-log .line:nth-child(odd) {
+	background: #383f44;
+}
+.channel-log b {
+	color: #FBDE2D;
+}
+
+
+#channel-list {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: solid 1px #ccc;
 }
