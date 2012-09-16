@@ -7,39 +7,60 @@ function openConnection (options) {
 		
 		var connectForm   = $('#connect-form');
 		var ircStuff		  = $('#irc-stuff');
-		var channelsList  = $('#channel-list');
-		var channelPanes 	= $('#channel-panes');
-		var msgInput 		  = $('#msg-input');
+		var tabs          = $('#tabs');
+		var tabViews 	    = $('#tab-views');
+		var commandInput 	= $('#command-input');
 		
 		function newMsg (msgData) {
-		  var chatLog = $('.channel-log[title="'+msgData.receiver.toLowerCase()+'"]');
+		  var msgType = msgData.type;
 		  
-		  chatLog.append("<div class='line'><b>" + msgData.from + ":</b> " + msgData.message + "</div>");
-			
-			chatLog.scrollTop(chatLog[0].scrollHeight);
+		  var tabView = $('.tab-view[title="'+msgData.receiver.toLowerCase()+'"]');
+		  var newLine = $('<div>').addClass('line ' + msgType);
+
+		  if (msgType == 'client') {
+		    var msgFrom  = $('<b>').text(msgData.from + ': ');
+		    
+		    newLine.append(msgFrom);  
+		  }
+		  
+		  newLine.append(msgData.message);
+		  
+			tabView.append(newLine)
+			       .scrollTop(tabView[0].scrollHeight);
 		}
 		
-		function joinedChannel (channel) {
-		  var firstChannel = (channelsList.children().length > 0 ? false : true);
+		function newTab (tabName) {
+		  var firstTab = (tabs.children().length > 0 ? false : true);
 		  
-		  if ($('.channel-list-channel-item[title="'+channel.toLowerCase()+'"]').length == 0) {
-  		  var channelListItem = $('<li>').attr('title', channel.toLowerCase())
-  		                                 .addClass('channel-list-channel-item ' + (firstChannel ? 'active' : ''))
-  		                                 .text(channel);
+		  if ($('.tab[title="'+tabName.toLowerCase()+'"]').length == 0) {
+		    if (tabName.search(/^[#]/) == 0) {
+		      newMsg({  		  
+    			  receiver: 'status', 
+    			  message:  'joined channel ' + tabName,
+    			  type:     'server'
+      		});
+		    }
+		    
+  		  var tab = $('<li>').attr('title', tabName.toLowerCase())
+  		                     .addClass('tab ' + (firstTab ? 'active' : ''))
+  		                     .text(tabName);
                                        
-        channelListItem.click(function () {
-          $('.channel-list-channel-item').removeClass('active');
+        tab.click(function () {
+          $('.tab').removeClass('active');
           $(this).addClass('active');
-          $('.channel-log').removeClass('active');
-          $('.channel-log[title="'+$(this).attr('title')+'"]').addClass('active');
+          
+          $('.tab-view').removeClass('active');
+          var activeTabView = $('.tab-view[title="'+$(this).attr('title')+'"]');
+          activeTabView.addClass('active');
+          activeTabView.scrollTop(activeTabView[0].scrollHeight);
         });
         
-    	  channelsList.append(channelListItem);
+    	  tabs.append(tab);
 
-        var channelLog = $('<div>').attr('title', channel.toLowerCase())
-                                   .addClass('channel-log ' + (firstChannel ? 'active' : ''));
+        var tabView = $('<div>').attr('title', tabName.toLowerCase())
+                                .addClass('tab-view ' + (firstTab ? 'active' : ''));
                                    
-        channelPanes.append(channelLog);
+        tabViews.append(tabView);
 		  }
 		}
 		
@@ -47,56 +68,79 @@ function openConnection (options) {
 			socket.emit('connectToIRC', { options: options });
 			
 			connectForm.hide();
-			ircStuff.show();
-			
-			socket.on('joinedChannel', function (data) {
-				joinedChannel(data.channel);
-			});
-			
-			socket.on('newChannelMessage', function (data) {
-				newMsg({
-				  receiver: data.channel, 
-				  from:     data.from, 
-				  message:  data.message
-				});
-			});
-			
-			socket.on('newPrivateMessage', function (data) {
-				newMsg({
-				  receiver: 'pm to you from',
-				  from:     data.from, 
-				  message:  data.message
-				});
-			});
-
-			socket.on('clientDisconnected', function (data) {
-			
+  		ircStuff.show();
+  		
+  		newTab('status');
+  		
+  		newMsg({  		  
+			  receiver: 'status', 
+			  message:  'connecting...',
+			  type:     'server'
+  		});
+		});
+		
+		socket.on('joinedChannel', function (data) {
+			newTab(data.channel);
+		});
+		
+		socket.on('newChannelMessage', function (data) {
+			newMsg({
+			  receiver: data.channel, 
+			  from:     data.from, 
+			  message:  data.message,
+			  type:     'client'
 			});
 		});
 		
+		socket.on('newPrivateMessage', function (data) {
+		  newTab(data.from);
+		  
+			newMsg({
+			  receiver: data.from,
+			  from:     data.from, 
+			  message:  data.message,
+			  type:     'client'
+			});
+		});
+
+		socket.on('clientDisconnected', function (data) {
+		  newMsg({  		  
+			  receiver: 'status', 
+			  message:  'disconnected...',
+			  type:     'server'
+  		});
+		});
+		
 		// catch client is typing
-		msgInput.keypress(function (e) {
+		commandInput.keypress(function (e) {
 			var code = (e.keyCode ? e.keyCode : e.which);
 			
 			if (code == 13) { // user pressed enter
-				var input = msgInput.val();
+				var input = commandInput.val();
 				
 				if (input != '') {
-					var args = input.split(' ');
-					
-					if (args[0] == '/msg') {
-						socket.emit('sendMsg', { to: args[1], message: input.slice(args[0].length+args[1].length+2) });
-						
-						newMsg({
-						  receiver: args[1].search(/^[#]/) == 0 ? args[1] : 'pm to ' + args[1] + ' from', 
-						  from:     "you", 
-						  message:  input.slice(args[0].length+args[1].length+2)
-						});
-						
-						msgInput.val('');
+					if (input.search(/^[\/]/) == 0) {
+					  // commands
 					}
 					else {
-						alert('You need to tell what user or channel to send the message to! ex: /msg #channame /msg username');
+					  // normal message to current tab-view
+					  var to = $('.tab.active').text();
+					  
+					  if (to == 'status') return;
+					  
+					  socket.emit('sendMsg', { 
+					    to:       to, 
+					    message:  input
+					  });
+						
+						newMsg({
+						  receiver: to, 
+						  from:     'you', 
+						  message:  input,
+      			  type:     'client'
+						});
+						
+						commandInput.val(''); 
 					}
 				}
 			}

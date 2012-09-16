@@ -48,7 +48,59 @@ body {
 	display: 	none;
 }
 
-#msg-input {
+#tabs {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: solid 1px #ccc;
+}
+
+.tab {
+  display: inline-block;
+  margin: 0;
+  padding: 6px 10px;
+  color: #ccc;
+  cursor: pointer;
+  border-right: solid 1px #ccc;
+}
+
+.tab.active {
+  color: #fff;
+  cursor: normal;
+}
+
+.tab-view {
+  position: fixed;
+  display:  none;
+	top: 			28px;
+	bottom:   28px;
+  left: 		0px;
+	width: 		100%;
+	overflow: auto;
+}
+.tab-view.active {
+  display: block;
+}
+
+.tab-view .line {
+	display:	block;
+	width: 		100%;
+	padding: 	5px 0px;
+}
+
+.tab-view .line.client:nth-child(odd) {
+	background: #383f44;
+}
+
+.tab-view b {
+	color: #FBDE2D;
+}
+
+#command-input {
 	display: 			block;
   position:     fixed;
   bottom:       0;
@@ -60,59 +112,4 @@ body {
 	border-right: none;
 	border-left: 	none;
 	padding:      5px 0px;
-}
-
-.channel-list-channel-item {
-  display: inline-block;
-  margin: 0;
-  padding: 6px 10px;
-  color: #ccc;
-  cursor: pointer;
-  border-right: solid 1px #ccc;
-}
-
-.channel-list-channel-item:last-child {
-  border-right: none;
-}
-
-.channel-list-channel-item.active {
-  color: #fff;
-  cursor: normal;
-}
-
-.channel-log {
-  position: fixed;
-  display:  none;
-	top: 			28px;
-	bottom:   28px;
-  left: 		0px;
-	width: 		100%;
-	overflow: auto;
-}
-.channel-log.active {
-  display: block;
-}
-
-.channel-log .line {
-	display:	block;
-	width: 		100%;
-	padding: 	5px 0px;
-}
-.channel-log .line:nth-child(odd) {
-	background: #383f44;
-}
-.channel-log b {
-	color: #FBDE2D;
-}
-
-
-#channel-list {
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border-bottom: solid 1px #ccc;
 }
