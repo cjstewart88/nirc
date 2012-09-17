@@ -1,17 +1,26 @@
-function openConnection (options) {
-	if (options.server == "" || options.nickname == "" || options.channels == "") {
-		alert("Fields marked with * are required");
-	}
-	else {
-		var socket  		  = io.connect(null);
-		
-		var connectForm   = $('#connect-form');
+(function ($) {
+  $.nirc = function () {
+    var options = {
+	    server:   $("#server").val(), 
+	    port:     $("#port").val(), 
+	    nickname: $("#nickname").val(), 
+	    channels: $("#channels").val()
+	  }
+	  
+	  if (options.server == "" || options.nickname == "" || options.channels == "") {
+	    alert('Fields marked with * are required!');
+	    return;
+	  }
+
+	  var socket  		  = io.connect(null);
+	  
+    var connectForm   = $('#connect-form');
 		var ircStuff		  = $('#irc-stuff');
 		var tabs          = $('#tabs');
 		var tabViews 	    = $('#tab-views');
 		var commandInput 	= $('#command-input');
-		
-		function newMsg (msgData) {
+
+		var newMsg = function (msgData) {
 		  var msgType = msgData.type;
 		  
 		  var tabView = $('.tab-view[title="'+msgData.receiver.toLowerCase()+'"]');
@@ -29,7 +38,7 @@ function openConnection (options) {
 			       .scrollTop(tabView[0].scrollHeight);
 		}
 		
-		function newTab (tabName) {
+		var newTab = function (tabName) {
 		  $('.tab').removeClass('active');
 		  $('.tab-view').removeClass('active');
 		  
@@ -67,7 +76,7 @@ function openConnection (options) {
 		  }
 		}
 		
-		function closeTab (tabName) {
+		var closeTab = function (tabName) {
 		  if (tabName.search(/^[#]/) == 0) {
 	      newMsg({  		  
   			  receiver: 'status', 
@@ -94,37 +103,38 @@ function openConnection (options) {
 		  tabView.remove();
 		}
 		
-		socket.on('connect', function () {	  
+		// START SOCKET LISTENERS
+		socket.on('connect', function () {
 			socket.emit('connectToIRC', { options: options });
-			
+
 			connectForm.hide();
   		ircStuff.show();
-  		
+
   		newTab('status');
-  		
+
   		newMsg({  		  
 			  receiver: 'status', 
 			  message:  'connecting...',
 			  type:     'server'
   		});
 		});
-		
+
 		socket.on('successfullyJoinedChannel', function (data) {
 			newTab(data.channel);
 		});
-		
+
 		socket.on('userJoinedChannel', function (data) {
 			// this will be used when there's a channel user list
 		});
-		
+
 		socket.on('successfullyPartedChannel', function (data) {
 		  closeTab(data.channel);
 		});
-		
+
 		socket.on('userPartedChannel', function (data) {
 			// this will be used when there's a channel user list
 		});
-		
+
 		socket.on('newChannelMessage', function (data) {
 			newMsg({
 			  receiver: data.channel, 
@@ -133,10 +143,10 @@ function openConnection (options) {
 			  type:     'client'
 			});
 		});
-		
+
 		socket.on('newPrivateMessage', function (data) {
 		  newTab(data.from);
-		  
+
 			newMsg({
 			  receiver: data.from,
 			  from:     data.from, 
@@ -152,25 +162,26 @@ function openConnection (options) {
 			  type:     'server'
   		});
 		});
-		
-		// catch client typing
-		commandInput.keypress(function (e) {
+		// END SOCKET LISTENERS
+		    
+    // CAPTURE USER TYPING
+    commandInput.keypress(function (e) {
 			var code = (e.keyCode ? e.keyCode : e.which);
-			
+
 			if (code == 13) { // user pressed enter
 				var input = commandInput.val();
-				
+
 				if (input != '') {
 					if (input.search(/^[\/]/) == 0) {
 					  /* 
 					    user is trying to use irc commands 
 					  */
-					  
+
 					  // if a user types the command /part be sure to send 
 					  // the currently active channel
 					  if (input.split(' ')[0].substr(1).toLowerCase() == 'part') {
 					    var activeTab = $('.tab.active').text();
-					    
+
 					    if (activeTab == 'status') {
 					      newMsg({  		  
           			  receiver: 'status', 
@@ -184,33 +195,34 @@ function openConnection (options) {
 					      input = input + ' ' + activeTab;  
 					    }
 					  }
-					  
+
 					  socket.emit('command', input);
-					  
+
 						commandInput.val('');
 					}
 					else {
 					  // normal message to current tab-view
 					  var to = $('.tab.active').text();
-					  
+
 					  if (to == 'status') return;
-					  
+
 					  socket.emit('sendMsg', { 
 					    to:       to, 
 					    message:  input
 					  });
-						
+
 						newMsg({
 						  receiver: to, 
 						  from:     'you', 
 						  message:  input,
       			  type:     'client'
 						});
-						
+
 						commandInput.val(''); 
 					}
 				}
 			}
 		});
-	}
-}
+		// ENDER CAPTURE USER TYPING
+  };
+})(jQuery);

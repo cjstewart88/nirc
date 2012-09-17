@@ -49,11 +49,14 @@ io.sockets.on('connection', function (client) {
 			client.emit('newPrivateMessage', { from: from, message: text });
 		});
 
-		// clients wanting to send a message
+		// client wanting to send a message
 		client.on('sendMsg', function (data) {
 			ircClient.say(data.to, data.message);
 		});
     
+    // client wanting to use an irc command
+    // part and join are the only supported commands
+    // that are wired up... 
     client.on('command', function (data) {
       var command = data.split(' ')[0].substr(1).toUpperCase();
       
