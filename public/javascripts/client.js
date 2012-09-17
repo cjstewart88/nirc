@@ -121,6 +121,9 @@ function openConnection (options) {
 				if (input != '') {
 					if (input.search(/^[\/]/) == 0) {
 					  // commands
+					  socket.emit('command', input);
+					  
+						commandInput.val('');
 					}
 					else {
 					  // normal message to current tab-view

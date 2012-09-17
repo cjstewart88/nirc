@@ -6,6 +6,10 @@ body {
 	color:        #fff;
 }
 
+input:focus{
+  outline: none;
+}
+
 #connect-form {
 	width: 					160px;
 	margin: 				0 auto;
@@ -27,7 +31,6 @@ body {
 	border: 				solid 1px #ccc;
 }
 #connect-form input:focus {
-	outline: none;
 	border:	 solid 1px #FBDE2D;
 }
 #connect-form #connect {
@@ -88,8 +91,7 @@ body {
 
 .tab-view .line {
 	display:	block;
-	width: 		100%;
-	padding: 	5px 0px;
+	padding: 	5px 10px;
 }
 
 .tab-view .line.client:nth-child(odd) {
