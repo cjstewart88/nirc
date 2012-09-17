@@ -33,8 +33,8 @@ function Client(server, nick, opt) {
         server: server,
         nick: nick,
         password: null,
-        userName: 'nodebot',
-        realName: 'nodeJS IRC client',
+        userName: 'nirc',
+        realName: 'node irc',
         port: 6667,
         debug: false,
         showErrors: true,
@@ -442,7 +442,11 @@ function Client(server, nick, opt) {
             case "err_inviteonlychan":
               if ( self.opt.showErrors )
                   util.log("\033[01;31mERROR: " + util.inspect(message) + "\033[0m");
-              break; 
+              break;
+            case "err_notonchannel":
+              if ( self.opt.showErrors )
+                  util.log("\033[01;31mERROR: " + util.inspect(message) + "\033[0m");
+              break;
             default:
                 if ( message.commandType == 'error' ) {
                     if ( self.opt.showErrors )
@@ -613,9 +617,8 @@ Client.prototype.disconnect = function ( message, callback ) { // {{{
     self.conn.end();
 }; // }}}
 Client.prototype.send = function(command) { // {{{
-    console.log(arguments);
     var args = Array.prototype.slice.call(arguments);
-    console.log(args);
+
     // Remove the command
     args.shift();
     
@@ -682,7 +685,7 @@ Client.prototype.part = function(channel, callback) { // {{{
     if (this.opt.channels.indexOf(channel) != -1) {
         this.opt.channels.splice(this.opt.channels.indexOf(channel), 1);
     }
-
+    
     this.send('PART', channel);
 } // }}}
 Client.prototype.say = function(target, text) { // {{{

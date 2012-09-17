@@ -30,7 +30,8 @@ function openConnection (options) {
 		}
 		
 		function newTab (tabName) {
-		  var firstTab = (tabs.children().length > 0 ? false : true);
+		  $('.tab').removeClass('active');
+		  $('.tab-view').removeClass('active');
 		  
 		  if ($('.tab[title="'+tabName.toLowerCase()+'"]').length == 0) {
 		    if (tabName.search(/^[#]/) == 0) {
@@ -42,26 +43,55 @@ function openConnection (options) {
 		    }
 		    
   		  var tab = $('<li>').attr('title', tabName.toLowerCase())
-  		                     .addClass('tab ' + (firstTab ? 'active' : ''))
+  		                     .addClass('tab active')
   		                     .text(tabName);
                                        
         tab.click(function () {
           $('.tab').removeClass('active');
           $(this).addClass('active');
-          
+
           $('.tab-view').removeClass('active');
           var activeTabView = $('.tab-view[title="'+$(this).attr('title')+'"]');
           activeTabView.addClass('active');
           activeTabView.scrollTop(activeTabView[0].scrollHeight);
+          
+          commandInput.focus();
         });
         
     	  tabs.append(tab);
 
         var tabView = $('<div>').attr('title', tabName.toLowerCase())
-                                .addClass('tab-view ' + (firstTab ? 'active' : ''));
+                                .addClass('tab-view active');
                                    
         tabViews.append(tabView);
 		  }
+		}
+		
+		function closeTab (tabName) {
+		  if (tabName.search(/^[#]/) == 0) {
+	      newMsg({  		  
+  			  receiver: 'status', 
+  			  message:  'parted channel ' + tabName,
+  			  type:     'server'
+    		});
+	    }
+		  
+		  var tabNameToClose = tabName.toLowerCase();
+		  
+		  var tab     = $('.tab[title="'+tabNameToClose+'"]');
+		  var tabView = $('.tab-view[title="'+tabNameToClose+'"]');
+		  
+		  var currentActiveTab  = $('.tab.active').attr('title');
+		  if (currentActiveTab == tabNameToClose) {
+  	    var tabToActivate   = tab.prev();
+  		  var tabViewToActive = $('.tab-view[title="'+tabToActivate.attr('title')+'"]'); 
+  		  
+  		  tabToActivate.addClass('active');
+  		  tabViewToActive.addClass('active');
+		  }
+		  
+		  tab.remove();
+		  tabView.remove();
 		}
 		
 		socket.on('connect', function () {	  
@@ -79,8 +109,20 @@ function openConnection (options) {
   		});
 		});
 		
-		socket.on('joinedChannel', function (data) {
+		socket.on('successfullyJoinedChannel', function (data) {
 			newTab(data.channel);
+		});
+		
+		socket.on('userJoinedChannel', function (data) {
+			// this will be used when there's a channel user list
+		});
+		
+		socket.on('successfullyPartedChannel', function (data) {
+		  closeTab(data.channel);
+		});
+		
+		socket.on('userPartedChannel', function (data) {
+			// this will be used when there's a channel user list
 		});
 		
 		socket.on('newChannelMessage', function (data) {
@@ -111,7 +153,7 @@ function openConnection (options) {
   		});
 		});
 		
-		// catch client is typing
+		// catch client typing
 		commandInput.keypress(function (e) {
 			var code = (e.keyCode ? e.keyCode : e.which);
 			
@@ -120,7 +162,29 @@ function openConnection (options) {
 				
 				if (input != '') {
 					if (input.search(/^[\/]/) == 0) {
-					  // commands
+					  /* 
+					    user is trying to use irc commands 
+					  */
+					  
+					  // if a user types the command /part be sure to send 
+					  // the currently active channel
+					  if (input.split(' ')[0].substr(1).toLowerCase() == 'part') {
+					    var activeTab = $('.tab.active').text();
+					    
+					    if (activeTab == 'status') {
+					      newMsg({  		  
+          			  receiver: 'status', 
+          			  message:  'You can not use the /part command on the status window... to part a channel specify the channel to part. EX: /part #ruby',
+          			  type:     'server'
+            		});
+                commandInput.val('');
+					      return;
+					    }
+					    else {
+					      input = input + ' ' + activeTab;  
+					    }
+					  }
+					  
 					  socket.emit('command', input);
 					  
 						commandInput.val('');

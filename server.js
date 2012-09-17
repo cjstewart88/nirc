@@ -28,8 +28,15 @@ io.sockets.on('connection', function (client) {
 		});
 
     // join channel listener
-    ircClient.addListener('join', function (channel, nick, message) {
-      client.emit('joinedChannel', { channel: channel });
+    ircClient.addListener('join', function (channel, nick, args) {
+      var actionToEmit = (nick == ircClient.nick ? 'successfullyJoinedChannel' : 'userJoinedChannel')
+      client.emit(actionToEmit, { channel: channel, who: nick });
+		});
+    
+    // part channel listener
+    ircClient.addListener('part', function (channel, nick, message, args) {
+      var actionToEmit = (nick == ircClient.nick ? 'successfullyPartedChannel' : 'userPartedChannel')
+      client.emit(actionToEmit, { channel: channel, who: nick });
 		});
     
     // listener for normal messages
@@ -53,14 +60,17 @@ io.sockets.on('connection', function (client) {
       var args = data.split(' ');
       args.shift();
       
-      var message = {
-        command:  command,
-        nick:     ircClient.nick,
-        args:     args
+      switch (command) {
+        case "JOIN":
+          ircClient.join(args[0]);
+          break;
+        case "PART":
+          ircClient.part(args[0]);
+          break;
+        default:
+          console.log("unknown command");
+          //ircClient.send.apply(ircClient, [command].concat(args));
       }
-      
-      ircClient.emit('raw', message);
-      ircClient.send.apply(ircClient, [command].concat(args));
 		});
     
 		// client disconnected
