@@ -27,6 +27,15 @@ io.sockets.on('connection', function (client) {
 			channels: channels
 		});
 
+    // info/err msg listener
+    ircClient.addListener('raw', function(message){
+      if (message.rawCommand.match(/^\d+$/)) {
+        // "Is it numeric" - is this the best characterization of a info/err message?
+        // First arg is nick
+        client.emit('newInfoMsg', { rawCommand: message.rawCommand, args: message.args.splice(1) } );
+      }
+    })
+
     // join channel listener
     ircClient.addListener('join', function (channel, nick, args) {
       var actionToEmit = (nick == ircClient.nick ? 'successfullyJoinedChannel' : 'userJoinedChannel')

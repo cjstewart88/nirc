@@ -119,6 +119,14 @@
   		});
 		});
 
+    socket.on('newInfoMsg', function(data){
+      newMsg({
+        receiver: 'status',
+        message:  data.args.join(' '),
+        type:     'server'
+      });
+    });
+
 		socket.on('successfullyJoinedChannel', function (data) {
 			newTab(data.channel);
 		});
