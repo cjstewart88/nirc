@@ -4,7 +4,9 @@
 	    server:   $("#server").val(), 
 	    port:     $("#port").val(), 
 	    nickname: $("#nickname").val(), 
-	    channels: $("#channels").val()
+	    channels: $("#channels").val(),
+      ssl:      $("#ssl").is(":checked"),
+      password: $("#password").val()
 	  }
 	  
 	  if (options.server == "" || options.nickname == "" || options.channels == "") {

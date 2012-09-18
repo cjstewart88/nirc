@@ -519,7 +519,10 @@ Client.prototype.connect = function ( retryCount, callback ) { // {{{
                (self.opt.selfSigned &&
                 self.conn.authorizationError === 'DEPTH_ZERO_SELF_SIGNED_CERT') ||
                 (self.opt.certExpired &&
-                   self.conn.authorizationError === 'CERT_HAS_EXPIRED')) {
+                   self.conn.authorizationError === 'CERT_HAS_EXPIRED') ||
+                (self.opt.selfSigned &&
+                 self.conn.authorizationError === 'UNABLE_TO_VERIFY_LEAF_SIGNATURE')
+              ) {
               // authorization successful
               self.conn.setEncoding('utf-8');
                 if ( self.opt.certExpired &&

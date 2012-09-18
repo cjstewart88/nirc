@@ -22,10 +22,22 @@ io.sockets.on('connection', function (client) {
 		var channels = data.options.channels.replace(" ","").split(",");
 		
 		// initialize irc connection
-		var ircClient = new irc.Client(data.options.server, data.options.nickname, {
+    var opts = {
 			port: 		data.options.port || 6667,
 			channels: channels
-		});
+    };
+
+    if (data.options.password) {
+      opts.password = data.options.password;
+    }
+
+    if (data.options.ssl) {
+      opts.secure      = { rejectUnauthorized: false};
+      opts.selfSigned  = true;
+      opts.certExpired = true;
+    }
+
+		var ircClient = new irc.Client(data.options.server, data.options.nickname, opts);
 
     // join channel listener
     ircClient.addListener('join', function (channel, nick, args) {
