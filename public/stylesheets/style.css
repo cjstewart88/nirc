@@ -108,8 +108,13 @@ label[for=ssl] {
 	background: #383f44;
 }
 
-.tab-view b {
+.tab-view .from {
+  font-weight: bold;
 	color: #FBDE2D;
+}
+
+.tab-view .from.from-you {
+  color: rgb(45, 177, 251);
 }
 
 #command-input {
