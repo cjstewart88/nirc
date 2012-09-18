@@ -24,7 +24,9 @@ io.sockets.on('connection', function (client) {
 		// initialize irc connection
 		var ircClient = new irc.Client(data.options.server, data.options.nickname, {
 			port: 		data.options.port || 6667,
-			channels: channels
+      password: data.options.password,
+			channels: channels,
+      secure:   data.options.ssl ? {rejectUnauthorized: false} : false
 		});
 
     // join channel listener
