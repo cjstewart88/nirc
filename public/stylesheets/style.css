@@ -30,6 +30,16 @@ input:focus{
 	padding:				3px 5px;
 	border: 				solid 1px #ccc;
 }
+
+label[for=ssl] {
+  display: inline;
+  width: auto;
+}
+#connect-form input[type=checkbox] {
+  display: inline;
+  width: auto;
+}
+
 #connect-form input:focus {
 	border:	 solid 1px #FBDE2D;
 }
