@@ -767,56 +767,50 @@ Client.prototype.ctcp = function(to, type, text) {
  */
 function parseMessage(line, stripColors) { // {{{
     var message = {};
-    var match;
+    var prefix, line, trailing, args, pos, reply;
 
     if (stripColors) {
         line = line.replace(/[\x02\x1f\x16\x0f]|\x03\d{0,2}(?:,\d{0,2})?/g, "");
     }
 
-    // Parse prefix
-    if ( match = line.match(/^:([^ ]+) +/) ) {
-        message.prefix = match[1];
-        line = line.replace(/^:[^ ]+ +/, '');
-        if ( match = message.prefix.match(/^([_a-zA-Z0-9\[\]\\`^{}|-]*)(!([^@]+)@(.*))?$/) ) {
+    /* handle removing the prefix from the message.
+     * this is everything after : and before the first space. */
+    if (line[0] === ':') {
+        pos    = line.indexOf(' ');
+        prefix = line.substr(1, pos - 1);
+        line   = line.substr(pos + 1);
+
+        message.prefix = prefix;
+        if (match = message.prefix.match(/^([_a-zA-Z0-9\[\]\\`^{}|-]*)(!([^@]+)@(.*))?$/)) {
             message.nick = match[1];
             message.user = match[3];
             message.host = match[4];
-        }
-        else {
+        } else {
             message.server = message.prefix;
         }
     }
 
-    // Parse command
-    match = line.match(/^([^ ]+) */);
-    message.command = match[1];
-    message.rawCommand = match[1];
+    /* handle any potential trailing argument, which may have spaces in it */
+    if ((pos = line.indexOf(' :')) !== -1) {
+        trailing = line.substr(pos + 2);
+        line     = line.substr(0, pos);
+        args     = line.length != 0 ? line.split(' ') : [];
+        args.push(trailing);
+    } else {
+        args = line.length != 0 ? line.split(' ') : [];
+    }
+
+    command = args.shift();
+
+    message.rawCommand  = command;
+    message.command     = command;
+    message.args        = args;
     message.commandType = 'normal';
-    line = line.replace(/^[^ ]+ +/, '');
 
-    if ( replyFor[message.rawCommand] ) {
-        message.command     = replyFor[message.rawCommand].name;
-        message.commandType = replyFor[message.rawCommand].type;
+    if ((reply = replyFor[message.rawCommand])) {
+        message.command     = reply.name;
+        message.commandType = reply.type;
     }
-
-    message.args = [];
-    var middle, trailing;
-
-    // Parse parameters
-    if ( line.indexOf(':') != -1 ) {
-        match = line.match(/(.*)(?:^:|\s+:)(.*)/);
-        middle = match[1].trimRight();
-        trailing = match[2]; 
-    }
-    else {
-        middle = line;
-    }
-
-    if ( middle.length )
-        message.args = middle.split(/ +/);
-
-    if ( typeof(trailing) != 'undefined' && trailing.length )
-        message.args.push(trailing);
 
     return message;
 } // }}}
