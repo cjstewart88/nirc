@@ -794,10 +794,10 @@ function parseMessage(line, stripColors) { // {{{
     if ((pos = line.indexOf(' :')) !== -1) {
         trailing = line.substr(pos + 2);
         line     = line.substr(0, pos);
-        args     = line.split(' ');
+        args     = line.length != 0 ? line.split(' ') : [];
         args.push(trailing);
     } else {
-        args = line.split(' ');
+        args = line.length != 0 ? line.split(' ') : [];
     }
 
     command = args.shift();
