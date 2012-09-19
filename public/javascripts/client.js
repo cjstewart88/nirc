@@ -29,7 +29,10 @@
 		  var newLine = $('<div>').addClass('line ' + msgType);
 
 		  if (msgType == 'client') {
-		    var msgFrom  = $('<b>').text(msgData.from + ': ');
+		    var msgFrom  = $('<span>').addClass('from').text(msgData.from + ': ');
+        if (msgData.fromYou) {
+          msgFrom.addClass('from-you');
+        }
 		    
 		    newLine.append(msgFrom);  
 		  }
@@ -223,7 +226,8 @@
 
 						newMsg({
 						  receiver: to, 
-						  from:     'you', 
+						  from:     'you',
+              fromYou:  true, 
 						  message:  input,
       			  type:     'client'
 						});
