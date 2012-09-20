@@ -17,10 +17,10 @@ var server  = http.createServer(app)
 
 var io      = io.listen(server);
 
-io.sockets.on('connection', function (client) { 
+io.sockets.on('connection', function (client) {
   client.on('connectToIRC', function (data) {
     var channels = data.options.channels.replace(" ","").split(",");
-    
+
     // initialize irc connection
     var opts = {
       debug: true,
@@ -52,13 +52,13 @@ io.sockets.on('connection', function (client) {
       var actionToEmit = (nick == ircClient.nick ? 'successfullyJoinedChannel' : 'userJoinedChannel')
       client.emit(actionToEmit, { channel: channel, who: nick });
     });
-    
+
     // part channel listener
     ircClient.addListener('part', function (channel, nick, message, args) {
       var actionToEmit = (nick == ircClient.nick ? 'successfullyPartedChannel' : 'userPartedChannel')
       client.emit(actionToEmit, { channel: channel, who: nick });
     });
-    
+
     // listener for normal messages
     ircClient.addListener('message', function (from, to, text, message) {
       client.emit('newChannelMessage', { channel: to, from: from, message: text });
@@ -77,10 +77,10 @@ io.sockets.on('connection', function (client) {
     client.on('sendMsg', function (data) {
       ircClient.say(data.to, data.message);
     });
-    
+
     // client wanting to use an irc command
     // part and join are the only supported commands
-    // that are wired up... 
+    // that are wired up...
     client.on('command', function (data) {
       var args    = data.split(' ');
       var command = args.shift().substr(1).toUpperCase();
@@ -98,7 +98,7 @@ io.sockets.on('connection', function (client) {
           //ircClient.send.apply(ircClient, [command].concat(args));
       }
     });
-    
+
     // client disconnected
     client.on('disconnect', function () {
       ircClient.disconnect();

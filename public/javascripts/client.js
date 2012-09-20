@@ -1,21 +1,21 @@
 (function ($) {
   $.nirc = function () {
     var options = {
-      server:   $("#server").val(), 
-      port:     $("#port").val(), 
-      nickname: $("#nickname").val(), 
+      server:   $("#server").val(),
+      port:     $("#port").val(),
+      nickname: $("#nickname").val(),
       channels: $("#channels").val(),
       ssl:      $("#ssl").is(":checked"),
       password: $("#password").val()
     }
-    
+
     if (options.server == "" || options.nickname == "" || options.channels == "") {
       alert('Fields marked with * are required!');
       return;
     }
 
     var socket        = io.connect(null);
-    
+
     var connectForm   = $('#connect-form');
     var ircStuff      = $('#irc-stuff');
     var tabs          = $('#tabs');
@@ -24,7 +24,7 @@
 
     var newMsg = function (msgData) {
       var msgType = msgData.type;
-      
+
       var tab     = $('.tab[title="'+msgData.receiver.toLowerCase()+'"]');
       var tabView = $('.tab-view[title="'+tab.attr('title')+'"]');
       var newLine = $('<div>').addClass('line ' + msgType);
@@ -38,101 +38,101 @@
         if (msgData.fromYou) {
           msgFrom.addClass('from-you');
         }
-        
-        newLine.append(msgFrom);  
+
+        newLine.append(msgFrom);
       }
-      
+
       newLine.append(msgData.message);
-      
+
       tabView.append(newLine)
              .scrollTop(tabView[0].scrollHeight);
     }
-    
+
     var newTab = function (tabName) {
       $('.tab').removeClass('active');
       $('.tab-view').removeClass('active');
-      
+
       if ($('.tab[title="'+tabName.toLowerCase()+'"]').length == 0) {
         if (tabName.search(/^[#]/) == 0) {
-          newMsg({        
-            receiver: 'status', 
+          newMsg({
+            receiver: 'status',
             message:  'joined channel ' + tabName,
             type:     'server'
           });
         }
-        
+
         var tab = $('<li>').attr('title', tabName.toLowerCase())
                            .addClass('tab active')
                            .text(tabName);
-                                       
+
         tab.click(function () {
           $('.tab').removeClass('active');
           $('.tab-view').removeClass('active');
-          
+
           var tabToActivate   = $(this);
           var tabViewToActive = $('.tab-view[title="'+tabToActivate.attr('title')+'"]');
-          
+
           activateTab(tabToActivate, tabViewToActive);
         });
-        
+
         tabs.append(tab);
 
         var tabView = $('<div>').attr('title', tabName.toLowerCase())
                                 .addClass('tab-view active');
-                                   
+
         tabViews.append(tabView);
       }
     }
-    
+
     var closeTab = function (tabName) {
       if (tabName.search(/^[#]/) == 0) {
-        newMsg({        
-          receiver: 'status', 
+        newMsg({
+          receiver: 'status',
           message:  'parted channel ' + tabName,
           type:     'server'
         });
       }
-      
+
       var tabNameToClose = tabName.toLowerCase();
-      
+
       var tab     = $('.tab[title="'+tabNameToClose+'"]');
       var tabView = $('.tab-view[title="'+tabNameToClose+'"]');
-      
+
       var currentActiveTab  = $('.tab.active').attr('title');
       if (currentActiveTab == tabNameToClose) {
         var tabToActivate     = tab.prev();
-        var tabViewToActivate = $('.tab-view[title="'+tabToActivate.attr('title')+'"]'); 
-        
+        var tabViewToActivate = $('.tab-view[title="'+tabToActivate.attr('title')+'"]');
+
         activateTab(tabToActivate, tabViewToActivate);
       }
-      
+
       tab.remove();
       tabView.remove();
     }
-    
+
     var changeTabWithKeyboard = function (direction) {
       // deactivate old tab
       var currentTab      = $('.tab.active');
       var currentTabView  = $('.tab-view[title="'+currentTab.attr('title')+'"]');
-      
+
       currentTab.removeClass('active');
       currentTabView.removeClass('active');
-      
+
       // activate new tab
       var tabToActivate;
-      
+
       if (direction == 'left') {
-        tabToActivate = (currentTab.prev().length == 1 ? currentTab.prev() : $('.tab').last()); 
+        tabToActivate = (currentTab.prev().length == 1 ? currentTab.prev() : $('.tab').last());
       }
       else {
         tabToActivate = (currentTab.next().length == 1 ? currentTab.next() : $('.tab').first());
       }
-      
-      var tabViewToActivate = $('.tab-view[title="'+tabToActivate.attr('title')+'"]'); 
-      
+
+      var tabViewToActivate = $('.tab-view[title="'+tabToActivate.attr('title')+'"]');
+
       activateTab(tabToActivate, tabViewToActivate);
     }
-    
+
     var activateTab = function (tabToActivate, tabViewToActivate) {
       tabToActivate.addClass('active')
                    .removeClass('new-msgs');
@@ -142,7 +142,7 @@
 
       commandInput.focus();
     }
-    
+
     // START SOCKET LISTENERS
     socket.on('connect', function () {
       socket.emit('connectToIRC', { options: options });
@@ -152,8 +152,8 @@
 
       newTab('status');
 
-      newMsg({        
-        receiver: 'status', 
+      newMsg({
+        receiver: 'status',
         message:  'connecting...',
         type:     'server'
       });
@@ -196,7 +196,7 @@
               type: 'server'
             });
           }
-      } 
+      }
     });
 
     socket.on('newInfoMsg', function(data){
@@ -234,8 +234,8 @@
 
     socket.on('newChannelMessage', function (data) {
       newMsg({
-        receiver: data.channel, 
-        from:     data.from, 
+        receiver: data.channel,
+        from:     data.from,
         message:  data.message,
         type:     'client'
       });
@@ -246,15 +246,15 @@
 
       newMsg({
         receiver: data.from,
-        from:     data.from, 
+        from:     data.from,
         message:  data.message,
         type:     'client'
       });
     });
 
     socket.on('clientDisconnected', function (data) {
-      newMsg({        
-        receiver: 'status', 
+      newMsg({
+        receiver: 'status',
         message:  'disconnected...',
         type:     'server'
       });
@@ -268,7 +268,7 @@
       });
     });
     // END SOCKET LISTENERS
-        
+
     // CAPTURE USER TYPING
     commandInput.keypress(function (e) {
       var code = (e.keyCode ? e.keyCode : e.which);
@@ -278,16 +278,16 @@
 
         if (input != '') {
           if (input.search(/^[\/]/) == 0) {
-            // user is trying to use irc commands 
+            // user is trying to use irc commands
 
-            // if a user types the command /part be sure to send 
+            // if a user types the command /part be sure to send
             // the currently active channel
             if (input.split(' ')[0].substr(1).toLowerCase() == 'part') {
               var activeTab = $('.tab.active').text();
 
               if (activeTab == 'status') {
-                newMsg({        
-                  receiver: 'status', 
+                newMsg({
+                  receiver: 'status',
                   message:  'You can not use the /part command on the status window... to part a channel specify the channel to part. EX: /part #ruby',
                   type:     'server'
                 });
@@ -295,7 +295,7 @@
                 return;
               }
               else {
-                input = input + ' ' + activeTab;  
+                input = input + ' ' + activeTab;
               }
             }
 
@@ -309,32 +309,32 @@
 
             if (to == 'status') return;
 
-            socket.emit('sendMsg', { 
-              to:       to, 
+            socket.emit('sendMsg', {
+              to:       to,
               message:  input
             });
 
             newMsg({
-              receiver: to, 
+              receiver: to,
               from:     'you',
-              fromYou:  true, 
+              fromYou:  true,
               message:  input,
               type:     'client'
             });
 
-            commandInput.val(''); 
+            commandInput.val('');
           }
         }
       }
     });
     // END CAPTURE USER TYPING
-    
+
     // SETUP KEY BINDINGS
     Mousetrap.bind('ctrl+left', function() {
       changeTabWithKeyboard('left');
     });
 
-    Mousetrap.bind('ctrl+right', function() { 
+    Mousetrap.bind('ctrl+right', function() {
       changeTabWithKeyboard('right');
     });
     // END KEY BINDINGS
