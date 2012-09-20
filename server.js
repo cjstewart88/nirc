@@ -46,6 +46,10 @@ io.sockets.on('connection', function (client) {
         client.emit('raw', message);
       } else if (message.rawCommand == '332') {
         client.emit('raw', message);
+      } else if (message.rawCommand == '353') {
+        client.emit('raw', message); 
+      } else if (message.rawCommand == '366') {
+        client.emit('raw', message);
       } else if (message.rawCommand.match(/^\d+$/)) {
         // "Is it numeric" - is this the best characterization of a info/err message?
         // First arg is nick
