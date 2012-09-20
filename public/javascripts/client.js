@@ -175,6 +175,14 @@
 			  type:     'server'
   		});
 		});
+
+    socket.on('errorMessage', function(data) {
+      newMsg({
+        receiver: 'status',
+        message:  data.message,
+        type: 'error'
+      });
+    });
 		// END SOCKET LISTENERS
 		    
     // CAPTURE USER TYPING
