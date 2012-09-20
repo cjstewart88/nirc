@@ -29,7 +29,7 @@
 		  var tabView = $('.tab-view[title="'+tab.attr('title')+'"]');
 		  var newLine = $('<div>').addClass('line ' + msgType);
 
-		  if (tab.attr('title') != $('.tab.active').attr('title')) {
+		  if (!tab.hasClass('active')) {
 		    tab.addClass('new-msgs');
 		  }
 
