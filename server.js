@@ -65,6 +65,10 @@ io.sockets.on('connection', function (client) {
 			client.emit('newChannelMessage', { channel: to, from: from, message: text });
 		});
 
+    ircClient.addListener('notice', function(from, to, text, message){
+      client.emit('newNotice', { from: from, to: to, message: text });
+    });
+
     // add listener for private messages
     ircClient.addListener('pm', function (from, text, message) {
 			client.emit('newPrivateMessage', { from: from, message: text });

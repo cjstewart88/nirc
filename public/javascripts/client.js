@@ -132,6 +132,15 @@
       });
     });
 
+    socket.on('newNotice', function(data){
+      newMsg({
+        receiver: 'status',
+        message:  data.message,
+        from:     data.from || options.server,
+        type:     'client'
+      });
+    });
+
 		socket.on('successfullyJoinedChannel', function (data) {
 			newTab(data.channel);
 		});
