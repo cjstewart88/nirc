@@ -105,7 +105,7 @@ label[for=ssl] {
 }
 
 .tab-view .line {
-  white-space: pre;
+  white-space: pre-wrap;
 	display:	   block;
 	padding: 	   5px 10px;
 }
