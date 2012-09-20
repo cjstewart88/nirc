@@ -26,6 +26,7 @@
     var tabViews      = $('#tab-views');
     var commandInput  = $('#command-input');
     var supportsNotifications = !!window.webkitNotifications;
+    var iconURL = "/images/nirc32.png";
     
     function replaceURLWithHTMLLinks (text) {
       var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
@@ -53,8 +54,9 @@
           msgFrom.addClass('from-you');
         } else if (msgData.message.match(new RegExp("\\b" + options.nickname + "\\b", 'i'))) {
           newLine.addClass('mentioned'); //for highlighting
-          if(supportsNotifications) { //bring on the webkit notification
-            var notification = newNotification(msgData.message, msgData.receiver);
+          // if either the user is in another browser tab/app, or if the user is in a diff irc channel
+          if(supportsNotifications && (!document.hasFocus() || !tab.hasClass('active'))) { //bring on the webkit notification
+            var notification = newNotification(msgData.message, msgData.receiver, iconURL);
             notification.onclick = function() { 
               window.focus(); //takes user to the browser tab
               focusTab(tab); //focuses the correct channel tab
