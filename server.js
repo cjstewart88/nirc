@@ -40,20 +40,10 @@ io.sockets.on('connection', function (client) {
 
 		var ircClient = new irc.Client(data.options.server, data.options.nickname, opts);
 
-    // info/err msg listener
-    ircClient.addListener('raw', function(message){
-      if (message.rawCommand == '331') {
+    ircClient.addListener('raw', function(message) {
+      // eventually, everything should be in here, not just numerics
+      if (message.rawCommand.match(/^\d+$/)) {
         client.emit('raw', message);
-      } else if (message.rawCommand == '332') {
-        client.emit('raw', message);
-      } else if (message.rawCommand == '353') {
-        client.emit('raw', message); 
-      } else if (message.rawCommand == '366') {
-        client.emit('raw', message);
-      } else if (message.rawCommand.match(/^\d+$/)) {
-        // "Is it numeric" - is this the best characterization of a info/err message?
-        // First arg is nick
-        client.emit('newInfoMsg', { rawCommand: message.rawCommand, args: message.args.splice(1) } );
       }
     })
 

@@ -125,29 +125,43 @@
 		});
 
     socket.on('raw', function(message){
-      if (message.rawCommand == '331') {
-        newMsg({
-          receiver: message.args[1],
-          message: 'No topic for ' + message.args[1],
-          type: 'server'
-        });
-      } else if (message.rawCommand == '332') {
-        newMsg({
-          receiver: message.args[1],
-          message: 'Topic for ' + message.args[1] + ': "' + message.args[2] + '"',
-          type: 'server'
-        });
-      } else if (message.rawCommand == '353') {
-        newMsg({
-          receiver: message.args[2],
-          message: "Users in " + message.args[2] + ": " + message.args[3],
-          type: 'server'
-        });
-      } else if (message.rawCommand == '366') {
-        // In large channels, multiple 353s are needed to collect the full list of users.
-        // 366 signals that all the 353s are done; the full user list has been received.
-        // For now, we'll just print each 353 as it comes and eat the 366, because it's easy.
-      }
+      switch (message.rawCommand) {
+        case 331:
+          newMsg({
+            receiver: message.args[1],
+            message: 'No topic for ' + message.args[1],
+            type: 'server'
+          });
+          break;
+        case '332':
+          newMsg({
+            receiver: message.args[1],
+            message: 'Topic for ' + message.args[1] + ': "' + message.args[2] + '"',
+            type: 'server'
+          });
+          break;
+        case '353':
+          newMsg({
+            receiver: message.args[2],
+            message: "Users in " + message.args[2] + ": " + message.args[3],
+            type: 'server'
+          });
+          break;
+        case '366':
+          // In large channels, multiple 353s are needed to collect the full list of users.
+          // 366 signals that all the 353s are done; the full user list has been received.
+          // For now, we'll just print each 353 as it comes and eat the 366, because it's easy.
+          break;
+        default:
+          // unhandled messages here
+          if (message.rawCommand.match(/^\d+$/)) {
+            newMsg({
+              receiver: 'status',
+              message: message.args.splice(1).join(' '),
+              type: 'server'
+            });
+          }
+      } 
     });
 
     socket.on('newInfoMsg', function(data){
