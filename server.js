@@ -83,11 +83,9 @@ io.sockets.on('connection', function (client) {
     // part and join are the only supported commands
     // that are wired up... 
     client.on('command', function (data) {
-      var command = data.split(' ')[0].substr(1).toUpperCase();
-      
-      var args = data.split(' ');
-      args.shift();
-      
+      var args    = data.split(' ');
+      var command = args.shift().substr(1).toUpperCase();
+
       switch (command) {
         case "JOIN":
           ircClient.join(args[0]);
@@ -96,7 +94,8 @@ io.sockets.on('connection', function (client) {
           ircClient.part(args[0]);
           break;
         default:
-          console.log("unknown command");
+          console.log("unknown command:", command);
+          client.emit('errorMessage', {message: "Unknown command: " + command});
           //ircClient.send.apply(ircClient, [command].concat(args));
       }
 		});
