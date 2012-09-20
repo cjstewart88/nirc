@@ -23,6 +23,7 @@ io.sockets.on('connection', function (client) {
 		
 		// initialize irc connection
     var opts = {
+      debug: true,
 			port: 		data.options.port || 6667,
 			channels: channels
     };
@@ -41,7 +42,11 @@ io.sockets.on('connection', function (client) {
 
     // info/err msg listener
     ircClient.addListener('raw', function(message){
-      if (message.rawCommand.match(/^\d+$/)) {
+      if (message.rawCommand == '331') {
+        client.emit('raw', message);
+      } else if (message.rawCommand == '332') {
+        client.emit('raw', message);
+      } else if (message.rawCommand.match(/^\d+$/)) {
         // "Is it numeric" - is this the best characterization of a info/err message?
         // First arg is nick
         client.emit('newInfoMsg', { rawCommand: message.rawCommand, args: message.args.splice(1) } );

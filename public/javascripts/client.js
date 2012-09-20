@@ -124,6 +124,22 @@
   		});
 		});
 
+    socket.on('raw', function(message){
+      if (message.rawCommand == '331') {
+        newMsg({
+          receiver: message.args[1],
+          message: 'No topic for ' + message.args[1],
+          type: 'server'
+        });
+      } else if (message.rawCommand == '332') {
+        newMsg({
+          receiver: message.args[1],
+          message: 'Topic for ' + message.args[1] + ': "' + message.args[2] + '"',
+          type: 'server'
+        });
+      }
+    });
+
     socket.on('newInfoMsg', function(data){
       newMsg({
         receiver: 'status',
