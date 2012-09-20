@@ -25,8 +25,13 @@
 		var newMsg = function (msgData) {
 		  var msgType = msgData.type;
 		  
-		  var tabView = $('.tab-view[title="'+msgData.receiver.toLowerCase()+'"]');
+		  var tab     = $('.tab[title="'+msgData.receiver.toLowerCase()+'"]');
+		  var tabView = $('.tab-view[title="'+tab.attr('title')+'"]');
 		  var newLine = $('<div>').addClass('line ' + msgType);
+
+		  if (tab.attr('title') != $('.tab.active').attr('title')) {
+		    tab.addClass('new-msgs');
+		  }
 
 		  if (msgType == 'client') {
 		    var msgFrom  = $('<span>').addClass('from').text(msgData.from + ': ');
@@ -62,14 +67,12 @@
                                        
         tab.click(function () {
           $('.tab').removeClass('active');
-          $(this).addClass('active');
-
           $('.tab-view').removeClass('active');
-          var activeTabView = $('.tab-view[title="'+$(this).attr('title')+'"]');
-          activeTabView.addClass('active');
-          activeTabView.scrollTop(activeTabView[0].scrollHeight);
           
-          commandInput.focus();
+          var tabToActivate   = $(this);
+          var tabViewToActive = $('.tab-view[title="'+tabToActivate.attr('title')+'"]');
+          
+          activateTab(tabToActivate, tabViewToActive);
         });
         
     	  tabs.append(tab);
@@ -97,15 +100,47 @@
 		  
 		  var currentActiveTab  = $('.tab.active').attr('title');
 		  if (currentActiveTab == tabNameToClose) {
-  	    var tabToActivate   = tab.prev();
-  		  var tabViewToActive = $('.tab-view[title="'+tabToActivate.attr('title')+'"]'); 
+  	    var tabToActivate     = tab.prev();
+  		  var tabViewToActivate = $('.tab-view[title="'+tabToActivate.attr('title')+'"]'); 
   		  
-  		  tabToActivate.addClass('active');
-  		  tabViewToActive.addClass('active');
+  		  activateTab(tabToActivate, tabViewToActivate);
 		  }
 		  
 		  tab.remove();
 		  tabView.remove();
+		}
+		
+		var changeTabWithKeyboard = function (direction) {
+		  // deactivate old tab
+		  var currentTab      = $('.tab.active');
+		  var currentTabView  = $('.tab-view[title="'+currentTab.attr('title')+'"]');
+		  
+		  currentTab.removeClass('active');
+		  currentTabView.removeClass('active');
+		  
+		  // activate new tab
+		  var tabToActivate;
+		  
+		  if (direction == 'left') {
+		    tabToActivate = (currentTab.prev().length == 1 ? currentTab.prev() : $('.tab').last()); 
+		  }
+		  else {
+		    tabToActivate = (currentTab.next().length == 1 ? currentTab.next() : $('.tab').first());
+		  }
+		  
+		  var tabViewToActivate = $('.tab-view[title="'+tabToActivate.attr('title')+'"]'); 
+		  
+		  activateTab(tabToActivate, tabViewToActivate);
+		}
+		
+		var activateTab = function (tabToActivate, tabViewToActivate) {
+		  tabToActivate.addClass('active')
+		               .removeClass('new-msgs');
+
+      tabViewToActivate.addClass('active')
+                       .scrollTop(tabViewToActivate[0].scrollHeight);
+
+      commandInput.focus();
 		}
 		
 		// START SOCKET LISTENERS
@@ -186,9 +221,7 @@
 
 				if (input != '') {
 					if (input.search(/^[\/]/) == 0) {
-					  /* 
-					    user is trying to use irc commands 
-					  */
+					  // user is trying to use irc commands 
 
 					  // if a user types the command /part be sure to send 
 					  // the currently active channel
@@ -237,6 +270,16 @@
 				}
 			}
 		});
-		// ENDER CAPTURE USER TYPING
+		// END CAPTURE USER TYPING
+		
+		// SETUP KEY BINDINGS
+  	Mousetrap.bind('ctrl+left', function() {
+  	  changeTabWithKeyboard('left');
+  	});
+
+  	Mousetrap.bind('ctrl+right', function() { 
+  	  changeTabWithKeyboard('right');
+  	});
+  	// END KEY BINDINGS
   };
 })(jQuery);
