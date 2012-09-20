@@ -82,8 +82,13 @@ label[for=ssl] {
 }
 
 .tab.active {
+  background: #333;
   color: #fff;
   cursor: normal;
+}
+
+.tab.new-msgs {
+  color: #B9D054;
 }
 
 .tab-view {
