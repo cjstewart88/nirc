@@ -105,8 +105,9 @@ label[for=ssl] {
 }
 
 .tab-view .line {
-	display:	block;
-	padding: 	5px 10px;
+  white-space: pre;
+	display:	   block;
+	padding: 	   5px 10px;
 }
 
 .tab-view .line.client:nth-child(odd) {
