@@ -26,6 +26,7 @@
 		  var msgType = msgData.type;
 		  
 		  var tabView = $('.tab-view[title="'+msgData.receiver.toLowerCase()+'"]');
+      var tab     = $('.tab[title="' + msgData.receiver.toLowerCase() + '"]');
 		  var newLine = $('<div>').addClass('line ' + msgType);
 
 		  if (msgType == 'client') {
@@ -41,6 +42,10 @@
 		  
 			tabView.append(newLine)
 			       .scrollTop(tabView[0].scrollHeight);
+
+      if (!tab.hasClass('active') && !tab.hasClass('pending')) {
+        tab.addClass('pending');
+      }
 		}
 		
 		var newTab = function (tabName) {
@@ -63,6 +68,7 @@
         tab.click(function () {
           $('.tab').removeClass('active');
           $(this).addClass('active');
+          $(this).removeClass('pending');
 
           $('.tab-view').removeClass('active');
           var activeTabView = $('.tab-view[title="'+$(this).attr('title')+'"]');

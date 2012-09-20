@@ -86,6 +86,10 @@ label[for=ssl] {
   cursor: normal;
 }
 
+.tab.pending {
+  text-decoration: underline;
+}
+
 .tab-view {
   position: fixed;
   display:  none;
