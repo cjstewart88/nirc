@@ -25,12 +25,13 @@
     var tabs          = $('#tabs');
     var tabViews      = $('#tab-views');
     var commandInput  = $('#command-input');
+    var supportsNotifications = !!window.webkitNotifications;
     
     function replaceURLWithHTMLLinks (text) {
       var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
       return text.replace(exp,"<a href='$1' target='_blank'>$1</a>"); 
     }
-    
+
     var newMsg = function (msgData) {
       var msgType = (msgData.reciever == 'status' ? 'status' : 'channel');
 
@@ -50,6 +51,17 @@
         
         if (msgData.fromYou) {
           msgFrom.addClass('from-you');
+        } else if (msgData.message.match(new RegExp("\\b" + options.nickname + "\\b", 'i'))) {
+          newLine.addClass('mentioned'); //for highlighting
+          if(supportsNotifications) { //bring on the webkit notification
+            var notification = newNotification(msgData.message, msgData.receiver);
+            notification.onclick = function() { 
+              window.focus(); //takes user to the browser tab
+              focusTab(tab); //focuses the correct channel tab
+              this.cancel(); //closes the notification
+            };
+            notification.show();
+          }
         }
 
         newLine.append(msgFrom);
@@ -63,6 +75,35 @@
              .scrollTop(tabView[0].scrollHeight);
     }
 
+    var newNotification = function (msg, title, icon) {
+      var authorized = window.webkitNotifications.checkPermission() == 0;
+      if (supportsNotifications && authorized) {
+        return window.webkitNotifications.createNotification(icon,title,msg);
+      }
+    }
+
+    /* this function works as both:
+     * focusTab("#target-tab") ... or focusTab($("#target-tab"))
+     *
+     * AND as a callback function (assuming click object is the tab being clicked)
+     * jqueryObject.click(focusTab);
+     */
+    var focusTab = function (target) {
+      $('.tab').removeClass('active');
+      $('.tab-view').removeClass('active');
+
+      if(typeof(target) == 'string') { //assumed selector string
+        var tabToActivate = $(target);
+      } else if (target instanceof jQuery) { //they've passed what we need
+        var tabToActivate = target;
+      } else { //assume we're in a callback
+        var tabToActivate = $(this);
+      }
+      var tabViewToActive = $('.tab-view[title="'+tabToActivate.attr('title')+'"]');
+
+      activateTab(tabToActivate, tabViewToActive);
+    }
+
     var newTab = function (tabName) {
       if ($('.tab[title="'+tabName.toLowerCase()+'"]').length == 0) {
         $('.tab').removeClass('active');
@@ -72,15 +113,7 @@
                            .addClass('tab active')
                            .text(tabName);
 
-        tab.click(function () {
-          $('.tab').removeClass('active');
-          $('.tab-view').removeClass('active');
-
-          var tabToActivate   = $(this);
-          var tabViewToActive = $('.tab-view[title="'+tabToActivate.attr('title')+'"]');
-
-          activateTab(tabToActivate, tabViewToActive);
-        });
+        tab.click(focusTab);
 
         tabs.append(tab);
 
