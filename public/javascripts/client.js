@@ -12,12 +12,12 @@
     if (options.server == "" || options.nickname == "" || options.channels == "") {
       alert('Fields marked with * are required!');
       return;
-    } else if (typeof(Storage) !== "undefined" && localStorage) {
+    } 
+    else if (typeof(Storage) !== "undefined" && localStorage) {
       //store the options in localStorage
       var opts = $.extend({}, options); //copy to modify
       delete opts['password']; //except password, probably a bad idea
-      var stringified = JSON.stringify(opts);
-      localStorage.ircOptions = stringified;
+      localStorage.ircOptions = JSON.stringify(opts);
     }
 
     var socket        = io.connect(null);
