@@ -49,20 +49,24 @@
         }
         
         var msgFrom = $('<span>').addClass('from').text(msgData.from + ': ');
-        
+        var mentionRegex = new RegExp("\\b" + options.nickname + "\\b", 'i')
+        var containsMention = msgData.message.match(mentionRegex);
         if (msgData.fromYou) {
           msgFrom.addClass('from-you');
-        } else if (msgData.message.match(new RegExp("\\b" + options.nickname + "\\b", 'i'))) {
+        } else if (containsMention) {
+          var tabNotFocused = !document.hasFocus() || !tab.hasClass('active');
           newLine.addClass('mentioned'); //for highlighting
           // if either the user is in another browser tab/app, or if the user is in a diff irc channel
-          if(supportsNotifications && (!document.hasFocus() || !tab.hasClass('active'))) { //bring on the webkit notification
+          if(tabNotFocused) { //bring on the webkit notification
             var notification = newNotification(msgData.message, msgData.receiver, iconURL);
-            notification.onclick = function() { 
-              window.focus(); //takes user to the browser tab
-              focusTab(tab); //focuses the correct channel tab
-              this.cancel(); //closes the notification
-            };
-            notification.show();
+            if (notification) { //in case they haven't authorized, the above will return nothin'
+              notification.onclick = function() { 
+                window.focus(); //takes user to the browser tab
+                focusTab(tab); //focuses the correct channel tab
+                this.cancel(); //closes the notification
+              };
+              notification.show();
+            }
           }
         }
 
@@ -78,8 +82,8 @@
     }
 
     var newNotification = function (msg, title, icon) {
-      var authorized = window.webkitNotifications.checkPermission() == 0;
-      if (supportsNotifications && authorized) {
+      var authorized = supportsNotification && window.webkitNotifications.checkPermission() == 0;
+      if (authorized) {
         return window.webkitNotifications.createNotification(icon,title,msg);
       }
     }
