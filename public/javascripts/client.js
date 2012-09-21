@@ -163,6 +163,14 @@
 
     socket.on('raw', function(message){
       switch (message.rawCommand.toUpperCase()) {
+        case 'KICK':
+          irc.getChannel(message.args[0]).removeName(message.args[1]);
+          newMsg({
+            receiver: message.args[0],
+            message: message.args[1] + " was kicked by " + message.prefix.match(/(.*?)(?:!.*?)?$/)[1] + " (" + message.args[2] + ")",
+            type: 'server'
+          });
+          break;
         case 'QUIT':
           var channels = irc.channels();
           for (var key in channels) {
