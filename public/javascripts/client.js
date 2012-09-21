@@ -43,16 +43,16 @@
       }
 
       newLine.append(msgData.message);
-
+      
       tabView.append(newLine)
              .scrollTop(tabView[0].scrollHeight);
     }
 
     var newTab = function (tabName) {
-      $('.tab').removeClass('active');
-      $('.tab-view').removeClass('active');
-
       if ($('.tab[title="'+tabName.toLowerCase()+'"]').length == 0) {
+        $('.tab').removeClass('active');
+        $('.tab-view').removeClass('active');
+        
         if (tabName.search(/^[#]/) == 0) {
           newMsg({
             receiver: 'status',
@@ -232,20 +232,13 @@
       // this will be used when there's a channel user list
     });
 
-    socket.on('newChannelMessage', function (data) {
+    socket.on('message', function (data) {
+      var fromChannelOrUser = (data.channel.search(/^[#]/) == 0 ? 'channel' : 'user');
+      
+      if (fromChannelOrUser == 'user') newTab(data.from);
+      
       newMsg({
-        receiver: data.channel,
-        from:     data.from,
-        message:  data.message,
-        type:     'client'
-      });
-    });
-
-    socket.on('newPrivateMessage', function (data) {
-      newTab(data.from);
-
-      newMsg({
-        receiver: data.from,
+        receiver: (fromChannelOrUser == 'channel' ? data.channel : data.from),
         from:     data.from,
         message:  data.message,
         type:     'client'
