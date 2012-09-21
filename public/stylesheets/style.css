@@ -112,7 +112,7 @@ label[for=ssl] {
 
 .tab-view .line .timestamp {
   color: #b0b0b0;
-  margin-right: 1em;
+  margin-right: 11px;
 }
 
 .tab-view .line.client:nth-child(odd) {
