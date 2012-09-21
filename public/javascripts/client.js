@@ -16,6 +16,8 @@
 
     var socket        = io.connect(null);
 
+    var irc           = new ircClient();
+
     var connectForm   = $('#connect-form');
     var ircStuff      = $('#irc-stuff');
     var tabs          = $('#tabs');
@@ -160,8 +162,20 @@
     });
 
     socket.on('raw', function(message){
-      switch (message.rawCommand) {
-        case 331:
+      switch (message.rawCommand.toUpperCase()) {
+        case 'QUIT':
+          var channels = irc.channels();
+          for (var key in channels) {
+            if (channels[key].removeName(message.nick)) {
+              newMsg({
+                receiver: channels[key]._name,
+                message: message.nick + " has quit (" + message.args[message.args.length - 1] + ")",
+                type: 'server'
+              })
+            }
+          }
+          break;
+        case '331':
           newMsg({
             receiver: message.args[1],
             message: 'No topic for ' + message.args[1],
@@ -176,6 +190,7 @@
           });
           break;
         case '353':
+          irc.getChannel(message.args[2]).populateNames(message.args[3].split(' '));
           newMsg({
             receiver: message.args[2],
             message: "Users in " + message.args[2] + ": " + message.args[3],
@@ -218,10 +233,17 @@
 
     socket.on('successfullyJoinedChannel', function (data) {
       newTab(data.channel);
+      var chan = irc.addChannel(data.channel);
     });
 
     socket.on('userJoinedChannel', function (data) {
       // this will be used when there's a channel user list
+      irc.getChannel(data.channel).addName(data.who);
+      newMsg({
+        receiver: data.channel,
+        message: data.who + " joined " + data.channel,
+        type: 'server'
+      });
     });
 
     socket.on('successfullyPartedChannel', function (data) {
@@ -230,6 +252,12 @@
 
     socket.on('userPartedChannel', function (data) {
       // this will be used when there's a channel user list
+      irc.getChannel(data.channel).removeName(data.who);
+      newMsg({
+        receiver: data.channel,
+        message: data.who + " parted " + data.channel,
+        type: 'server'
+      });
     });
 
     socket.on('newChannelMessage', function (data) {
