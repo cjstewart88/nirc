@@ -39,6 +39,9 @@
         tab.addClass('new-msgs');
       }
 
+      var timestamp = $("<span>").addClass('timestamp').text(new Date().toString().split(' ')[4]);
+      newLine.append(timestamp);
+
       if (msgType == 'client') {
         var msgFrom  = $('<span>').addClass('from').text(msgData.from + ': ');
         if (msgData.fromYou) {
