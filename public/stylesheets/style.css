@@ -115,7 +115,7 @@ label[for=ssl] {
   margin-right: 11px;
 }
 
-.tab-view .line.client:nth-child(odd) {
+.tab-view .line.channel:nth-child(odd) {
 	background: #383f44;
 }
 
