@@ -165,7 +165,7 @@
       });
     });
 
-    socket.on('raw', function(message){
+    socket.on('raw', function (message){
       switch (message.rawCommand) {
         case 331:
           newMsg({
@@ -205,7 +205,7 @@
       }
     });
 
-    socket.on('newInfoMsg', function(data){
+    socket.on('newInfoMsg', function (data){
       newMsg({
         receiver: 'status',
         message:  data.args.join(' '),
@@ -213,7 +213,7 @@
       });
     });
 
-    socket.on('newNotice', function(data){
+    socket.on('newNotice', function (data){
       newMsg({
         receiver: 'status',
         message:  data.message,
@@ -259,7 +259,7 @@
       });
     });
 
-    socket.on('errorMessage', function(data) {
+    socket.on('errorMessage', function (data) {
       newMsg({
         receiver: 'status',
         message:  data.message,
@@ -329,11 +329,11 @@
     // END CAPTURE USER TYPING
 
     // SETUP KEY BINDINGS
-    Mousetrap.bind('ctrl+left', function() {
+    Mousetrap.bind('ctrl+left', function () {
       changeTabWithKeyboard('left');
     });
 
-    Mousetrap.bind('ctrl+right', function() {
+    Mousetrap.bind('ctrl+right', function () {
       changeTabWithKeyboard('right');
     });
     // END KEY BINDINGS

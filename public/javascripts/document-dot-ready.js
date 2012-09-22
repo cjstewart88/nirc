@@ -9,7 +9,7 @@ $(document).ready(function () {
   }
   
   // initialize the connection and nirc
-  $('#connect').click(function() {
+  $('#connect').click(function () {
     $.nirc();
   });
 });
