@@ -166,6 +166,16 @@
       
       newMsg(msgData);
     });
+		
+		socket.on('disconnected', function () {
+			// ideally this should just clear the tabs and tabViews, hide the ircStuff, and show the connect form
+			// reloading the page for now, the socket seems to close or something when disconnecting server side :/
+			// tabs.html('');
+			// tabViews.html('');
+			// ircStuff.hide();
+			// connectForm.show();
+			window.location.reload()
+		});
     // END SOCKET LISTENERS
 
     // CAPTURE USER TYPING
@@ -178,10 +188,12 @@
         if (input != '') {
           if (input.search(/^[\/]/) == 0) {
             // user is trying to use irc commands
-
+						var splitInput 	= input.split(' ');
+						var command 		= splitInput[0].substr(1).toLowerCase();
+						
             // if a user types the command /part be sure to send
             // the currently active channel
-            if (input.split(' ')[0].substr(1).toLowerCase() == 'part') {
+            if (splitInput.length == 1) {
               var activeTab = $('.tab.active').text();
 
               if (activeTab == 'status') {
@@ -192,34 +204,58 @@
                 input = input + ' ' + activeTab;
               }
             }
+						else if (command == 'msg') {
+							var commandSplit 	= input.split(' ');
+							var receiver 			= commandSplit[1];
+							var message 			= commandSplit.splice(2, commandSplit.length - 2).join(' ');
 
-            socket.emit('command', input);
-            commandInput.val('');
+							if (receiver.search(/^#/) == -1) {
+								newTab(receiver);
+							}
+							
+							if ($('.tab[title="' + receiver + '"]').length == 1) {
+								newMsg({
+									receiver: receiver,
+									from:     'you',
+									fromYou:  true,
+									message:  message
+								});
+							}
+							else {
+								commandInput.val('');
+								return;
+							}
+						}
+						
+						 commandInput.val('');
           }
           else {
             // normal message to current tab-view
-            var to = $('.tab.active').text();
+            var receiver = $('.tab.active').attr('title');
 
             commandInput.val('');
-            if (to == 'status') return;
-
-            socket.emit('sendMsg', {
-              to:       to,
-              message:  input
-            });
-
-            newMsg({
-              receiver: to,
-              from:     'you',
-              fromYou:  true,
-              message:  input
-            });
+            if (receiver == 'status') return;
+						
+						newMsg({
+							receiver: receiver,
+							from:     'you',
+							fromYou:  true,
+							message:  input
+						});
+						
+						input = '/msg ' + receiver + ' ' + input;
           }
+					
+					socket.emit('command', input);
         }
       }
     });
     // END CAPTURE USER TYPING
-
+		
+		window.onbeforeunload = function () {
+			socket.emit('command', 'quit');
+		}
+		
     // SETUP KEY BINDINGS
     Mousetrap.bind('ctrl+left', function () {
       changeTabWithKeyboard('left');
