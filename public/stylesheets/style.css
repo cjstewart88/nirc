@@ -110,6 +110,10 @@ label[for=ssl] {
 	padding: 	   5px 10px;
 }
 
+.tab-view .line a {
+  color: #fff;
+}
+
 .tab-view .line .timestamp {
   color: #b0b0b0;
   margin-right: 11px;

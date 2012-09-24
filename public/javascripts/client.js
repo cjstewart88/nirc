@@ -25,7 +25,12 @@
     var tabs          = $('#tabs');
     var tabViews      = $('#tab-views');
     var commandInput  = $('#command-input');
-
+    
+    function replaceURLWithHTMLLinks (text) {
+      var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+      return text.replace(exp,"<a href='$1' target='_blank'>$1</a>"); 
+    }
+    
     var newMsg = function (msgData) {
       var msgType = (msgData.reciever == 'status' ? 'status' : 'channel');
 
@@ -49,8 +54,10 @@
 
         newLine.append(msgFrom);
       }
-
-      newLine.append(msgData.message);
+      
+      var message = replaceURLWithHTMLLinks(msgData.message);
+      
+      newLine.append(message);
       
       tabView.append(newLine)
              .scrollTop(tabView[0].scrollHeight);
