@@ -1,4 +1,7 @@
-$(document).ready(function () { 
+$(document).ready(function () {
+	// initialize web socket
+	var socket = io.connect(null);
+
   // prepopulate fields with last used values
   if (typeof(Storage) !== "undefined" && localStorage && localStorage.ircOptions) {
     var opts = JSON.parse(localStorage.ircOptions);
@@ -7,9 +10,9 @@ $(document).ready(function () {
       $('#' + option).val(opts[option]);
     }
   }
-  
-  // initialize the connection and nirc
+
+  // initialize nirc
   $('#connect').click(function () {
-    $.nirc();
+    $.nirc(socket);
   });
 });

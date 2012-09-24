@@ -1,5 +1,5 @@
 (function ($) {
-  $.nirc = function () {
+  $.nirc = function (socket) {
     var options = {
       server:   $("#server").val(),
       port:     $("#port").val(),
@@ -20,8 +20,6 @@
       localStorage.ircOptions = JSON.stringify(opts);
     }
 
-    var socket        = io.connect(null);
-
     var connectForm   = $('#connect-form');
     var ircStuff      = $('#irc-stuff');
     var tabs          = $('#tabs');
@@ -29,21 +27,22 @@
     var commandInput  = $('#command-input');
 
     var newMsg = function (msgData) {
-      var msgType = msgData.type;
+      var msgType = (msgData.reciever == 'status' ? 'status' : 'channel');
 
       var tab     = $('.tab[title="'+msgData.receiver.toLowerCase()+'"]');
       var tabView = $('.tab-view[title="'+tab.attr('title')+'"]');
       var newLine = $('<div>').addClass('line ' + msgType);
 
-      if (!tab.hasClass('active')) {
-        tab.addClass('new-msgs');
-      }
-
       var timestamp = $("<span>").addClass('timestamp').text(new Date().toString().split(' ')[4]);
       newLine.append(timestamp);
 
-      if (msgType == 'client') {
-        var msgFrom  = $('<span>').addClass('from').text(msgData.from + ': ');
+      if (msgType == 'channel' && msgData.from !== undefined) {
+        if (!tab.hasClass('active')) {
+          tab.addClass('new-msgs');
+        }
+        
+        var msgFrom = $('<span>').addClass('from').text(msgData.from + ': ');
+        
         if (msgData.fromYou) {
           msgFrom.addClass('from-you');
         }
@@ -61,14 +60,6 @@
       if ($('.tab[title="'+tabName.toLowerCase()+'"]').length == 0) {
         $('.tab').removeClass('active');
         $('.tab-view').removeClass('active');
-        
-        if (tabName.search(/^[#]/) == 0) {
-          newMsg({
-            receiver: 'status',
-            message:  'joined channel ' + tabName,
-            type:     'server'
-          });
-        }
 
         var tab = $('<li>').attr('title', tabName.toLowerCase())
                            .addClass('tab active')
@@ -94,14 +85,6 @@
     }
 
     var closeTab = function (tabName) {
-      if (tabName.search(/^[#]/) == 0) {
-        newMsg({
-          receiver: 'status',
-          message:  'parted channel ' + tabName,
-          type:     'server'
-        });
-      }
-
       var tabNameToClose = tabName.toLowerCase();
 
       var tab     = $('.tab[title="'+tabNameToClose+'"]');
@@ -152,123 +135,44 @@
       commandInput.focus();
     }
 
+		// INITIALIZE IRC CONNECTION
+		socket.emit('connectToIRC', { options: options });
+
+		connectForm.hide();
+		ircStuff.show();
+
+		newTab('status');
+		// END INITIALIZATION OF IRC CONNECTION
+		
     // START SOCKET LISTENERS
-    socket.on('connect', function () {
-      socket.emit('connectToIRC', { options: options });
-
-      connectForm.hide();
-      ircStuff.show();
-
-      newTab('status');
-
-      newMsg({
-        receiver: 'status',
-        message:  'connecting...',
-        type:     'server'
-      });
-    });
-
-    socket.on('raw', function (message){
-      switch (message.rawCommand) {
-        case 331:
-          newMsg({
-            receiver: message.args[1],
-            message: 'No topic for ' + message.args[1],
-            type: 'server'
-          });
-          break;
-        case '332':
-          newMsg({
-            receiver: message.args[1],
-            message: 'Topic for ' + message.args[1] + ': "' + message.args[2] + '"',
-            type: 'server'
-          });
-          break;
-        case '353':
-          newMsg({
-            receiver: message.args[2],
-            message: "Users in " + message.args[2] + ": " + message.args[3],
-            type: 'server'
-          });
-          break;
-        case '366':
-          // In large channels, multiple 353s are needed to collect the full list of users.
-          // 366 signals that all the 353s are done; the full user list has been received.
-          // For now, we'll just print each 353 as it comes and eat the 366, because it's easy.
-          break;
-        default:
-          // unhandled messages here
-          if (message.rawCommand.match(/^\d+$/)) {
-            newMsg({
-              receiver: 'status',
-              message: message.args.splice(1).join(' '),
-              type: 'server'
-            });
-          }
-      }
-    });
-
-    socket.on('newInfoMsg', function (data){
-      newMsg({
-        receiver: 'status',
-        message:  data.args.join(' '),
-        type:     'server'
-      });
-    });
-
-    socket.on('newNotice', function (data){
-      newMsg({
-        receiver: 'status',
-        message:  data.message,
-        from:     data.from || options.server,
-        type:     'client'
-      });
-    });
-
     socket.on('successfullyJoinedChannel', function (data) {
       newTab(data.channel);
-    });
-
-    socket.on('userJoinedChannel', function (data) {
-      // this will be used when there's a channel user list
     });
 
     socket.on('successfullyPartedChannel', function (data) {
       closeTab(data.channel);
     });
 
-    socket.on('userPartedChannel', function (data) {
-      // this will be used when there's a channel user list
-    });
-
     socket.on('message', function (data) {
-      var fromChannelOrUser = (data.channel.search(/^[#]/) == 0 ? 'channel' : 'user');
-      
-      if (fromChannelOrUser == 'user') newTab(data.from);
-      
-      newMsg({
-        receiver: (fromChannelOrUser == 'channel' ? data.channel : data.from),
-        from:     data.from,
-        message:  data.message,
-        type:     'client'
-      });
-    });
+      if (data.receiver.search(/^[#]/) == -1 && data.receiver != 'status') newTab(data.from);
 
-    socket.on('clientDisconnected', function (data) {
-      newMsg({
-        receiver: 'status',
-        message:  'disconnected...',
-        type:     'server'
-      });
-    });
-
-    socket.on('errorMessage', function (data) {
-      newMsg({
-        receiver: 'status',
+      var msgData = {
+        receiver: data.receiver,
         message:  data.message,
-        type: 'error'
-      });
+        from:     data.from
+      }
+      
+      newMsg(msgData);
     });
+		
+		socket.on('disconnected', function () {
+			socket.removeAllListeners();
+			
+			tabs.html('');
+			tabViews.html('');
+			ircStuff.hide();
+			connectForm.show();
+		});
     // END SOCKET LISTENERS
 
     // CAPTURE USER TYPING
@@ -281,18 +185,15 @@
         if (input != '') {
           if (input.search(/^[\/]/) == 0) {
             // user is trying to use irc commands
-
-            // if a user types the command /part be sure to send
+						var splitInput 	= input.split(' ');
+						var command 		= splitInput[0].substr(1).toLowerCase();
+						
+            // if a user types the command like /part or /topic be sure to send
             // the currently active channel
-            if (input.split(' ')[0].substr(1).toLowerCase() == 'part') {
+            if (splitInput.length == 1 && command != 'quit') {
               var activeTab = $('.tab.active').text();
 
               if (activeTab == 'status') {
-                newMsg({
-                  receiver: 'status',
-                  message:  'You can not use the /part command on the status window... to part a channel specify the channel to part. EX: /part #ruby',
-                  type:     'server'
-                });
                 commandInput.val('');
                 return;
               }
@@ -300,37 +201,58 @@
                 input = input + ' ' + activeTab;
               }
             }
+						else if (command == 'msg') {
+							var commandSplit 	= input.split(' ');
+							var receiver 			= commandSplit[1];
+							var message 			= commandSplit.splice(2, commandSplit.length - 2).join(' ');
 
-            socket.emit('command', input);
-
-            commandInput.val('');
+							if (receiver.search(/^#/) == -1) {
+								newTab(receiver);
+							}
+							
+							if ($('.tab[title="' + receiver + '"]').length == 1) {
+								newMsg({
+									receiver: receiver,
+									from:     'you',
+									fromYou:  true,
+									message:  message
+								});
+							}
+							else {
+								commandInput.val('');
+								return;
+							}
+						}
+						
+						 commandInput.val('');
           }
           else {
             // normal message to current tab-view
-            var to = $('.tab.active').text();
-
-            if (to == 'status') return;
-
-            socket.emit('sendMsg', {
-              to:       to,
-              message:  input
-            });
-
-            newMsg({
-              receiver: to,
-              from:     'you',
-              fromYou:  true,
-              message:  input,
-              type:     'client'
-            });
+            var receiver = $('.tab.active').attr('title');
 
             commandInput.val('');
+            if (receiver == 'status') return;
+						
+						newMsg({
+							receiver: receiver,
+							from:     'you',
+							fromYou:  true,
+							message:  input
+						});
+						
+						input = '/msg ' + receiver + ' ' + input;
           }
+
+					socket.emit('command', input);
         }
       }
     });
     // END CAPTURE USER TYPING
-
+		
+		window.onbeforeunload = function () {
+			socket.emit('command', '/quit');
+		}
+		
     // SETUP KEY BINDINGS
     Mousetrap.bind('ctrl+left', function () {
       changeTabWithKeyboard('left');
