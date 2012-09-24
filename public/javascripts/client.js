@@ -140,7 +140,8 @@
 
 		connectForm.hide();
 		ircStuff.show();
-
+    document.title = 'nirc - ' + options.server;
+    
 		newTab('status');
 		// END INITIALIZATION OF IRC CONNECTION
 		
@@ -172,6 +173,7 @@
 			tabViews.html('');
 			ircStuff.hide();
 			connectForm.show();
+			document.title = 'nirc';
 		});
     // END SOCKET LISTENERS
 
