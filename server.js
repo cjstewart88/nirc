@@ -23,7 +23,7 @@ app.configure(function () {
 /*
   Initialize the Server
 */                       
-var server = http.createServer(app).listen(3000);
+var server = http.createServer(app).listen(process.env.PORT || 3000);
 
 /*
   Load Main (Loads Socket.io & IRC)
