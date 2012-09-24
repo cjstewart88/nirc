@@ -82,7 +82,7 @@
     }
 
     var newNotification = function (msg, title, icon) {
-      var authorized = supportsNotification && window.webkitNotifications.checkPermission() == 0;
+      var authorized = supportsNotifications && window.webkitNotifications.checkPermission() == 0;
       if (authorized) {
         return window.webkitNotifications.createNotification(icon,title,msg);
       }
