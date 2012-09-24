@@ -1,5 +1,5 @@
 (function ($) {
-  $.nirc = function () {
+  $.nirc = function (socket) {
     var options = {
       server:   $("#server").val(),
       port:     $("#port").val(),
@@ -19,8 +19,6 @@
       delete opts['password']; //except password, probably a bad idea
       localStorage.ircOptions = JSON.stringify(opts);
     }
-
-    var socket        = io.connect(null);
 
     var connectForm   = $('#connect-form');
     var ircStuff      = $('#irc-stuff');
@@ -137,16 +135,16 @@
       commandInput.focus();
     }
 
+		// INITIALIZE IRC CONNECTION
+		socket.emit('connectToIRC', { options: options });
+
+		connectForm.hide();
+		ircStuff.show();
+
+		newTab('status');
+		// END INITIALIZATION OF IRC CONNECTION
+		
     // START SOCKET LISTENERS
-    socket.on('connect', function () {
-      socket.emit('connectToIRC', { options: options });
-
-      connectForm.hide();
-      ircStuff.show();
-
-      newTab('status');
-    });
-
     socket.on('successfullyJoinedChannel', function (data) {
       newTab(data.channel);
     });
@@ -168,13 +166,12 @@
     });
 		
 		socket.on('disconnected', function () {
-			// ideally this should just clear the tabs and tabViews, hide the ircStuff, and show the connect form
-			// reloading the page for now, the socket seems to close or something when disconnecting server side :/
-			// tabs.html('');
-			// tabViews.html('');
-			// ircStuff.hide();
-			// connectForm.show();
-			window.location.reload()
+			socket.removeAllListeners();
+			
+			tabs.html('');
+			tabViews.html('');
+			ircStuff.hide();
+			connectForm.show();
 		});
     // END SOCKET LISTENERS
 
@@ -191,9 +188,9 @@
 						var splitInput 	= input.split(' ');
 						var command 		= splitInput[0].substr(1).toLowerCase();
 						
-            // if a user types the command /part be sure to send
+            // if a user types the command like /part or /topic be sure to send
             // the currently active channel
-            if (splitInput.length == 1) {
+            if (splitInput.length == 1 && command != 'quit') {
               var activeTab = $('.tab.active').text();
 
               if (activeTab == 'status') {
@@ -245,7 +242,7 @@
 						
 						input = '/msg ' + receiver + ' ' + input;
           }
-					
+
 					socket.emit('command', input);
         }
       }
@@ -253,7 +250,7 @@
     // END CAPTURE USER TYPING
 		
 		window.onbeforeunload = function () {
-			socket.emit('command', 'quit');
+			socket.emit('command', '/quit');
 		}
 		
     // SETUP KEY BINDINGS
