@@ -28,7 +28,7 @@
     var supportsNotifications = !!window.webkitNotifications;
     var iconURL = "/images/nirc32.png";
     
-    function replaceURLWithHTMLLinks (text) {
+    var replaceURLWithHTMLLinks = function (text) {
       var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
       return text.replace(exp,"<a href='$1' target='_blank'>$1</a>"); 
     }
@@ -47,17 +47,19 @@
         if (!tab.hasClass('active')) {
           tab.addClass('new-msgs');
         }
-        
+
         var msgFrom = $('<span>').addClass('from').text(msgData.from + ': ');
         var mentionRegex = new RegExp("\\b" + options.nickname + "\\b", 'i')
         var containsMention = msgData.message.match(mentionRegex);
+
         if (msgData.fromYou) {
           msgFrom.addClass('from-you');
-        } else if (containsMention) {
+        } 
+        else if (containsMention) {
           var tabNotFocused = !document.hasFocus() || !tab.hasClass('active');
           newLine.addClass('mentioned'); //for highlighting
           // if either the user is in another browser tab/app, or if the user is in a diff irc channel
-          if(tabNotFocused) { //bring on the webkit notification
+          if (tabNotFocused) { //bring on the webkit notification
             var notification = newNotification(msgData.message, msgData.receiver, iconURL);
             if (notification) { //in case they haven't authorized, the above will return nothin'
               notification.onclick = function() { 
@@ -97,14 +99,19 @@
     var focusTab = function (target) {
       $('.tab').removeClass('active');
       $('.tab-view').removeClass('active');
-
+      
+      var tabToActivate;
+      
       if(typeof(target) == 'string') { //assumed selector string
-        var tabToActivate = $(target);
-      } else if (target instanceof jQuery) { //they've passed what we need
-        var tabToActivate = target;
-      } else { //assume we're in a callback
-        var tabToActivate = $(this);
+        tabToActivate = $(target);
+      } 
+      else if (target instanceof jQuery) { //they've passed what we need
+        tabToActivate = target;
+      } 
+      else { //assume we're in a callback
+        tabToActivate = $(this);
       }
+      
       var tabViewToActive = $('.tab-view[title="'+tabToActivate.attr('title')+'"]');
 
       activateTab(tabToActivate, tabViewToActive);
@@ -211,6 +218,10 @@
       
       newMsg(msgData);
     });
+		
+		socket.on('realNick', function (data) {
+		  options.nickname = data.nick;
+		});
 		
 		socket.on('disconnected', function () {
 			socket.removeAllListeners();
