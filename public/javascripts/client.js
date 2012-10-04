@@ -25,12 +25,14 @@
     var tabs          = $('#tabs');
     var tabViews      = $('#tab-views');
     var commandInput  = $('#command-input');
+    var supportsNotifications = !!window.webkitNotifications;
+    var iconURL = "/images/nirc32.png";
     
-    function replaceURLWithHTMLLinks (text) {
+    var replaceURLWithHTMLLinks = function (text) {
       var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
       return text.replace(exp,"<a href='$1' target='_blank'>$1</a>"); 
     }
-    
+
     var newMsg = function (msgData) {
       var msgType = (msgData.reciever == 'status' ? 'status' : 'channel');
 
@@ -45,11 +47,30 @@
         if (!tab.hasClass('active')) {
           tab.addClass('new-msgs');
         }
-        
+
         var msgFrom = $('<span>').addClass('from').text(msgData.from + ': ');
-        
+        var mentionRegex = new RegExp("(^|[^a-zA-Z0-9\\[\\]{}\\^`|])" + options.nickname + "([^a-zA-Z0-9\\[\\]{}\\^`|]|$)", 'i');
+        var containsMention = msgData.message.match(mentionRegex);
+
         if (msgData.fromYou) {
           msgFrom.addClass('from-you');
+        } 
+        else if (containsMention) {
+          //window.hasFocus is set by me in document-dot-ready.js
+          var tabNotFocused = !(document.hasFocus() && window.hasFocus && tab.hasClass('active'));
+          newLine.addClass('mentioned'); //for highlighting
+          // if either the user is in another browser tab/app, or if the user is in a diff irc channel
+          if (tabNotFocused) { //bring on the webkit notification
+            var notification = newNotification(msgData.message, msgData.receiver, iconURL);
+            if (notification) { //in case they haven't authorized, the above will return nothin'
+              notification.onclick = function() { 
+                window.focus(); //takes user to the browser tab
+                focusTab(tab); //focuses the correct channel tab
+                this.cancel(); //closes the notification
+              };
+              notification.show();
+            }
+          }
         }
 
         newLine.append(msgFrom);
@@ -63,6 +84,40 @@
              .scrollTop(tabView[0].scrollHeight);
     }
 
+    var newNotification = function (msg, title, icon) {
+      var authorized = supportsNotifications && window.webkitNotifications.checkPermission() == 0;
+      if (authorized) {
+        return window.webkitNotifications.createNotification(icon,title,msg);
+      }
+    }
+
+    /* this function works as both:
+     * focusTab("#target-tab") ... or focusTab($("#target-tab"))
+     *
+     * AND as a callback function (assuming click object is the tab being clicked)
+     * jqueryObject.click(focusTab);
+     */
+    var focusTab = function (target) {
+      $('.tab').removeClass('active');
+      $('.tab-view').removeClass('active');
+      
+      var tabToActivate;
+      
+      if(typeof(target) == 'string') { //assumed selector string
+        tabToActivate = $(target);
+      } 
+      else if (target instanceof jQuery) { //they've passed what we need
+        tabToActivate = target;
+      } 
+      else { //assume we're in a callback
+        tabToActivate = $(this);
+      }
+      
+      var tabViewToActive = $('.tab-view[title="'+tabToActivate.attr('title')+'"]');
+
+      activateTab(tabToActivate, tabViewToActive);
+    }
+
     var newTab = function (tabName) {
       if ($('.tab[title="'+tabName.toLowerCase()+'"]').length == 0) {
         $('.tab').removeClass('active');
@@ -72,15 +127,7 @@
                            .addClass('tab active')
                            .text(tabName);
 
-        tab.click(function () {
-          $('.tab').removeClass('active');
-          $('.tab-view').removeClass('active');
-
-          var tabToActivate   = $(this);
-          var tabViewToActive = $('.tab-view[title="'+tabToActivate.attr('title')+'"]');
-
-          activateTab(tabToActivate, tabViewToActive);
-        });
+        tab.click(focusTab);
 
         tabs.append(tab);
 
@@ -172,6 +219,10 @@
       
       newMsg(msgData);
     });
+		
+		socket.on('realNick', function (data) {
+		  options.nickname = data.nick;
+		});
 		
 		socket.on('disconnected', function () {
 			socket.removeAllListeners();
