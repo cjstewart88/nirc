@@ -56,7 +56,8 @@
           msgFrom.addClass('from-you');
         } 
         else if (containsMention) {
-          var tabNotFocused = !document.hasFocus() || !tab.hasClass('active');
+          //window.hasFocus is set by me in document-dot-ready.js
+          var tabNotFocused = !(document.hasFocus() && window.hasFocus && tab.hasClass('active'));
           newLine.addClass('mentioned'); //for highlighting
           // if either the user is in another browser tab/app, or if the user is in a diff irc channel
           if (tabNotFocused) { //bring on the webkit notification
