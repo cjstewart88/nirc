@@ -49,7 +49,7 @@
         }
 
         var msgFrom = $('<span>').addClass('from').text(msgData.from + ': ');
-        var mentionRegex = new RegExp("\\b" + options.nickname + "\\b", 'i')
+        var mentionRegex = new RegExp("(^|[^a-zA-Z0-9\\[\\]{}\\^`|])" + options.nickname + "([^a-zA-Z0-9\\[\\]{}\\^`|]|$)", 'i');
         var containsMention = msgData.message.match(mentionRegex);
 
         if (msgData.fromYou) {
