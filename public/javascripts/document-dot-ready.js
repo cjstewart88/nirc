@@ -20,6 +20,7 @@ $(document).ready(function () {
     $.nirc(socket);
   });
 
+  window.hasFocus = true;
   //misc listeners for when the tab loses/gains focus
   window.addEventListener('focus', function() {
     window.hasFocus = true;
