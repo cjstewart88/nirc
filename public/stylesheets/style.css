@@ -132,6 +132,10 @@ label[for=ssl] {
   color: #2DB1FB;
 }
 
+.tab-view .line.channel.mentioned  {
+	background: #585F56;
+}
+
 #command-input {
 	display: 			block;
   position:     fixed;
