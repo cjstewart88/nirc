@@ -27,19 +27,16 @@
     var commandInput  = $('#command-input');
     var supportsNotifications = !!window.webkitNotifications;
     var iconURL = "/images/nirc32.png";
-    
-    var replaceURLWithHTMLLinks = function (text) {
-      var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-      return text.replace(exp,"<a href='$1' target='_blank'>$1</a>"); 
-    }
 
     var newMsg = function (msgData) {
-      var msgType = (msgData.reciever == 'status' ? 'status' : 'channel');
+      var msgType   = (msgData.reciever == 'status' ? 'status' : 'channel');
 
-      var tab     = $('.tab[title="'+msgData.receiver.toLowerCase()+'"]');
-      var tabView = $('.tab-view[title="'+tab.attr('title')+'"]');
-      var newLine = $('<div>').addClass('line ' + msgType);
-
+      var tab       = $('.tab[title="'+msgData.receiver.toLowerCase()+'"]');
+      var tabView   = $('.tab-view[title="'+tab.attr('title')+'"]');
+      var newLine   = $('<div>').addClass('line ' + msgType);
+      var actualMsg = $('<span>');
+      
+      
       var timestamp = $("<span>").addClass('timestamp').text(new Date().toString().split(' ')[4]);
       newLine.append(timestamp);
 
@@ -76,10 +73,9 @@
         newLine.append(msgFrom);
       }
       
-      var message = replaceURLWithHTMLLinks(msgData.message);
-      
-      newLine.append(message);
-      
+      actualMsg.text(msgData.message);
+      newLine.append(actualMsg);
+
       tabView.append(newLine)
              .scrollTop(tabView[0].scrollHeight);
     }
