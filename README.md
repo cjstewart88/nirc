@@ -25,16 +25,16 @@ Node.js and NPM are required and should be setup before attempting to setup nirc
 
 - Open the app in your browser at `http://localhost:3000/`.
 
-## Contribute
-This project is available under the MIT License. Feel free to open PRs or issues to
-help make nirc better.
-
 ## Themes
 Roll your own theme by:
 
 1. Create a custom `.css` file in the `public/stylesheets/themes` directory.
 2. Update line `11` in `views/index.html` to point to your new theme.
 3. If you're proud of your theme open a PR to include it!
+
+## Contribute
+This project is available under the MIT License. Feel free to open PRs or issues to
+help make nirc better.
 
 #### Basic Git Workflow
 
