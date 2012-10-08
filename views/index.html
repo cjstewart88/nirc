@@ -8,6 +8,7 @@
     <script src='/javascripts/document-dot-ready.js'></script>
     <script src='/javascripts/vendor/mousetrap.min.js'></script>
     <link href='/stylesheets/style.css' media='screen' rel='stylesheet' type='text/css'/>
+    <link href='/stylesheets/themes/default.css' media='screen' rel='stylesheet' type='text/css'/>
 	</head>
   <body>
 		<form id="connect-form" onSubmit="return false;">
@@ -17,7 +18,7 @@
       <label for="password">Password</label> <input type="password" id="password" />
 			<label for="nickname">Nickname *</label> <input type="text" id="nickname" placeholder="Gordon"/>
 			<label for="channels">Channels *</label> <input type="text" id="channels" placeholder="#nirc, #node.js"/>
-      <input type="checkbox" id="ssl" /><label for="ssl">SSL</label>
+      <input type="checkbox" id="ssl"/> <label for="ssl">SSL</label>
 			<input type="submit" id="connect" value="Connect"/>
 		</form>
 		

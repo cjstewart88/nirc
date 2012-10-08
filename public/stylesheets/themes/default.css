@@ -1,0 +1,71 @@
+body {	
+  background:   #3F464C;
+	font-family:  Monaco, monospace;
+	font-size:    11px;
+	color:        #fff;
+}
+
+#connect-form h1 i {
+	color: #FBDE2D;
+}
+
+#connect-form input {
+	font-family:  Monaco, monospace;
+	font-size:    11px;
+	border-color: #ccc;
+}
+
+#connect-form input:focus {
+	border-color: #FBDE2D;
+}
+
+#connect-form #connect {
+	background: #000;
+	color:      #fff;
+}
+
+#connect-form #connect:hover, #connect-form #connect:focus {
+	background: #FBDE2D;
+	color:      #000;
+}
+
+#tabs {
+  border-bottom-color: #ccc;
+}
+
+.tab {
+  color:              #ccc;
+  border-right-color: #ccc;
+}
+
+.tab.active {
+  background: #333;
+  color:      #fff;
+}
+
+.tab.new-msgs {
+  color: #B9D054;
+}
+
+.tab-view .line .timestamp {
+  color: #b0b0b0;
+}
+
+.tab-view .from {
+  font-weight:  bold;
+	color:        #FBDE2D;
+}
+
+.tab-view .from.from-you {
+  color: #2DB1FB;
+}
+
+.tab-view .line.channel.mentioned  {
+	background: #585F56;
+}
+
+#command-input {
+  font-family: 	Monaco, monospace;
+	font-size:		11px;
+  border-color: #ccc;
+}

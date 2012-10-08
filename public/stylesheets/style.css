@@ -1,9 +1,5 @@
 body {	
-  margin:       0;
-  background:   #3F464C;
-	font-family:	Monaco, monospace;
-	font-size:		11px;
-	color:        #fff;
+  margin: 0;
 }
 
 input:focus{
@@ -11,50 +7,40 @@ input:focus{
 }
 
 #connect-form {
-	width: 					160px;
-	margin: 				0 auto;
-	margin-top: 		150px;
-	padding:				10px 15px;
+	width:      165px;
+	margin:     50px auto 0 auto;
 }
-#connect-form h1 i {
-	color: #FBDE2D;
-}
+
 #connect-form input, label {
-	display:	block;
-	width: 		151px;
+	display:  block;
+	width:    151px;
 }
 #connect-form input {
-	margin-bottom: 	10px;
-	font-family:		Monaco, monospace;
-	font-size:			11px;
-	padding:				3px 5px;
-	border: 				solid 1px #ccc;
+	margin-bottom:  10px;
+	padding:        3px 5px;
+	border-width:   1px;
+	border-style:   solid;
 }
 
 label[for=ssl] {
-  display: inline;
-  width: auto;
+  display:  inline;
+  width:    auto;
 }
 #connect-form input[type=checkbox] {
-  display: inline;
-  width: auto;
+  display:  inline;
+  width:    auto;
 }
 
 #connect-form input:focus {
-	border:	 solid 1px #FBDE2D;
+	border-width: 1px;
+	border-style: solid;
 }
 #connect-form #connect {
 	border: 			none;
-	background: 	#000;
-	color:				#fff;
 	cursor: 			pointer;
 	width: 				auto;
 	padding: 			8px 15px;
 	margin-left:	0;
-}
-#connect-form #connect:hover, #connect-form #connect:focus {
-	-webkit-transition: background-color 0.25s linear;
-	background: 				#FBDE2D;
 }
 
 #irc-stuff {
@@ -62,40 +48,35 @@ label[for=ssl] {
 }
 
 #tabs {
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border-bottom: solid 1px #ccc;
+  width:                100%;
+  position:             fixed;
+  top:                  0;
+  left:                 0;
+  margin:               0;
+  padding:              0;
+  list-style:           none;
+  border-bottom-width:  1px;
+  border-bottom-style:  solid;
 }
 
 .tab {
-  display: inline-block;
-  margin: 0;
-  padding: 6px 10px;
-  color: #ccc;
-  cursor: pointer;
-  border-right: solid 1px #ccc;
+  display:            inline-block;
+  margin:             0;
+  padding:            6px 10px;
+  cursor:             pointer;
+  border-right-width: 1px;
+  border-right-style: solid;
 }
 
 .tab.active {
-  background: #333;
-  color: #fff;
-  cursor: normal;
-}
-
-.tab.new-msgs {
-  color: #B9D054;
+  cursor: default;
 }
 
 .tab-view {
   position: fixed;
   display:  none;
-	top: 			28px;
-	bottom:   28px;
+	top: 			30px;
+	bottom:   25px;
   left: 		0px;
 	width: 		100%;
 	overflow: auto;
@@ -110,30 +91,8 @@ label[for=ssl] {
 	padding: 	   5px 10px;
 }
 
-.tab-view .line a {
-  color: #fff;
-}
-
 .tab-view .line .timestamp {
-  color: #b0b0b0;
   margin-right: 11px;
-}
-
-.tab-view .line.channel:nth-child(odd) {
-	background: #383f44;
-}
-
-.tab-view .from {
-  font-weight: bold;
-	color: #FBDE2D;
-}
-
-.tab-view .from.from-you {
-  color: #2DB1FB;
-}
-
-.tab-view .line.channel.mentioned  {
-	background: #585F56;
 }
 
 #command-input {
@@ -142,10 +101,10 @@ label[for=ssl] {
   bottom:       0;
   left:         0;
 	width: 				100%;
-	font-family: 	Monaco, monospace;
-	font-size:		11px;
-	border:				1px solid #ccc;
+	border-width: 1px;
+	border-style: solid;
 	border-right: none;
 	border-left: 	none;
 	padding:      5px 0px;
+	margin:       0;
 }
