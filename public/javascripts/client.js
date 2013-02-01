@@ -4,6 +4,7 @@
       server:   $("#server").val(),
       port:     $("#port").val(),
       nickname: $("#nickname").val(),
+      userName: $("#user").val(),
       channels: $("#channels").val(),
       ssl:      $("#ssl").is(":checked"),
       password: $("#password").val()
