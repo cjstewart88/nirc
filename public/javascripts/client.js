@@ -248,6 +248,11 @@
             // if a user types the command like /part or /topic be sure to send
             // the currently active channel
             if (splitInput.length == 1 && command != 'quit') {
+              if (command == 'clear') {
+                $('div .tab-view.active').html("");
+                commandInput.val('');
+                return;
+              }
               var activeTab = $('.tab.active').text();
 
               if (activeTab == 'status') {
