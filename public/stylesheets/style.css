@@ -91,6 +91,10 @@ label[for=ssl] {
 	padding: 	   5px 10px;
 }
 
+.tab-view .nicklist {
+  float: right;
+}
+
 .tab-view .line .timestamp {
   margin-right: 11px;
 }
