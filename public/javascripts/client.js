@@ -75,6 +75,8 @@
       }
       
       actualMsg.text(msgData.message);
+      var urlRegex = /(https?:\/\/[^\s]+)/g
+      actualMsg.html(actualMsg.text().replace(urlRegex, "<a target='_blank' href='$1'>$1</a>"));
       newLine.append(actualMsg);
 
       tabView.append(newLine)
