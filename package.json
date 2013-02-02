@@ -12,6 +12,6 @@
   },
   "subdomain": "nirc",
   "scripts": {
-    "start": "server.js"
+    "start": "node server.js"
   }
 }
