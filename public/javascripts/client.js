@@ -209,18 +209,20 @@
     });
 
     socket.on('channel_add_nicks', function(data){
-      var tabView = getTabView(data.channel);
-      var nickList = tabView.find('.nicklist');
-      for (var i in data.nicks) {
-        var nick = data.nicks[i];
-        var nickIsInList = false;
+      var tabView   = getTabView(data.channel);
+      var nickList  = tabView.find('.nicklist');
 
-        $.each(nickList.children(), function(i,e){
-          if ($(e).text() == nick){ nickIsInList = true; }
+      for (var i in data.nicks) {
+        var nick          = data.nicks[i];
+        var nickIsInList  = false;
+
+        $.each(nickList.children(), function (i, e) {
+          if ($(e).text() == nick) { nickIsInList = true; }
         });
 
         if (!nickIsInList) {
-          nickList.append($('<li>').text(data.nicks[i]));
+          var nickLi = $('<li>').text(nick);
+          nickList.append(nickLi);
         }
       }
     });
@@ -228,8 +230,9 @@
     socket.on('channel_remove_nick', function(data){
       var tabView = getTabView(data.channel);
       var nickList = tabView.find('.nicklist');
-      $.each(nickList.children(), function(i,e){
-        if ($(e).text() == data.nick){
+
+      $.each(nickList.children(), function (i, e) {
+        if ($(e).text() == data.nick) {
           $(e).remove();
         }
       });
@@ -238,8 +241,9 @@
     socket.on('change_nick', function(data){
       var tabView = getTabView(data.channel);
       var nickList = tabView.find('.nicklist');
-      $.each(nickList.children(), function(i,e){
-        if ($(e).text() == data.oldnick){
+
+      $.each(nickList.children(), function (i, e) {
+        if ($(e).text() == data.oldnick) {
           $(e).text(data.newnick);
         }
       });
@@ -370,4 +374,3 @@
     // END KEY BINDINGS
   };
 })(jQuery);
-

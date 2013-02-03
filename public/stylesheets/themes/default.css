@@ -30,12 +30,12 @@ body {
 }
 
 #tabs {
-  border-bottom-color: #ccc;
+  border-color: #ccc;
 }
 
 .tab {
-  color:              #ccc;
-  border-right-color: #ccc;
+  color:        #ccc;
+  border-color: #ccc;
 }
 
 .tab.active {
@@ -64,8 +64,11 @@ body {
 	background: #585F56;
 }
 
+.tab-view .nicklist {
+  border-color: #ccc;
+}
+
 #command-input {
   font-family: 	Monaco, monospace;
 	font-size:		11px;
-  border-color: #ccc;
 }
