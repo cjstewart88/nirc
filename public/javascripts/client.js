@@ -299,7 +299,7 @@
             // the currently active channel
             if (splitInput.length == 1 && command != 'quit') {
               if (command == 'clear') {
-                $('div .tab-view.active').html("");
+                $('div .tab-view.active .line').remove();
                 commandInput.val('');
                 return;
               }
