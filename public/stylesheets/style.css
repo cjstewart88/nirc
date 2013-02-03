@@ -133,6 +133,11 @@ label[for=ssl] {
   cursor:   pointer;
 }
 
+.tab-view .line .img-preview img {
+  margin-top: 10px;
+  max-width: 200px;
+}
+
 #command-input {
 	display: 			block;
   position:     fixed;

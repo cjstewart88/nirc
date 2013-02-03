@@ -33,6 +33,46 @@
       return $('.tab-view[title="'+title+'"]');
     };
 
+	 // Taken from: https://github.com/thedjpetersen/subway/blob/38923d864642ef491298b69567e826241d2b0147/assets/js/utils.js
+    // Find and link URLs
+    // TODO: put youtube and image embedding code
+    // into own function
+    var linkify = function(text) {
+      // see http://daringfireball.net/2010/07/improved_regex_for_matching_urls
+      var links = [];
+      var re = /\b((?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/gi;
+      var parsed = text.replace(re, function(url) {
+        // turn into a link
+        var href = url;
+        if (url.indexOf('http') !== 0) {
+          href = 'http://' + url;
+        }
+        links.push(href);
+        return '<a href="' + href + '" target="_blank">' + url + '</a>';
+      });
+      if (links.length>0){
+        //Look for embeddable media in all the links
+        for (var i=0; i<links.length; i++){
+          var href = links[i];
+          //Add embedded youtube video
+          /*if (href.search('http://www.youtube.com') > -1) {
+            var video_id = href.split('v=')[1];
+            var targetPosition = video_id.indexOf('&');
+            if(targetPosition !== -1) {
+              video_id = video_id.substring(0, targetPosition);
+            }
+            parsed = parsed.split('</div><div class=\"chat-time\">').join(ich.youtube_embed({video_id:video_id}, true) + '</div><div class=\"chat-time\">');
+          }*/
+  
+          //Add embedded images
+          if (jQuery.inArray(href.substr(-3), ['jpg', 'gif', 'png']) > -1 || jQuery.inArray(href.substr(-4), ['jpeg']) > -1) {
+            parsed += '<div class="img-preview"><a href="'+href+'" target="_blank"><img src="' + href + '" /></a></div>';
+          }
+        }
+      }
+      return parsed;
+    }
+
     var newMsg = function (msgData) {
       var msgType   = (msgData.reciever == 'status' ? 'status' : 'channel');
 
@@ -79,8 +119,7 @@
       }
       
       actualMsg.text(msgData.message);
-      var urlRegex = /(https?:\/\/[^\s]+)/g
-      actualMsg.html(actualMsg.text().replace(urlRegex, "<a target='_blank' href='$1'>$1</a>"));
+      actualMsg.html(linkify(msgData.message));
       newLine.append(actualMsg);
 
       tabView.append(newLine)
