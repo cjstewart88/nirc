@@ -1,3 +1,21 @@
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar:hover {
+  background: rgba(255, 255, 255, 0.02);
+  -webkit-box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  -webkit-box-shadow: inset 1px 1px 0 rgba(255, 255, 255, ,0.1), inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
 body {	
   margin: 0;
 }
@@ -75,10 +93,10 @@ label[for=ssl] {
 .tab-view {
   position: fixed;
   display:  none;
-	top: 			30px;
+	top: 			28px;
 	bottom:   25px;
   left: 		0px;
-	width: 		100%;
+  right:    150px;
 	overflow: auto;
 }
 .tab-view.active {
@@ -95,16 +113,33 @@ label[for=ssl] {
   margin-right: 11px;
 }
 
+.tab-view .nicklist {
+  width:              150px;
+  margin:             0;
+  padding:            0;
+  position:           fixed;
+  top:                28px;
+  bottom:             25px;
+  right:              0px;
+  overflow-x:         hidden;
+  overflow-y:         auto;
+  list-style-type:    none;
+  border-left-width:  1px;
+  border-left-style:  solid;
+}
+
+.tab-view .nicklist li {
+  padding:  5px;
+  cursor:   pointer;
+}
+
 #command-input {
 	display: 			block;
   position:     fixed;
   bottom:       0;
   left:         0;
 	width: 				100%;
-	border-width: 1px;
-	border-style: solid;
-	border-right: none;
-	border-left: 	none;
+	border:       none;
 	padding:      5px 0px;
 	margin:       0;
 }
