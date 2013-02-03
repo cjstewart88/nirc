@@ -29,11 +29,15 @@
     var supportsNotifications = !!window.webkitNotifications;
     var iconURL = "/images/nirc32.png";
 
+    var getTabView = function(title) {
+      return $('.tab-view[title="'+title+'"]');
+    };
+
     var newMsg = function (msgData) {
       var msgType   = (msgData.reciever == 'status' ? 'status' : 'channel');
 
       var tab       = $('.tab[title="'+msgData.receiver.toLowerCase()+'"]');
-      var tabView   = $('.tab-view[title="'+tab.attr('title')+'"]');
+      var tabView   = getTabView(tab.attr('title'));
       var newLine   = $('<div>').addClass('line ' + msgType);
       var actualMsg = $('<span>');
       
@@ -133,6 +137,9 @@
         var tabView = $('<div>').attr('title', tabName.toLowerCase())
                                 .addClass('tab-view active');
 
+        var nickList = $('<ul>').addClass('nicklist');
+        tabView.append(nickList);
+
         tabViews.append(tabView);
       }
     }
@@ -201,6 +208,47 @@
     // START SOCKET LISTENERS
     socket.on('successfullyJoinedChannel', function (data) {
       newTab(data.channel);
+    });
+
+    socket.on('channel_add_nicks', function(data){
+      var tabView   = getTabView(data.channel);
+      var nickList  = tabView.find('.nicklist');
+
+      for (var i in data.nicks) {
+        var nick          = data.nicks[i];
+        var nickIsInList  = false;
+
+        $.each(nickList.children(), function (i, e) {
+          if ($(e).text() == nick) { nickIsInList = true; }
+        });
+
+        if (!nickIsInList) {
+          var nickLi = $('<li>').text(nick);
+          nickList.append(nickLi);
+        }
+      }
+    });
+
+    socket.on('channel_remove_nick', function(data){
+      var tabView = getTabView(data.channel);
+      var nickList = tabView.find('.nicklist');
+
+      $.each(nickList.children(), function (i, e) {
+        if ($(e).text() == data.nick) {
+          $(e).remove();
+        }
+      });
+    });
+
+    socket.on('change_nick', function(data){
+      var tabView = getTabView(data.channel);
+      var nickList = tabView.find('.nicklist');
+
+      $.each(nickList.children(), function (i, e) {
+        if ($(e).text() == data.oldnick) {
+          $(e).text(data.newnick);
+        }
+      });
     });
 
     socket.on('successfullyPartedChannel', function (data) {
@@ -328,4 +376,3 @@
     // END KEY BINDINGS
   };
 })(jQuery);
-
