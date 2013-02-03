@@ -135,7 +135,7 @@ label[for=ssl] {
 
 .tab-view .line .img-preview img {
   margin-top: 10px;
-  width: 200px;
+  max-width: 200px;
 }
 
 #command-input {
