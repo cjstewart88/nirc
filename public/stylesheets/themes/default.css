@@ -1,8 +1,12 @@
-body {	
+body {
   background:   #3F464C;
 	font-family:  Monaco, monospace;
 	font-size:    11px;
 	color:        #fff;
+}
+
+a {
+  color: #fff;
 }
 
 #connect-form h1 i {

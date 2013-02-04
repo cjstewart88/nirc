@@ -1,9 +1,13 @@
-body {	
+body {
   background:   #22252A;
 	font-family:  Consolas, 'Liberation Mono', Courier, monospace;
 	font-weight:  bold;
 	font-size:    13px;
 	color:        #fff;
+}
+
+a {
+  color: #fff;
 }
 
 #connect-form h1 i {
