@@ -218,6 +218,13 @@
       newTab(data.channel);
     });
 
+    //Private message on nick click
+	$(".nicklist li").live("click", function(event){
+	var pmUser = $(this).text();
+	alert('Now talking private with: ' + pmUser);
+	newTab(pmUser);
+    });
+    
     socket.on('channel_add_nicks', function(data){
       var tabView   = getTabView(data.channel);
       var nickList  = tabView.find('.nicklist');
