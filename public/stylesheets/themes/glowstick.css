@@ -74,6 +74,10 @@ a {
   border-color: #555753;
 }
 
+.tab-view .nicklist li:hover {
+  text-decoration: underline;
+}
+
 #command-input {
 	font-family:  Consolas, 'Liberation Mono', Courier, monospace;
 	font-weight:  bold;

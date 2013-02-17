@@ -102,6 +102,9 @@ label[for=ssl] {
 .tab-view.active {
   display: block;
 }
+.tab-view.no-nicklist {
+  right: 0;
+}
 
 .tab-view .line {
   white-space: pre-wrap;

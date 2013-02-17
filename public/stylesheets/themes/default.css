@@ -72,6 +72,10 @@ a {
   border-color: #ccc;
 }
 
+.tab-view .nicklist li:hover {
+  text-decoration: underline;
+}
+
 #command-input {
   font-family: 	Monaco, monospace;
 	font-size:		11px;

@@ -145,10 +145,19 @@
         var tabView = $('<div>').attr('title', tabName.toLowerCase())
                                 .addClass('tab-view active');
 
-        var nickList = $('<ul>').addClass('nicklist');
-        tabView.append(nickList);
-
+        if (tabName.split('')[0] == '#') {
+          var nickList = $('<ul>').addClass('nicklist');
+          tabView.append(nickList);  
+        }
+        else {
+          tabView.addClass('no-nicklist');
+        }
+        
         tabViews.append(tabView);
+        commandInput.focus();
+      }
+      else {
+        focusTab($('.tab[title="'+tabName.toLowerCase()+'"]'));
       }
     }
 
@@ -232,7 +241,12 @@
 
         if (!nickIsInList) {
           var nickLi = $('<li>').text(nick);
+          
           nickList.append(nickLi);
+          
+          nickLi.click(function () {
+            newTab($(this).text());
+          });
         }
       }
     });
