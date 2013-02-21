@@ -2,14 +2,14 @@ body {
         color: #FFFFFF;
         background-position: bottom;
         background-repeat:no-repeat;
-  font-family:  'Lucida Sans Unicode', 'comic-sans ms', arial;
+  	font-family:  'Lucida Sans Unicode', 'comic-sans ms', arial;
 	font-size:    13px;
 	background:   url('black_lozenge.png'), #EEE;
         font-size: 14px;
 }
 
 a {
-  color: #9FBF7E;
+  	color: #9FBF7E;
 }
 
 #connect-form h1 i {
@@ -23,12 +23,12 @@ a {
 }
 
 #desciption {
-    color: #92AA86
+    	color: #92AA86
 }
 
 #connect-form {
-    width:      300px;
-    margin-top: 20px;
+	width:      300px;
+	margin-top: 20px;
 }
 
 #connect-form input:focus {
@@ -45,53 +45,53 @@ a {
 }
 
 #tabs {
-  border-color: #9FBF7E;
+	border-color: #9FBF7E;
 }
 
 #tab-views {
-    color: #FFFFFF;
+	color: #FFFFFF;
 }
 
 .tab {
-  color:        #FFFFFF;
-  border-color: #9FBF7E;
+	color:        #FFFFFF;
+	border-color: #9FBF7E;
 }
 
 .tab.active {
-  background: #8A9A7F;
-  color:      #fff;
+	background: #8A9A7F;
+	color:      #fff;
 }
 
 .tab.new-msgs {
-  color: #FFFFFF;
-  background: #38858C;
+	color: #FFFFFF;
+	background: #38858C;
 }
 
 .tab-view .line .timestamp {
-  color: #A0A0A0;
-  margin-left: 5px;
+	color: #A0A0A0;
+	margin-left: 5px;
 }
 
 .tab-view .from {
-    font-weight:  bold;
-    color:        #A0BE7E;
+	font-weight:  bold;
+	color:        #A0BE7E;
 }
 
 .tab-view .from.from-you {
-    color: #F38630;
+	color: #F38630;
 }
 
 .tab-view .line.channel.mentioned  {
-    background: #333;
-    color: #FFFFFF;
+	background: #333;
+	color: #FFFFFF;
 }
 
 .tab-view .nicklist {
-    border-color: #9FBF7E;
+	border-color: #9FBF7E;
 }
 
 .tab-view .nicklist li:hover {
-  text-decoration: underline;
+	text-decoration: underline;
 }
 
 #command-input {
