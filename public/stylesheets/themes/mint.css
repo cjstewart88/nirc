@@ -1,0 +1,105 @@
+body {
+        color: #FFFFFF;
+        background-position: bottom;
+        background-repeat:no-repeat;
+  	font-family:  'Lucida Sans Unicode', 'comic-sans ms', arial;
+	font-size:    13px;
+	background:   url('black_lozenge.png'), #EEE;
+        font-size: 14px;
+}
+
+a {
+  	color: #9FBF7E;
+}
+
+#connect-form h1 i {
+	color: #9FBF7E;
+}
+
+#connect-form input {
+	font-family:  'Lucida Sans Unicode', 'comic-sans ms', arial;
+	font-size:    14px;
+	border-color: #ccc;
+}
+
+#desciption {
+    	color: #92AA86
+}
+
+#connect-form {
+	width:      300px;
+	margin-top: 20px;
+}
+
+#connect-form input:focus {
+	border-color: #A6E32D;
+}
+
+#connect-form #connect {
+	background: #22252A;
+	color:      #fff;
+}
+
+#connect-form #connect:hover, #connect-form #connect:focus {
+	background: #92AA86;
+}
+
+#tabs {
+	border-color: #9FBF7E;
+}
+
+#tab-views {
+	color: #FFFFFF;
+}
+
+.tab {
+	color:        #FFFFFF;
+	border-color: #9FBF7E;
+}
+
+.tab.active {
+	background: #8A9A7F;
+	color:      #fff;
+}
+
+.tab.new-msgs {
+	color: #FFFFFF;
+	background: #38858C;
+}
+
+.tab-view .line .timestamp {
+	color: #A0A0A0;
+	margin-left: 5px;
+}
+
+.tab-view .from {
+	font-weight:  bold;
+	color:        #A0BE7E;
+}
+
+.tab-view .from.from-you {
+	color: #F38630;
+}
+
+.tab-view .line.channel.mentioned  {
+	background: #333;
+	color: #FFFFFF;
+}
+
+.tab-view .nicklist {
+	border-color: #9FBF7E;
+}
+
+.tab-view .nicklist li:hover {
+	text-decoration: underline;
+}
+
+#command-input {
+	font-family:    'Lucida Sans Unicode', 'comic-sans ms', arial;
+	font-size:      14px;
+        border-top:     1px solid #9FBF7E;
+        padding-left:   10px;
+        padding-right:  20px;
+        background: rgba(159, 191, 126, 0.4);
+        color: #FFFFFF;
+}
