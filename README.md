@@ -28,7 +28,8 @@ Node.js and NPM are required and should be setup before attempting to setup nirc
 ## Themes
 Roll your own theme by:
 
-1. Create a custom `.css` file in the `public/stylesheets/themes` directory.
+1. Create a folder for your theme in the `public/stylesheets/themes` directory.
+1. Add your custom css and images to this folder.
 2. Update line `11` in `views/index.html` to point to your new theme.
 3. If you're proud of your theme open a PR to include it!
 
