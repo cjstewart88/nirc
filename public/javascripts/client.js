@@ -30,7 +30,7 @@
     var iconURL = "/images/nirc32.png";
 
     var getTabView = function(title) {
-      return $('.tab-view[title="'+title+'"]');
+      return $('.tab-view[title="'+title.toLowerCase()+'"]');
     };
 
     var newMsg = function (msgData) {
