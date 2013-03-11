@@ -3,12 +3,12 @@
   <head>
     <title>nirc</title>
     <script src='//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js'></script>
-    <script src='/socket.io/socket.io.js'></script>   
+    <script src='/socket.io/socket.io.js'></script>
     <script src='/javascripts/client.js'></script>
     <script src='/javascripts/document-dot-ready.js'></script>
     <script src='/javascripts/vendor/mousetrap.min.js'></script>
     <link href='/stylesheets/style.css' media='screen' rel='stylesheet' type='text/css'/>
-    <link href='/stylesheets/themes/mint/mint.css' media='screen' rel='stylesheet' type='text/css'/>
+    <link href='/stylesheets/themes/default/default.css' media='screen' rel='stylesheet' type='text/css'/>
 	</head>
   <body>
 		<form id="connect-form" onSubmit="return false;">
@@ -22,8 +22,8 @@
       <input type="checkbox" id="ssl"/> <label for="ssl">SSL</label>
 			<input type="submit" id="connect" value="Connect"/>
 		</form>
-		
-		<div id="irc-stuff">		  
+
+		<div id="irc-stuff">
 		  <ul id="tabs"></ul>
 		  <div id="tab-views"></div>
 			<input type="text" id="command-input" class="mousetrap"/>

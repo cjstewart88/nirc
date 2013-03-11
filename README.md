@@ -1,6 +1,10 @@
 # nirc
 A simple web browser IRC client written in Node.js.
 
+## Demo
+
+Give it a go: http://nirc.jit.su/
+
 ## Setup
 Node.js and NPM are required and should be setup before attempting to setup nirc.
 
@@ -21,7 +25,7 @@ Node.js and NPM are required and should be setup before attempting to setup nirc
 
 ```
       $ node server
-``` 
+```
 
 - Open the app in your browser at `http://localhost:3000/`.
 
@@ -44,7 +48,7 @@ help make nirc better.
 ```
       $ git clone https://github.com/cjstewart88/nirc.git
       $ cd nirc
-```     
+```
 
 - Make a branch for your fixes or new features:
 
@@ -52,7 +56,7 @@ help make nirc better.
       $ git branch -d branch_name_here
 ```
 
-- Make your changes, test to make sure they work and make sure no previous 
+- Make your changes, test to make sure they work and make sure no previous
 functionality is broken.
 
 - Push to your fork Open a Pull Request!
