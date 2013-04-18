@@ -339,7 +339,7 @@
                 commandInput.val('');
                 return;
               }
-              var activeTab = $('.tab.active').text();
+              var activeTab = $('.tab.active').attr('title');
 
               if (activeTab == 'status') {
                 commandInput.val('');
