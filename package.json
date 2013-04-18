@@ -1,6 +1,6 @@
 {
   "name": "nirc",
-  "version": "0.0.1-24",
+  "version": "0.0.1-25",
   "dependencies": {
     "express": "3.0",
     "ejs": "0.8.3",

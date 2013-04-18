@@ -86,6 +86,11 @@ label[for=ssl] {
   border-right-style: solid;
 }
 
+.close-tab {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
 .tab.active {
   cursor: default;
 }

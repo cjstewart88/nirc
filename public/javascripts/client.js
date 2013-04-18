@@ -27,7 +27,6 @@
     var tabViews      = $('#tab-views');
     var commandInput  = $('#command-input');
     var supportsNotifications = !!window.webkitNotifications;
-    var iconURL = "/images/nirc32.png";
 
     var getTabView = function(title) {
       return $('.tab-view[title="'+title.toLowerCase()+'"]');
@@ -71,7 +70,7 @@
           newLine.addClass('mentioned'); //for highlighting
           // if either the user is in another browser tab/app, or if the user is in a diff irc channel
           if (tabNotFocused) { //bring on the webkit notification
-            var notification = newNotification(msgData.message, msgData.receiver, iconURL);
+            var notification = newNotification(msgData.message, msgData.receiver, "/images/nirc32.png");
             if (notification) { //in case they haven't authorized, the above will return nothin'
               notification.onclick = function() {
                 window.focus(); //takes user to the browser tab
@@ -124,9 +123,12 @@
         tabToActivate = $(this);
       }
 
-      var tabViewToActive = $('.tab-view[title="'+tabToActivate.attr('title')+'"]');
+      var tabViewToActivate = $('.tab-view[title="'+tabToActivate.attr('title')+'"]');
 
-      activateTab(tabToActivate, tabViewToActive);
+      tabToActivate.addClass('active').removeClass('new-msgs');
+      tabViewToActivate.addClass('active').scrollTop(tabViewToActivate[0].scrollHeight);
+
+      commandInput.focus();
     }
 
     var newTab = function (tabName) {
@@ -138,6 +140,14 @@
                            .addClass('tab active')
                            .text(tabName);
 
+        if (tabName != 'status') {
+          var closeButton = $('<span>').addClass('close-tab')
+                                       .text('[x]')
+                                       .click(closeTabFromXButton);
+
+          tab.append(closeButton);
+        }
+
         tab.click(focusTab);
 
         tabs.append(tab);
@@ -147,17 +157,30 @@
 
         if (tabName.split('')[0] == '#') {
           var nickList = $('<ul>').addClass('nicklist');
-          tabView.append(nickList);  
+          tabView.append(nickList);
         }
         else {
           tabView.addClass('no-nicklist');
         }
-        
+
         tabViews.append(tabView);
         commandInput.focus();
       }
       else {
         focusTab($('.tab[title="'+tabName.toLowerCase()+'"]'));
+      }
+    }
+
+    var closeTabFromXButton = function (e) {
+      e.stopImmediatePropagation();
+
+      var tabToClose = $(this).parent().attr('title');
+
+      if (tabToClose.indexOf('#') == 0) {
+        socket.emit('command', '/part ' + tabToClose);
+      }
+      else {
+        closeTab(tabToClose);
       }
     }
 
@@ -169,10 +192,7 @@
 
       var currentActiveTab  = $('.tab.active').attr('title');
       if (currentActiveTab == tabNameToClose) {
-        var tabToActivate     = tab.prev();
-        var tabViewToActivate = $('.tab-view[title="'+tabToActivate.attr('title')+'"]');
-
-        activateTab(tabToActivate, tabViewToActivate);
+        focusTab(tab.prev());
       }
 
       tab.remove();
@@ -197,19 +217,7 @@
         tabToActivate = (currentTab.next().length == 1 ? currentTab.next() : $('.tab').first());
       }
 
-      var tabViewToActivate = $('.tab-view[title="'+tabToActivate.attr('title')+'"]');
-
-      activateTab(tabToActivate, tabViewToActivate);
-    }
-
-    var activateTab = function (tabToActivate, tabViewToActivate) {
-      tabToActivate.addClass('active')
-                   .removeClass('new-msgs');
-
-      tabViewToActivate.addClass('active')
-                       .scrollTop(tabViewToActivate[0].scrollHeight);
-
-      commandInput.focus();
+      focusTab(tabToActivate);
     }
 
     var removeNickFromList = function(channel, nick) {
@@ -284,12 +292,12 @@
     });
 
     socket.on('message', function (data) {
-      if (data.receiver.search(/^[#]/) == -1 && data.receiver != 'status') newTab(data.from);
+      if (data.receiver.search(/^[#]/) == -1 && data.receiver != 'status' && data.from) newTab(data.from);
 
       var msgData = {
-        receiver: data.receiver,
+        receiver: (data.from ? data.receiver : 'status'),
         message:  data.message,
-        from:     data.from
+        from:     data.from || data.receiver
       }
 
       newMsg(msgData);

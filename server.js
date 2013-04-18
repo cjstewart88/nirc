@@ -4,7 +4,7 @@
 var express = require('express'),
     ejs     = require('ejs'),
     http    = require('http');
-    
+
 /*
   Initialize & Configure Express
 */
@@ -17,12 +17,12 @@ app.configure(function () {
   app.set('views', __dirname + '/views');
   app.use(express.static(__dirname + '/public'));
   app.get('/', function(req, res) { res.render('index'); });
-  
+
 });
 
 /*
   Initialize the Server
-*/                       
+*/
 var server = http.createServer(app).listen(process.env.PORT || 3000);
 
 /*
