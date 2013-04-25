@@ -293,11 +293,11 @@
 
     socket.on('message', function (data) {
       if (data.receiver.search(/^[#]/) == -1 && data.receiver != 'status' && data.from) newTab(data.from);
-
+      console.log(data);
       var msgData = {
-        receiver: (data.from ? data.receiver : 'status'),
+        receiver: data.receiver,
         message:  data.message,
-        from:     data.from || data.receiver
+        from:     data.from
       }
 
       newMsg(msgData);
