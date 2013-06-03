@@ -16,6 +16,7 @@ app.configure(function () {
   app.set('view engine', 'html');
   app.set('views', __dirname + '/views');
   app.use(express.static(__dirname + '/public'));
+  app.use(express.favicon(__dirname + '/public/images/nirc.ico'));
   app.get('/', function(req, res) { res.render('index'); });
 
 });
