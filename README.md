@@ -53,7 +53,7 @@ help make nirc better.
 - Make a branch for your fixes or new features:
 
 ```
-      $ git branch -d branch_name_here
+      $ git checkout -b branch_name_here
 ```
 
 - Make your changes, test to make sure they work and make sure no previous
