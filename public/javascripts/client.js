@@ -257,6 +257,16 @@
       }
     };
 
+    var disconnect = function () {
+      socket.removeAllListeners();
+
+      tabs.html('');
+      tabViews.html('');
+      ircStuff.hide();
+      connectForm.show();
+      document.title = 'nirc';
+    };
+
 		// INITIALIZE IRC CONNECTION
 		socket.emit('connectToIRC', { options: options });
 
@@ -293,7 +303,7 @@
 
     socket.on('message', function (data) {
       if (data.receiver.search(/^[#]/) == -1 && data.receiver != 'status' && data.from) newTab(data.from);
-      console.log(data);
+      
       var msgData = {
         receiver: data.receiver,
         message:  data.message,
@@ -308,13 +318,7 @@
 		});
 
 		socket.on('disconnected', function () {
-			socket.removeAllListeners();
-
-			tabs.html('');
-			tabViews.html('');
-			ircStuff.hide();
-			connectForm.show();
-			document.title = 'nirc';
+			disconnect();
 		});
     // END SOCKET LISTENERS
 
