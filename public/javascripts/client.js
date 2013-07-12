@@ -25,73 +25,43 @@
     var ircStuff      = $('#irc-stuff');
     var tabs          = $('#tabs');
     var tabViews      = $('#tab-views');
-    var commandInput  = $('#command-input');
+    var tabView       = $('#tab-view');
+    var textInput	  = $('#command-input');
+	var thisChannel;
     var supportsNotifications = !!window.webkitNotifications;
-
+	
+	//-----------------------Messages--------------------------
     var getTabView = function(title) {
-      return $('.tab-view[title="'+title.toLowerCase()+'"]');
+	  return $('.tab-view[title="'+title+'"]');
     };
 
     var newMsg = function (msgData) {
-      var msgType   = (msgData.reciever == 'status' ? 'status' : 'channel');
-
-      var tab       = $('.tab[title="'+msgData.receiver.toLowerCase()+'"]');
-      var tabView   = getTabView(tab.attr('title'));
-      var newLine   = $('<div>').addClass('line ' + msgType);
-      var actualMsg = $('<span>');
-
-
-      var timestamp = $("<span>").addClass('timestamp').text(new Date().toString().split(' ')[4]);
-      newLine.append(timestamp);
-
-      var actionMatch = msgData.message.match(/\u0001ACTION (.*)\u0001/);
-
-      if (msgType == 'channel' && msgData.from !== undefined) {
-        if (!tab.hasClass('active')) {
-          tab.addClass('new-msgs');
-        }
-
-        var msgFrom = $('<span>').addClass(actionMatch ? '' : 'from').text(msgData.from);
-        var mentionRegex = new RegExp("(^|[^a-zA-Z0-9\\[\\]{}\\^`|])" + options.nickname + "([^a-zA-Z0-9\\[\\]{}\\^`|]|$)", 'i');
-        var containsMention = msgData.message.match(mentionRegex);
-
-        if (actionMatch) {
-          msgFrom.prepend('* ').append(' ');
-        } else {
-          msgFrom.append(': ');
-        }
-
-        if (msgData.fromYou) {
-          msgFrom.addClass('from-you');
-        }
-        else if (containsMention) {
-          //window.hasFocus is set by me in document-dot-ready.js
-          var tabNotFocused = !(document.hasFocus() && window.hasFocus && tab.hasClass('active'));
-          newLine.addClass('mentioned'); //for highlighting
-          // if either the user is in another browser tab/app, or if the user is in a diff irc channel
-          if (tabNotFocused) { //bring on the webkit notification
-            var notification = newNotification(msgData.message, msgData.receiver, "/images/nirc32.png");
-            if (notification) { //in case they haven't authorized, the above will return nothin'
-              notification.onclick = function() {
-                window.focus(); //takes user to the browser tab
-                focusTab(tab); //focuses the correct channel tab
-                this.cancel(); //closes the notification
-              };
-              notification.show();
-            }
-          }
-        }
-
-        newLine.append(msgFrom);
-      }
-
-      actualMsg.text(actionMatch ? actionMatch[1] : msgData.message);
-      var urlRegex = /\b((?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/gi;
-      actualMsg.html(actualMsg.text().replace(urlRegex, "<a target='_blank' href='$1'>$1</a>"));
-      newLine.append(actualMsg);
-
-      tabView.append(newLine)
-             .scrollTop(tabView[0].scrollHeight);
+		var tab = $('.tab-view[title="' + msgData.channel + '"]');
+		var newLine = $('<div>').addClass('line');
+		var msg;
+			
+		if (msgData.command === true){
+		msg = $('<i>').addClass('message').text(msgData.from + ' ' + msgData.message);
+		}
+		else {
+		msg = $('<span>').addClass('message').text(msgData.from + ': ' + msgData.message);
+		}
+			
+		var timestamp = $("<span>").addClass('timestamp').text(new Date().toString().split(' ')[4]);
+		
+		var mentionRegex = new RegExp("(^|[^a-zA-Z0-9\\[\\]{}\\^`|])" + options.nickname + "([^a-zA-Z0-9\\[\\]{}\\^`|]|$)", 'i');
+		var containsMention = msgData.message.toString().match(mentionRegex);
+		if (containsMention) {
+			newLine.append(timestamp);
+			newLine.append(': ');
+			newLine.append(msg).addClass('mentioned');
+			tab.append(newLine);
+		} else {
+			newLine.append(timestamp);
+			newLine.append(': ');
+			newLine.append(msg);
+			tab.append(newLine);
+		}
     }
 
     var newNotification = function (msg, title, icon) {
@@ -121,17 +91,19 @@
       }
       else { //assume we're in a callback
         tabToActivate = $(this);
+		thisChannel = tabToActivate.attr('title').toLowerCase();
       }
 
       var tabViewToActivate = $('.tab-view[title="'+tabToActivate.attr('title')+'"]');
 
       tabToActivate.addClass('active').removeClass('new-msgs');
       tabViewToActivate.addClass('active').scrollTop(tabViewToActivate[0].scrollHeight);
-
-      commandInput.focus();
+      textInput.focus();
     }
 
     var newTab = function (tabName) {
+		thisChannel = tabName.toLowerCase();
+		
       if ($('.tab[title="'+tabName.toLowerCase()+'"]').length == 0) {
         $('.tab').removeClass('active');
         $('.tab-view').removeClass('active');
@@ -164,7 +136,7 @@
         }
 
         tabViews.append(tabView);
-        commandInput.focus();
+        textInput.focus();
       }
       else {
         focusTab($('.tab[title="'+tabName.toLowerCase()+'"]'));
@@ -182,7 +154,7 @@
       else {
         closeTab(tabToClose);
       }
-    }
+    };
 
     var closeTab = function (tabName) {
       var tabNameToClose = tabName.toLowerCase();
@@ -197,7 +169,7 @@
 
       tab.remove();
       tabView.remove();
-    }
+    };
 
     var changeTabWithKeyboard = function (direction) {
       // deactivate old tab
@@ -218,7 +190,7 @@
       }
 
       focusTab(tabToActivate);
-    }
+    };
 
     var removeNickFromList = function(channel, nick) {
       var tabView = getTabView(channel);
@@ -229,7 +201,7 @@
           $(e).remove();
         }
       });
-    }
+    };
 
     var addNickToList = function(channel, nick) {
       var tabView = getTabView(channel);
@@ -257,16 +229,6 @@
       }
     };
 
-    var disconnect = function () {
-      socket.removeAllListeners();
-
-      tabs.html('');
-      tabViews.html('');
-      ircStuff.hide();
-      connectForm.show();
-      document.title = 'nirc';
-    };
-
 		// INITIALIZE IRC CONNECTION
 		socket.emit('connectToIRC', { options: options });
 
@@ -282,128 +244,142 @@
       newTab(data.channel);
     });
 
-    socket.on('channel_add_nicks', function(data){
-      for (var i in data.nicks) {
-        addNickToList(data.channel, data.nicks[i]);
-      }
+    socket.on('channel_add_nicks', function(channel, nicks){
+      $.each(nicks, function (key, value) {
+        addNickToList(channel, key + value);
+      });
+    });
+	
+    socket.on('channel_joins', function(channel, nick){
+        addNickToList(channel, nick);
     });
 
-    socket.on('channel_remove_nick', function(data){
-      removeNickFromList(data.channel, data.nick);
+    socket.on('channel_remove_nick', function(nick, channel){
+		console.log('channel_remove_nick: ' + channel + ' ' + nick);
+		removeNickFromList(nick, channel);
     });
 
-    socket.on('change_nick', function(data){
-      removeNickFromList(data.channel, data.oldnick);
-      addNickToList(data.channel, data.newnick);
+    socket.on('change_nick', function(channels, oldnick, newnick){
+      removeNickFromList(channels, oldnick);
+      addNickToList(channels, newnick);
     });
 
     socket.on('successfullyPartedChannel', function (data) {
       closeTab(data.channel);
     });
-
-    socket.on('message', function (data) {
-      if (data.receiver.search(/^[#]/) == -1 && data.receiver != 'status' && data.from) newTab(data.from);
-      
-      var msgData = {
-        receiver: data.receiver,
-        message:  data.message,
-        from:     data.from
-      }
-
-      newMsg(msgData);
+	
+    socket.on('notice', function (data) {
+		//option to turn notice on/off later
+		//Shows kick, kills, nickchange and more
     });
+
+		//-----------------server-messages----------------------------
+		socket.on('serverMsg', function (message) {
+			//Array
+			var msgData = {
+				from : server,
+				channel : "status",
+				message : message.args
+			};
+			newMsg(msgData);
+		});
+		socket.on('serverMsg2', function (message) {
+			//No array. Plain text
+			var msgData = {
+				from : server,
+				channel : "status",
+				message : message
+			};
+			newMsg(msgData);		
+		});
+		//--------------------user-messages-----------------------------
+		socket.on('message', function (nick, channel, text, command) {
+		if (command === true){command = true;}
+			var msgData = {
+				from : nick,
+				channel : channel,
+				message : text,
+				command : command
+			};
+			newMsg(msgData);
+		});
+		
+		socket.on('pm', function (from, message) {
+			newTab(from);
+
+			var msgData = {
+				from : from,
+				channel : from,
+				message : message
+			};
+			newPmMsg(msgData);
+		});
 
 		socket.on('realNick', function (data) {
 		  options.nickname = data.nick;
 		});
 
 		socket.on('disconnected', function () {
-			disconnect();
+			socket.removeAllListeners();
+
+			tabs.html('');
+			tabViews.html('');
+			ircStuff.hide();
+			connectForm.show();
+			document.title = 'nirc';
 		});
     // END SOCKET LISTENERS
 
-    // CAPTURE USER TYPING
-    commandInput.keypress(function (e) {
-      var code = (e.keyCode ? e.keyCode : e.which);
+		//-----------------Send-message----------------------
+		textInput.keypress(function (e) {
+			var code = (e.keyCode ? e.keyCode : e.which);
+			var input = textInput.val();
 
-      if (code == 13) { // user pressed enter
-        var input = commandInput.val();
+			if (code == 13) {
+			    if (input.search(/^[\/]/) == 0) {
+				
+					var splitInput = input.split(' ');
+					var type = splitInput[0];
+					var text = input.substring( input.indexOf(" ") + 1, input.length );
+					var command;
+					
+					if (type === '/me'){command = true;}
+					else {command = false;}
+					
+					var msgData = {
+						from : options.nickname,
+						channel : thisChannel,
+						message : text,
+						command : command
+					};
+					
+					lastText = $(textInput).val();
+					newMsg(msgData);
+					socket.emit('command', thisChannel, type, text);
+					textInput.val('');
+				}
+				else if (input !== '') {
+				
+					var msgData = {
+						from : options.nickname,
+						channel : thisChannel,
+						message : input
+					};
 
-        if (input != '') {
-          if (input.search(/^[\/]/) == 0) {
-            // user is trying to use irc commands
-						var splitInput 	= input.split(' ');
-						var command 		= splitInput[0].substr(1).toLowerCase();
-
-            // if a user types the command like /part or /topic be sure to send
-            // the currently active channel
-            if (splitInput.length == 1 && command != 'quit') {
-              if (command == 'clear') {
-                $('div .tab-view.active .line').remove();
-                commandInput.val('');
-                return;
-              }
-              var activeTab = $('.tab.active').attr('title');
-
-              if (activeTab == 'status') {
-                commandInput.val('');
-                return;
-              }
-              else {
-                input = input + ' ' + activeTab;
-              }
-            }
-						else if (command == 'msg') {
-							var commandSplit 	= input.split(' ');
-							var receiver 			= commandSplit[1];
-							var message 			= commandSplit.splice(2, commandSplit.length - 2).join(' ');
-
-							if (receiver.search(/^#/) == -1) {
-								newTab(receiver);
-							}
-
-							if ($('.tab[title="' + receiver + '"]').length == 1) {
-								newMsg({
-									receiver: receiver,
-									from:     'you',
-									fromYou:  true,
-									message:  message
-								});
-							}
-							else {
-								commandInput.val('');
-								return;
-							}
-						}
-
-						 commandInput.val('');
-          }
-          else {
-            // normal message to current tab-view
-            var receiver = $('.tab.active').attr('title');
-
-            commandInput.val('');
-            if (receiver == 'status') return;
-
-						newMsg({
-							receiver: receiver,
-							from:     'you',
-							fromYou:  true,
-							message:  input
-						});
-
-						input = '/msg ' + receiver + ' ' + input;
-          }
-
-					socket.emit('command', input);
-        }
-      }
-    });
-    // END CAPTURE USER TYPING
-
-		window.onbeforeunload = function () {
-			socket.emit('command', '/quit');
-		}
+					lastText = $(textInput).val();
+					newMsg(msgData);
+					socket.emit('message', thisChannel, input);
+					textInput.val('');
+				}
+			}
+		});
+		
+		$(textInput).keydown(function (e) {
+			var code = (e.keyCode || e.which);
+			if (code == 38) {
+				$(textInput).val(lastText);
+			}
+		});
 
     // SETUP KEY BINDINGS
     Mousetrap.bind('ctrl+left', function () {
