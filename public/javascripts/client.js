@@ -27,6 +27,7 @@
     var tabViews      = $('#tab-views');
     var commandInput  = $('#command-input');
     var supportsNotifications = !!window.webkitNotifications;
+    var maxLines      = 500;
 
     var getTabView = function(title) {
       return $('.tab-view[title="'+title.toLowerCase()+'"]');
@@ -92,6 +93,12 @@
 
       tabView.append(newLine)
              .scrollTop(tabView[0].scrollHeight);
+
+      var visibleLines = tabView.find('.line');
+      while (visibleLines.length > maxLines) {
+        visibleLines.get(0).remove();
+        visibleLines.shift();
+      }
     }
 
     var newNotification = function (msg, title, icon) {
