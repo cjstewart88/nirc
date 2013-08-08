@@ -27,6 +27,7 @@
     var tabViews      = $('#tab-views');
     var commandInput  = $('#command-input');
     var supportsNotifications = !!window.webkitNotifications;
+    var scroll = true;
 
     var getTabView = function(title) {
       return $('.tab-view[title="'+title.toLowerCase()+'"]');
@@ -90,8 +91,11 @@
       actualMsg.html(actualMsg.text().replace(urlRegex, "<a target='_blank' href='$1'>$1</a>"));
       newLine.append(actualMsg);
 
-      tabView.append(newLine)
-             .scrollTop(tabView[0].scrollHeight);
+      tabView.append(newLine);
+      
+      	if (scroll === true) {
+	   tabView.scrollTop(tabView[0].scrollHeight);
+	};
     }
 
     var newNotification = function (msg, title, icon) {
@@ -398,6 +402,20 @@
 					socket.emit('command', input);
         }
       }
+      // SCROLL DISABLE / ENABLE
+      	tabViews.mousedown(function () {
+		scroll = false;
+	});
+
+	tabViews.click(function () {
+		scroll = true;
+	});
+
+	tabViews.bind("scroll mousedown mouseup DOMMouseScroll mousewheel keyup", function (e) {
+		if (e.which > 0 || e.type === "mousedown" || e.type === "mousewheel") {
+	  scroll = false;
+		}
+	});
     });
     // END CAPTURE USER TYPING
 
