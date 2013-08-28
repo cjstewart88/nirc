@@ -94,10 +94,10 @@
       tabView.append(newLine)
              .scrollTop(tabView[0].scrollHeight);
 
-      var visibleLines = tabView.find('.line');
+      var visibleLines = tabView.find('.line').toArray();
       while (visibleLines.length > maxLines) {
-        visibleLines.get(0).remove();
-        visibleLines.shift();
+        visibleLines[0].remove();
+        visibleLines.shift(); // in case we use this later in the function
       }
     }
 
