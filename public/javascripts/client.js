@@ -28,6 +28,10 @@
     var commandInput  = $('#command-input');
     var supportsNotifications = !!window.webkitNotifications;
     var maxLines      = 500;
+    
+    //Get current time
+    var now = new Date();
+    var getTime = now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
 
     var getTabView = function(title) {
       return $('.tab-view[title="'+title.toLowerCase()+'"]');
@@ -42,7 +46,7 @@
       var actualMsg = $('<span>');
 
 
-      var timestamp = $("<span>").addClass('timestamp').text(new Date().toString().split(' ')[4]);
+      var timestamp = $("<span>").addClass('timestamp').text(getTime);
       newLine.append(timestamp);
 
       var actionMatch = msgData.message.match(/\u0001ACTION (.*)\u0001/);
