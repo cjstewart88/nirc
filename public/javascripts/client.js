@@ -30,8 +30,11 @@
     var maxLines      = 500;
     
     //Get current time
-    var now = new Date();
-    var getTime = now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+    function currentTime(){
+    	var now = new Date();
+    	var getTime = now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+    	return getTime;
+    }
 
     var getTabView = function(title) {
       return $('.tab-view[title="'+title.toLowerCase()+'"]');
@@ -46,7 +49,7 @@
       var actualMsg = $('<span>');
 
 
-      var timestamp = $("<span>").addClass('timestamp').text(getTime);
+      var timestamp = $("<span>").addClass('timestamp').text(currentTime());
       newLine.append(timestamp);
 
       var actionMatch = msgData.message.match(/\u0001ACTION (.*)\u0001/);
