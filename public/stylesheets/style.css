@@ -91,6 +91,10 @@ label[for=ssl] {
   cursor: pointer;
 }
 
+.close-tab:hover {
+  color:#FF0000;
+}
+
 .tab.active {
   cursor: default;
 }
