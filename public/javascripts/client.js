@@ -28,7 +28,7 @@
     var commandInput  = $('#command-input');
     var supportsNotifications = !!window.webkitNotifications;
     var maxLines      = 500;
-    
+
     //Get current time
     function currentTime(){
     	var now = new Date();
@@ -317,9 +317,9 @@
 
     socket.on('message', function (data) {
       if (data.receiver.search(/^[#]/) == -1 && data.receiver != 'status' && data.from) newTab(data.from);
-      
+
       var msgData = {
-        receiver: data.receiver,
+        receiver: (data.receiver == options.nickname ? 'status' : data.receiver),
         message:  data.message,
         from:     data.from
       }
