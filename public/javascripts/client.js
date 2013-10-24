@@ -94,8 +94,6 @@
       }
 
       actualMsg.text(actionMatch ? actionMatch[1] : msgData.message);
-      var urlRegex = /\b((?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/gi;
-      actualMsg.html(actualMsg.text().replace(urlRegex, "<a target='_blank' href='$1'>$1</a>"));
       newLine.append(actualMsg);
 
       tabView.append(newLine)
