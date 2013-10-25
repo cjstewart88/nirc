@@ -5,7 +5,7 @@ $(document).ready(function () {
   // prepopulate fields with last used values
   if (typeof(Storage) !== "undefined" && localStorage && localStorage.ircOptions) {
     var opts = JSON.parse(localStorage.ircOptions);
-    
+
     // populate each options field, assuming the option name matches the input ID
     // now with logic to accomodate checkboxes!
     for (option in opts) {
@@ -22,6 +22,11 @@ $(document).ready(function () {
 
   // initialize nirc
   $('#connect').click(function () {
+    if (!navigator.onLine) {
+      alert('You must be connected to the internet.');
+      return false;
+    }
+
     // if supports webkit notifications, and if they haven't allowed already
     if(window.webkitNotifications && window.webkitNotifications.checkPermission() != 0) {
       window.webkitNotifications.requestPermission();
