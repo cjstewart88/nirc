@@ -31,9 +31,9 @@
 
     //Get current time
     function currentTime(){
-    	var now = new Date();
-    	var getTime = now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
-    	return getTime;
+    	var date = new Date;
+    	var ts = ["0" + date.getHours(), "0" + date.getMinutes(), "0" + date.getSeconds()].join(":");
+    	return ts.replace(/\d(\d\d)/g, "$1");
     }
 
     var getTabView = function(title) {
