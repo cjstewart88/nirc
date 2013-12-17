@@ -88,7 +88,7 @@
                 notification.show();
               }
             }else if (window.Notification && navigator.userAgent.toLowerCase().indexOf("firefox") > -1) {
-              newNotificationW3C(msgData.message, msgData.receiver);
+              newNotificationW3C(msgData.message, msgData.receiver,"/images/nirc32.png",tab);
             }
           }
         }
@@ -115,12 +115,14 @@
       }
     }
 
-    var newNotificationW3C = function (msg, title) {
+    var newNotificationW3C = function (msg, title, icon,tab) {
       if (Notification.permission == 'granted') {
-        var notification = new Notification(title, { dir: "auto",
-          lang: "",
-          body: msg,
-          tag: "sometag",});
+        var notification = new Notification(title, { dir: "auto",body: msg, icon: icon,});
+        notification.onclick = function() {
+          window.focus(); //takes user to the browser tab
+          focusTab(tab); //focuses the correct channel tab
+          this.cancel(); //closes the notification
+        };
       }
     }
 
