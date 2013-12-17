@@ -26,7 +26,6 @@
     var tabs          = $('#tabs');
     var tabViews      = $('#tab-views');
     var commandInput  = $('#command-input');
-    var supportsNotifications = !!window.webkitNotifications;
     var maxLines      = 500;
 
     //Get current time
@@ -78,14 +77,18 @@
           newLine.addClass('mentioned'); //for highlighting
           // if either the user is in another browser tab/app, or if the user is in a diff irc channel
           if (tabNotFocused) { //bring on the webkit notification
-            var notification = newNotification(msgData.message, msgData.receiver, "/images/nirc32.png");
-            if (notification) { //in case they haven't authorized, the above will return nothin'
-              notification.onclick = function() {
-                window.focus(); //takes user to the browser tab
-                focusTab(tab); //focuses the correct channel tab
-                this.cancel(); //closes the notification
-              };
-              notification.show();
+            if (window.webkitNotifications && navigator.userAgent.indexOf("Chrome") > -1) {
+              var notification = newNotification(msgData.message, msgData.receiver, "/images/nirc32.png");
+              if (notification) { //in case they haven't authorized, the above will return nothin'
+                notification.onclick = function() {
+                  window.focus(); //takes user to the browser tab
+                  focusTab(tab); //focuses the correct channel tab
+                  this.cancel(); //closes the notification
+                };
+                notification.show();
+              }
+            }else if (window.Notification && navigator.userAgent.toLowerCase().indexOf("firefox") > -1) {
+              newNotificationW3C(msgData.message, msgData.receiver,"/images/nirc32.png",tab);
             }
           }
         }
@@ -107,9 +110,19 @@
     }
 
     var newNotification = function (msg, title, icon) {
-      var authorized = supportsNotifications && window.webkitNotifications.checkPermission() == 0;
-      if (authorized) {
+      if (window.webkitNotifications.checkPermission() == 0) {
         return window.webkitNotifications.createNotification(icon,title,msg);
+      }
+    }
+
+    var newNotificationW3C = function (msg, title, icon,tab) {
+      if (Notification.permission == 'granted') {
+        var notification = new Notification(title, { dir: "auto",body: msg, icon: icon,});
+        notification.onclick = function() {
+          window.focus(); //takes user to the browser tab
+          focusTab(tab); //focuses the correct channel tab
+          this.cancel(); //closes the notification
+        };
       }
     }
 
