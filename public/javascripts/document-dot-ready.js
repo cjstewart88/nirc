@@ -34,9 +34,7 @@ $(document).ready(function () {
       }
     } else if (window.Notification && navigator.userAgent.toLowerCase().indexOf("firefox") > -1) {
       if (Notification.permission == 'default') {
-        Notification.requestPermission(function(perm) {
-          alert(perm);
-        });
+        Notification.requestPermission();
       }
     }
     $.nirc(socket);
