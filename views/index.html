@@ -7,19 +7,73 @@
     <script src='/javascripts/vendor/angular.min.js'></script>
     <script src='/javascripts/vendor/lodash.min.js'></script>
     <script src='/javascripts/nirc.js'></script>
+    <script src='/javascripts/nirc/user.js'></script>
+    <script src='/javascripts/nirc/channel.js'></script>
+    <script src='/javascripts/nirc/channel.js'></script>
+    <script src='/javascripts/nirc/chat_event.js'></script>
+    <script src='/javascripts/nirc/client.js'></script>
     <link href='/stylesheets/style.css' media='screen' rel='stylesheet' type='text/css'/>
     <link href='/stylesheets/themes/default/default.css' media='screen' rel='stylesheet' type='text/css'/>
   </head>
   <body ng-controller="MainCtrl">
+    <div class="overlay" ng-if="!client.connected">
+      <div class="floater">
+        <div class="titlebar">Configuration</div>
+        <form ng-submit="client.connect()">
+          <div>
+            <label>Server:</label>
+            <input type="text" ng-model="client.options.server">
+          </div>
+
+          <div>
+            <label>Port:</label>
+            <input type="number" ng-model="client.options.port">
+          </div>
+
+          <div>
+            <label>Nick:</label>
+            <input type="text" ng-model="client.options.nickname">
+          </div>
+
+          <div>
+            <label>Real Name:</label>
+            <input type="text" ng-model="client.options.userName">
+          </div>
+
+          <div>
+            <label>Channels:</label>
+            <input type="text" ng-model="client.options.channels" ng-list>
+          </div>
+
+          <div>
+            <label>Server Password:</label>
+            <input type="text" ng-model="client.options.password">
+          </div>
+
+          <div>
+            <label class="checkbox">
+              <input type="checkbox" ng-model="client.options.ssl"> SSL
+            </label>
+          </div>
+
+          <div>
+            <input type="submit" value="Connect">
+          </div>
+
+
+        </form>
+      </div>
+    </div>
+
     <ul class="tabbar" ng-controller="TabCtrl">
-      <li ng-repeat="channel in channels" ng-class="{active: isActive(channel)}">
-        <a href ng-click="setActive(channel)">{{channel.name}}</a>
+      <li ng-repeat="channel in client.channels" ng-class="{active: channel == client.activeChannel}">
+        <a href ng-click="client.setActive(channel)">{{channel.name}}</a>
       </li>
     </ul>
     <div class="wrapper">
       <div class="content">
         <ul class="lines">
-          <li ng-repeat="event in activeChannel.history">
+          <li ng-repeat="event in client.activeChannel.history">
             {{event.user.nick}}: {{event.text}}
           </li>
         </ul>

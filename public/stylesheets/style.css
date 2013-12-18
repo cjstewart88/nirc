@@ -10,7 +10,63 @@ body {
   font-size: 12px;
 }
 
-html, body, .wrapper, .content, .users {
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(32, 32, 32, 0.70);
+  z-index: 5000;
+}
+
+.floater {
+  width: 324px;
+  margin: 32px auto;
+  background: #ccc;
+  border: 1px solid #333;
+}
+
+.floater form {
+  padding: 8px;
+}
+
+.floater form label {
+  display: inline-block;
+  width: 100px;
+}
+
+.floater form label.checkbox {
+  text-align: left;
+  display: inline-block;
+  width: 100%;
+}
+
+.floater form input {
+  display: inline-block;
+  width: 200px;
+}
+
+.floater form input[type=checkbox] {
+  display: inline-block;
+  width: auto;
+}
+
+
+.floater form input[type=submit] {
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+
+
+.titlebar {
+  padding: 8px;
+  background: #333;
+  color: #ccc;
+}
+
+html, body, .wrapper, .content {
   height: 100%;
 }
 
@@ -26,6 +82,7 @@ html, body, .wrapper, .content, .users {
 .users {
   position: absolute;
   right: 0;
+  bottom: 0;
   top: 40px;
   width: 400px;
   border-left: 1px solid #eee;
