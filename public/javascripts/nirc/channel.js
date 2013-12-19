@@ -22,5 +22,9 @@ angular.module('nirc')
       }
     };
 
+    Channel.prototype.addUser = function(user) {
+      this.users.push(user);
+    };
+
     return Channel;
   });

@@ -50,25 +50,21 @@ angular.module('nirc')
         if (name == 'status') {
           return this.statusChannel;
         }
-
-        return _.find(this.channels, function(ch) {
-          return ch.name == name;
-        });
+        return _.find(this.channels, function(ch) { return ch.name == name; });
       }
     };
 
     /* initially our active channel is the status pane. */
     Client.activeChannel = Client.statusChannel;
 
-
     /* handle private events from the socket.io connector */
     socket.on('message', function(d) {
-      var ch, event = new ChatEvent(d.from, d.receiver, d.message);
+      var ch, event = new ChatEvent(new User(d.from || ''), new User(d.receiver), d.message);
 
-      if ((ch = Client.channel(event.to))) {
+      if ((ch = Client.channel(event.to.nick))) {
         ch.addEvent(event);
       } else {
-        console.log("couldn't find", event.to);
+        console.log("couldn't find", event.to.nick);
         /* perhaps here we spawn a new channel ? */
       }
 
@@ -98,7 +94,26 @@ angular.module('nirc')
       $rootScope.$apply();
     });
 
+    socket.on('channel_add_nicks', function(d) {
+      var ch;
+      if ((ch = Client.channel(d.channel))) {
+        _.each(d.nicks, function(u) {
+          console.log(u);
+          ch.addUser(new User(u));
+        });
+      }
+      $rootScope.$apply();
+    });
+
+    socket.on('channel_remove_nick', function(d) {
+      var ch;
+      if ((ch = Client.channel(d.channel))) {
+        ch.users = _.reject(ch.users, function(u) {
+          return u.nick == d.nick;
+        });
+      }
+      $rootScope.$apply();
+    });
 
     return Client;
-
   });

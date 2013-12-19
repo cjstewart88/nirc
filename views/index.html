@@ -9,13 +9,13 @@
     <script src='/javascripts/nirc.js'></script>
     <script src='/javascripts/nirc/user.js'></script>
     <script src='/javascripts/nirc/channel.js'></script>
-    <script src='/javascripts/nirc/channel.js'></script>
     <script src='/javascripts/nirc/chat_event.js'></script>
     <script src='/javascripts/nirc/client.js'></script>
     <link href='/stylesheets/style.css' media='screen' rel='stylesheet' type='text/css'/>
     <link href='/stylesheets/themes/default/default.css' media='screen' rel='stylesheet' type='text/css'/>
   </head>
   <body ng-controller="MainCtrl">
+    <!-- config overlay -->
     <div class="overlay" ng-if="!client.connected">
       <div class="floater">
         <div class="titlebar">Configuration</div>
@@ -63,27 +63,44 @@
       </div>
     </div>
 
+    <!-- channel/status tabbar  -->
     <ul class="tabbar" ng-controller="TabCtrl">
       <li class="logo">
         nIRC
       </li>
-      <li ng-class="{active: client.statusChannel == client.activeChannel}">
-        <a href ng-click="client.setActive(client.statusChannel)">status</a>
+      <li ng-class="{active: isActive(client.statusChannel)}">
+        <a href ng-click="setActive(client.statusChannel)">status</a>
       </li>
-      <li ng-repeat="channel in client.channels" ng-class="{active: channel == client.activeChannel}">
-        <a href ng-click="client.setActive(channel)">{{channel.name}}</a>
+      <li ng-repeat="channel in client.channels" ng-class="{active: isActive(channel)}">
+        <a href ng-click="setActive(channel)">{{channel.name}}</a>
       </li>
     </ul>
+
     <div class="wrapper">
-      <div class="content">
-        <ul class="lines">
-          <li ng-repeat="event in client.activeChannel.history">
-            {{event.from.nick}}: {{event.text}}
-          </li>
-        </ul>
-      </div>
-      <div class="users">
-      </div>
+      <!-- main content pane -->
+      <ul class="content">
+        <li ng-repeat="event in client.activeChannel.history">
+          <span class="timestamp">
+            {{event.timestamp | date:'HH:mm:ss'}}
+          </span>
+          <span class="sender">
+            {{event.from.nick}}:
+          </span>
+          <span class="message">
+            {{event.message}}
+          </span>
+        </li>
+      </ul>
+      <!-- user list -->
+      <ul class="users">
+        <li ng-repeat="user in client.activeChannel.users">
+          {{user.nick}}
+        </li>
+      </ul>
+    </div>
+
+    <div class="input-wrapper">
+      <input type="text" class="user-input">
     </div>
   </body>
 </html>
