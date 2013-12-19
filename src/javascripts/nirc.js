@@ -1,6 +1,6 @@
 angular.module('nirc', ['ngSanitize'])
   .controller('RootCtrl', function($scope) {
-    $scope.themes = ['classic', 'night'];
+    $scope.themes = ['classic', 'night', 'paper'];
     $scope.theme  = $scope.themes[0];
     $scope.setTheme = function(t) {
       $scope.theme = t;
