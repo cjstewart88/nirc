@@ -3,3 +3,5 @@ stylesheets/.sass-cache/
 public/javascripts/nirc/templates.js
 public/stylesheets/
 .sass-cache/
+public/javascripts/nirc.js
+public/javascripts/nirc.templates.js

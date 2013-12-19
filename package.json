@@ -10,6 +10,10 @@
     "grunt": "*",
     "grunt-angular-templates": "*",
     "grunt-contrib-sass": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-ngmin": "*",
+    "grunt-contrib-clean": "*",
     "grunt-contrib-watch": "*"
   }
 }
