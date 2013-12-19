@@ -4,10 +4,6 @@ angular.module('nirc', [])
 
     $scope.client = Client;
 
-    $scope.say = function(command) {
-      $scope.client.say(command);
-    };
-
   })
 
   .controller('TabCtrl', function($scope) {

@@ -25,6 +25,18 @@ angular.module('nirc')
       /* -- public interface below -- */
 
       say: function(text) {
+        var ch = this.activeChannel;
+
+        if (!text || !text.length) {
+          return;
+        }
+
+        if (text.charAt(0) != '/') {
+          /* add our own text to the channel. */
+          ch.addEvent(new ChatEvent(this.me, new User(ch.name), text));
+          text = '/msg ' + ch.name + ' ' + text;
+        }
+
         socket.emit('command', text);
       },
 

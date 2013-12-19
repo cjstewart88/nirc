@@ -7,7 +7,7 @@
     <script src='/javascripts/vendor/angular.min.js'></script>
     <script src='/javascripts/vendor/lodash.min.js'></script>
     <script src='/javascripts/nirc.js'></script>
-    <script src='/javascripts/nirc/directives/say.js'></script>
+    <script src='/javascripts/nirc/directives/on-enter.js'></script>
     <script src='/javascripts/nirc/user.js'></script>
     <script src='/javascripts/nirc/channel.js'></script>
     <script src='/javascripts/nirc/chat_event.js'></script>
@@ -58,7 +58,7 @@
     </div>
 
     <div class="input-wrapper">
-      <input type="text" class="user-input" say>
+      <input type="text" class="user-input" on-enter="client.say(text)">
     </div>
   </body>
 </html>
