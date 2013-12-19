@@ -1,4 +1,4 @@
-angular.module('nirc', [])
+angular.module('nirc', ['ngSanitize'])
 
   .controller('MainCtrl', function($scope, Client) {
     $scope.client = Client;

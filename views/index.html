@@ -5,6 +5,7 @@
     <script src='/socket.io/socket.io.js'></script>
     <script src='/javascripts/vendor/mousetrap.min.js'></script>
     <script src='/javascripts/vendor/angular.min.js'></script>
+    <script src='/javascripts/vendor/angular-sanitize.min.js'></script>
     <script src='/javascripts/vendor/lodash.min.js'></script>
     <script src='/javascripts/nirc.js'></script>
     <script src='/javascripts/nirc/directives/on-enter.js'></script>
@@ -52,9 +53,7 @@
           <span class="sender">
             {{event.from.nick}}:
           </span>
-          <span class="message">
-            {{event.message}}
-          </span>
+          <span class="message" ng-bind-html="event.message | linky:'_blank'"></span>
         </li>
       </ul>
       <!-- user list -->
