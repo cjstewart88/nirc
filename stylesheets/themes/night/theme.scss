@@ -1,0 +1,85 @@
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans+Mono);
+
+body {
+  font-family: "Droid Sans Mono", monospace;
+  font-size:   12px;
+  color: #999;
+  background: #303038;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.config {
+  border: 1px solid #555;
+  background: #303038;
+  box-shadow: 0px 0px 12px #000000;
+
+  .titlebar {
+    background: #202028;
+    border-bottom: 1px solid #555;
+  }
+
+  input[type=submit] {
+    border: 1px solid #101018;
+    background: #202028;
+    color: #fff;
+    padding: 8px;
+    cursor: pointer;
+    &:hover {
+      border-color: #606068;
+      background: #505058;
+    }
+  }
+}
+
+.tabbar {
+  color: #999;
+  background: #202028;
+
+  li {
+    border-right: 1px solid rgba(255, 255, 255, 0.25);
+
+    &.active {
+      a {
+        background: #303038;
+        color: #fff;
+      }
+    }
+
+    a {
+      color: #4682b4;
+      text-decoration: none;
+    }
+  }
+
+}
+
+.content {
+  .timestamp {
+    color: rgba(255, 255, 255, 0.50);
+  }
+
+  .sender {
+    font-weight: bold;
+    color: #4682b4;
+  }
+
+  .message {
+    a {
+      color: #999;
+      text-decoration: underline;
+    }
+  }
+
+}
+
+.users {
+  background: #202028;
+}
+
+.user-input {
+  font-family: "Droid Sans Mono", monospace;
+  font-size: 11px;
+}

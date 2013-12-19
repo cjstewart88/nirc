@@ -1,43 +1,43 @@
-<div class="floater">
+<div class="config">
   <div class="titlebar">Configuration</div>
   <form ng-submit="client.connect()">
-    <div>
+    <div class="control-group">
       <label>Server:</label>
       <input type="text" ng-model="client.options.server">
     </div>
 
-    <div>
+    <div class="control-group">
       <label>Port:</label>
       <input type="number" ng-model="client.options.port">
     </div>
 
-    <div>
+    <div class="control-group">
       <label>Nick:</label>
       <input type="text" ng-model="client.options.nickname">
     </div>
 
-    <div>
+    <div class="control-group">
       <label>Real Name:</label>
       <input type="text" ng-model="client.options.userName">
     </div>
 
-    <div>
+    <div class="control-group">
       <label>Channels:</label>
       <input type="text" ng-model="client.options.channels" ng-list>
     </div>
 
-    <div>
+    <div class="control-group">
       <label>Server Password:</label>
       <input type="text" ng-model="client.options.password">
     </div>
 
-    <div>
+    <div class="control-group">
       <label class="checkbox">
         <input type="checkbox" ng-model="client.options.ssl"> SSL
       </label>
     </div>
 
-    <div>
+    <div class="control-group">
       <input type="submit" value="Connect">
     </div>
   </form>

@@ -1,4 +1,4 @@
-$userWidth: 200px;
+$userWidth:    200px;
 $tabbarHeight: 40px;
 $inputHeight:  40px;
 
@@ -14,8 +14,6 @@ html, body, .wrapper, .content {
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
-  font-size: 12px;
 }
 
 .overlay {
@@ -24,39 +22,37 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(32, 32, 32, 0.70);
   z-index: 5000;
 }
 
-.floater {
+.config {
   width: 324px;
   margin: 32px auto;
-  background: #ccc;
-  border: 1px solid #333;
 
   .titlebar {
     padding: 8px;
-    background: #333;
-    color: #ccc;
   }
 
   form {
     padding: 8px;
 
+    .control-group {
+      margin: 8px auto;
+    }
+
     label {
-      display: inline-block;
-      width: 100px;
+      display: block;
     }
 
     label.checkbox {
       text-align: left;
       display: inline-block;
-      width: 100%;
     }
 
     input {
-      display: inline-block;
-      width: 200px;
+      display: block;
+      margin: 0;
+      width: 100%;
     }
 
     input[type=checkbox] {
@@ -83,8 +79,6 @@ body {
   right: 0;
   bottom: 0;
   height: $inputHeight;
-  border-top: 1px solid #eee;
-  background: #333;
 
   input {
     display: block;
@@ -99,27 +93,12 @@ body {
   width: 100%;
   padding: 20px;
   padding-right: $userWidth + 20px;
-  background: #999;
-  color: #333;
   overflow: auto;
   margin: 0;
-  font-family: monospace;
 
   li {
     display: block;
     width: 100%;
-
-    .timestamp {
-      color: rgba(0, 0, 0, 0.30);
-    }
-
-    .sender {
-      font-weight: bold;
-    }
-
-    .message {
-
-    }
   }
 }
 
@@ -127,9 +106,9 @@ body {
   position: absolute;
   right: 0;
   bottom: 0;
+  margin: 0;
   top: $tabbarHeight;
   width: $userWidth;
-  border-left: 1px solid #eee;
   overflow: auto;
   list-style: none;
 }
@@ -138,8 +117,6 @@ body {
   list-style: none;
   margin: 0;
   padding: 0;
-  background: #333;
-  border-bottom: 1px solid #666;
   position: absolute;
   left: 0;
   right: 0;
@@ -151,14 +128,7 @@ body {
     &.logo {
       display: block;
       padding: 12px;
-      color: #555;
-      font-weight: bold;
       text-align: left;
-    }
-
-    &.active a {
-      background: #3366cc;
-      color: #fff;
     }
 
     &:after {
@@ -170,15 +140,9 @@ body {
     a {
       display: block;
       padding: 12px;
-      text-decoration: none;
       text-align: center;
       min-width: 80px;
-      color: #ccc;
 
-      &:hover {
-        color: #eee;
-        background: #444;
-      }
     }
 
  }

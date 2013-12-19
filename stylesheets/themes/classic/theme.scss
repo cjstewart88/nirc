@@ -1,0 +1,76 @@
+
+body {
+  font-family: Monaco, monospace;
+  font-size:   11px;
+  color: #fff;
+  background: #3F464C;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.config {
+  border: 1px solid #ccc;
+  background: #3F464C;
+  box-shadow: 0px 0px 12px #000000;
+
+  .titlebar {
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+  }
+
+  input[type=submit] {
+    border: 1px solid #0F262C;
+    background: #1F363C;
+    color: #fff;
+    padding: 8px;
+    cursor: pointer;
+    &:hover {
+      border-color: #DBBE0D;
+      background: #FBDE2D;
+    }
+  }
+}
+
+.tabbar {
+  color: #ccc;
+  border-bottom: 1px solid #ccc;
+
+  li {
+    border-right: 1px solid #ccc;
+
+    &.active {
+      a {
+        background: #333;
+        color: #fff;
+      }
+    }
+
+    a {
+      text-decoration: none;
+    }
+  }
+
+}
+
+.content {
+  .timestamp {
+    color: #b0b0b0;
+  }
+
+  .sender {
+    font-weight: bold;
+    color: #FBDE2D;
+  }
+
+}
+
+.users {
+  border-left: 1px solid #ccc;
+}
+
+.user-input {
+  font-family: Monaco, monospace;
+  font-size: 11px;
+}
