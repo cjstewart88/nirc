@@ -37,20 +37,28 @@ body {
 .tabbar {
   color: #999;
   background: #202028;
-
+  height: 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
   li {
-    border-right: 1px solid rgba(255, 255, 255, 0.25);
-
     &.active {
       a {
         background: #303038;
         color: #fff;
+        &:hover {
+          background: #303038;
+        }
       }
+      border-right: 1px solid rgba(255, 255, 255, 0.25);
+      border-left: 1px solid  rgba(255, 255, 255, 0.25);
     }
 
     a {
       color: #4682b4;
       text-decoration: none;
+      transition: background 0.25s ease-in-out;
+      &:hover {
+        background: #404048;
+      }
     }
   }
 
@@ -70,18 +78,23 @@ body {
     a {
       color: #999;
       text-decoration: underline;
+      transition: color 0.25s ease-in-out;
+      &:hover {
+        color: #ccc;
+      }
     }
   }
 
 }
 
 .users {
-  background: #202028;
+  border-left: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 .user-input {
   border: none;
   padding-left: 20px;
+  margin-right: 200px;
   border-top: 1px solid rgba(255, 255, 255, 0.25);
   font-family: "Droid Sans Mono", monospace;
   font-size: 11px;
