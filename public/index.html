@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="nirc">
+<html ng-app="nirc" ng-controller="RootCtrl">
   <head>
     <title>nirc</title>
     <script src='/socket.io/socket.io.js'></script>
@@ -11,7 +11,7 @@
     <script src='/javascripts/nirc.templates.js'></script>
     <link href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css' rel='stylesheet'>
     <link href='/stylesheets/style.css' media='screen' rel='stylesheet' type='text/css'/>
-    <link href='/stylesheets/themes/classic/theme.css' media='screen' rel='stylesheet' type='text/css'/>
+    <link ng-href='/stylesheets/themes/{{theme}}/theme.css' media='screen' rel='stylesheet' type='text/css'/>
   </head>
   <body ng-controller="MainCtrl">
     <!-- config overlay -->
@@ -35,6 +35,9 @@
           <i class="fa fa-fw" ng-class="iconFor(channel)"></i>
           {{channel.name}}
         </a>
+      </li>
+      <li class="theme-selector">
+        <select ng-model="theme" ng-options="t for t in themes" ng-change="setTheme(theme)"></select>
       </li>
     </ul>
 

@@ -126,6 +126,11 @@ body {
       text-align: left;
     }
 
+    &.theme-selector {
+      padding: 8px;
+      float: right;
+    }
+
     &:after {
       content: "";
       display: table;
@@ -135,7 +140,6 @@ body {
     a {
       display: block;
       padding: 12px;
-      text-align: center;
       min-width: 80px;
 
     }

@@ -1,4 +1,11 @@
 angular.module('nirc', ['ngSanitize'])
+  .controller('RootCtrl', function($scope) {
+    $scope.themes = ['classic', 'night'];
+    $scope.theme  = $scope.themes[0];
+    $scope.setTheme = function(t) {
+      $scope.theme = t;
+    };
+  })
 
   .controller('MainCtrl', function($scope, Client, Mousetrap) {
     $scope.client = Client;
