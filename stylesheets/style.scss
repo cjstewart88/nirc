@@ -94,6 +94,7 @@ body {
 }
 
 .content {
+  list-style: none;
   width: 100%;
   padding: 20px;
   padding-right: 400px;
@@ -102,16 +103,6 @@ body {
   overflow: auto;
   margin: 0;
   font-family: monospace;
-}
-
-.users {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  top: 40px;
-  width: 400px;
-  border-left: 1px solid #eee;
-  overflow: auto;
 
   li {
     display: block;
@@ -129,6 +120,18 @@ body {
 
     }
   }
+}
+
+.users {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  top: 40px;
+  width: 400px;
+  border-left: 1px solid #eee;
+  overflow: auto;
+  list-style: none;
+
 }
 
 .tabbar {
