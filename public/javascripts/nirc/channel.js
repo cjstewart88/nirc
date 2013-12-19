@@ -14,8 +14,8 @@ angular.module('nirc')
 
     Channel.MAX_HISTORY = 500;
 
-    Channel.prototype.addLine = function(line) {
-      this.history.push(line);
+    Channel.prototype.addEvent = function(event) {
+      this.history.push(event);
 
       while (this.history.length > Channel.MAX_HISTORY) {
         this.history.shift();

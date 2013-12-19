@@ -77,6 +77,9 @@ html, body, .wrapper, .content {
 .content {
   width: 100%;
   padding-right: 400px;
+  background: #999;
+  color: #333;
+  overflow: auto;
 }
 
 .users {
@@ -86,11 +89,13 @@ html, body, .wrapper, .content {
   top: 40px;
   width: 400px;
   border-left: 1px solid #eee;
+  overflow: auto;
 }
 
 .lines {
   margin: 0;
   padding: 20px;
+  font-family: monospace;
 }
 
 .lines li {

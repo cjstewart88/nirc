@@ -59,13 +59,14 @@
           <div>
             <input type="submit" value="Connect">
           </div>
-
-
         </form>
       </div>
     </div>
 
     <ul class="tabbar" ng-controller="TabCtrl">
+      <li ng-class="{active: client.statusChannel == client.activeChannel}">
+        <a href ng-click="client.setActive(client.statusChannel)">status</a>
+      </li>
       <li ng-repeat="channel in client.channels" ng-class="{active: channel == client.activeChannel}">
         <a href ng-click="client.setActive(channel)">{{channel.name}}</a>
       </li>
@@ -74,7 +75,7 @@
       <div class="content">
         <ul class="lines">
           <li ng-repeat="event in client.activeChannel.history">
-            {{event.user.nick}}: {{event.text}}
+            {{event.from.nick}}: {{event.text}}
           </li>
         </ul>
       </div>

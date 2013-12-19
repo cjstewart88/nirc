@@ -5,8 +5,4 @@ angular.module('nirc', [])
 
   .controller('TabCtrl', function($scope) {
 
-    $scope.isActive = function(ch) {
-      return $scope.activeChannel === ch;
-    };
-
   });

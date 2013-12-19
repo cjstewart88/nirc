@@ -1,5 +1,5 @@
 angular.module('nirc')
-  .factory('Client', function($rootScope, Channel, User) {
+  .factory('Client', function($rootScope, Channel, User, ChatEvent) {
     var socket = io.connect(null);
 
     var Client = {
@@ -15,6 +15,7 @@ angular.module('nirc')
 
       connected: false,
       channels: [],
+      statusChannel: new Channel('status'),
       activeChannel: null,
       me: new User(''),
 
@@ -32,12 +33,35 @@ angular.module('nirc')
 
       disconnect: function() {
         this.connected = false;
+      },
+
+      setActive: function(channel) {
+        this.activeChannel = channel;
+      },
+
+      channel: function(name) {
+        if (name == 'status') {
+          return this.statusChannel;
+        }
+
+        return _.find(this.channels, function(ch) {
+          return ch.name == name;
+        });
       }
 
     };
 
+    Client.activeChannel = Client.statusChannel;
+
     socket.on('message', function(d) {
-      console.log(d);
+      var event = new ChatEvent(d.from, d.receiver, d.message);
+      var ch;
+      if ((ch = Client.channel(event.to))) {
+        ch.addEvent(event);
+        console.log(event, 'to', ch);
+      } else {
+        console.log("couldn't find", event.to);
+      }
       $rootScope.$apply();
     });
 
