@@ -55,6 +55,7 @@ angular.module('nirc')
       /* set the active channel to the provided channel object. */
       setActive: function(channel) {
         this.activeChannel = channel;
+        this.activeChannel.activity = false;
       },
 
       /* find a channel, given a name. returns undefined if not found. */
