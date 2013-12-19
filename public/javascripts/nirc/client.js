@@ -50,6 +50,8 @@ angular.module('nirc')
 
       disconnect: function() {
         this.connected = false;
+        this.channels = [];
+        this.activeChannel = this.statusChannel;
       },
 
       /* set the active channel to the provided channel object. */
@@ -74,12 +76,11 @@ angular.module('nirc')
     socket.on('message', function(d) {
       var ch, event = new ChatEvent(new User(d.from || ''), new User(d.receiver), d.message);
 
-      if ((ch = Client.channel(event.to.nick))) {
-        ch.addEvent(event);
-      } else {
-        console.log("couldn't find", event.to.nick);
-        /* perhaps here we spawn a new channel ? */
+      if (!(ch = Client.channel(event.to.nick))) {
+        ch = new Channel(event.to.nick);
+        Client.channels.push(ch);
       }
+      ch.addEvent(event);
 
       $rootScope.$apply();
     });
@@ -110,10 +111,7 @@ angular.module('nirc')
     socket.on('channel_add_nicks', function(d) {
       var ch;
       if ((ch = Client.channel(d.channel))) {
-        _.each(d.nicks, function(u) {
-          console.log(u);
-          ch.addUser(new User(u));
-        });
+        _.each(d.nicks, function(u) { ch.addUser(new User(u)); });
       }
       $rootScope.$apply();
     });
