@@ -1,3 +1,7 @@
+$userWidth: 200px;
+$tabbarHeight: 40px;
+$inputHeight:  40px;
+
 html, body, .wrapper, .content {
   height: 100%;
 }
@@ -60,20 +64,17 @@ body {
       width: auto;
     }
 
-
     input[type=submit] {
       display: block;
       text-align: center;
       width: 100%;
     }
   }
-
 }
 
-
 .wrapper {
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding-top: $tabbarHeight;
+  padding-bottom: $inputHeight;
 }
 
 .input-wrapper {
@@ -81,7 +82,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 40px;
+  height: $inputHeight;
   border-top: 1px solid #eee;
   background: #333;
 
@@ -97,7 +98,7 @@ body {
   list-style: none;
   width: 100%;
   padding: 20px;
-  padding-right: 400px;
+  padding-right: $userWidth + 20px;
   background: #999;
   color: #333;
   overflow: auto;
@@ -126,17 +127,17 @@ body {
   position: absolute;
   right: 0;
   bottom: 0;
-  top: 40px;
-  width: 400px;
+  top: $tabbarHeight;
+  width: $userWidth;
   border-left: 1px solid #eee;
   overflow: auto;
   list-style: none;
-
 }
 
 .tabbar {
   list-style: none;
-  margin: 0; padding: 0;
+  margin: 0;
+  padding: 0;
   background: #333;
   border-bottom: 1px solid #666;
   position: absolute;
