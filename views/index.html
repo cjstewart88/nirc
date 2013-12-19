@@ -8,6 +8,7 @@
     <script src='/javascripts/vendor/lodash.min.js'></script>
     <script src='/javascripts/nirc.js'></script>
     <script src='/javascripts/nirc/directives/on-enter.js'></script>
+    <script src='/javascripts/nirc/directives/scroll-glue.js'></script>
     <script src='/javascripts/nirc/user.js'></script>
     <script src='/javascripts/nirc/channel.js'></script>
     <script src='/javascripts/nirc/chat_event.js'></script>
@@ -43,7 +44,7 @@
 
     <div class="wrapper">
       <!-- main content pane -->
-      <ul class="content">
+      <ul class="content" scroll-glue>
         <li ng-repeat="event in client.activeChannel.history">
           <span class="timestamp">
             {{event.timestamp | date:'HH:mm:ss'}}
