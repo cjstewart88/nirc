@@ -25,7 +25,7 @@ angular.module('nirc')
       /* -- public interface below -- */
 
       say: function(text) {
-        this.socket.emit('command', text);
+        socket.emit('command', text);
       },
 
       connect: function() {
