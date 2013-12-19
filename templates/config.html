@@ -1,0 +1,44 @@
+<div class="floater">
+  <div class="titlebar">Configuration</div>
+  <form ng-submit="client.connect()">
+    <div>
+      <label>Server:</label>
+      <input type="text" ng-model="client.options.server">
+    </div>
+
+    <div>
+      <label>Port:</label>
+      <input type="number" ng-model="client.options.port">
+    </div>
+
+    <div>
+      <label>Nick:</label>
+      <input type="text" ng-model="client.options.nickname">
+    </div>
+
+    <div>
+      <label>Real Name:</label>
+      <input type="text" ng-model="client.options.userName">
+    </div>
+
+    <div>
+      <label>Channels:</label>
+      <input type="text" ng-model="client.options.channels" ng-list>
+    </div>
+
+    <div>
+      <label>Server Password:</label>
+      <input type="text" ng-model="client.options.password">
+    </div>
+
+    <div>
+      <label class="checkbox">
+        <input type="checkbox" ng-model="client.options.ssl"> SSL
+      </label>
+    </div>
+
+    <div>
+      <input type="submit" value="Connect">
+    </div>
+  </form>
+</div>

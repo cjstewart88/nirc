@@ -5,5 +5,11 @@
     "express": "3.4.3",
     "ejs": "0.8.4",
     "socket.io": "0.9.16"
+  },
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-angular-templates": "*",
+    "grunt-contrib-sass": "*",
+    "grunt-contrib-watch": "*"
   }
 }
