@@ -8,7 +8,7 @@
     <script src='/javascripts/vendor/angular-sanitize.min.js'></script>
     <script src='/javascripts/vendor/lodash.min.js'></script>
     <script src='/javascripts/nirc.js'></script>
-    <script src='/javascripts/nirc/directives/on-enter.js'></script>
+    <script src='/javascripts/nirc/directives/read-line.js'></script>
     <script src='/javascripts/nirc/directives/scroll-glue.js'></script>
     <script src='/javascripts/nirc/user.js'></script>
     <script src='/javascripts/nirc/channel.js'></script>
@@ -66,7 +66,7 @@
     </div>
 
     <div class="input-wrapper">
-      <input type="text" class="user-input" on-enter="client.say(text)">
+      <input type="text" class="user-input" read-line="client.say(text)">
     </div>
   </body>
 </html>
