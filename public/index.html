@@ -55,9 +55,9 @@
         </li>
       </ul>
       <!-- user list -->
-      <ul class="users">
+      <ul class="users" ng-controller="UserCtrl">
         <li ng-repeat="user in client.activeChannel.users">
-          {{user.nick}}
+          <a ng-click="messageTo(user)" href>{{user.nick}}</a>
         </li>
       </ul>
     </div>

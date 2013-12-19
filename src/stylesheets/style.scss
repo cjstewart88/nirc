@@ -102,10 +102,17 @@ body {
   right: 0;
   bottom: 0;
   margin: 0;
+  padding: 0;
   top: $tabbarHeight;
   width: $userWidth;
   overflow: auto;
   list-style: none;
+  li {
+    a {
+      display: block;
+      padding: 8px;
+    }
+  }
 }
 
 .tabbar {

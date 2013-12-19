@@ -69,4 +69,18 @@ angular.module('nirc', ['ngSanitize'])
       return $scope.client.setActive(ch);
     };
 
+  })
+
+  .controller('UserCtrl', function($scope, Channel) {
+    $scope.messageTo = function(user) {
+      var ch;
+
+      if ((ch = $scope.client.channel(user.nick))) {
+        $scope.client.activeChannel = ch;
+      } else {
+        ch = new Channel(user.nick);
+        $scope.client.channels.push(ch);
+        $scope.client.activeChannel = ch;
+      }
+    };
   });

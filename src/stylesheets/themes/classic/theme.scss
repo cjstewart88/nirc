@@ -76,6 +76,16 @@ body {
 
 .users {
   border-left: 1px solid #ccc;
+  li {
+    a {
+      color: #fff;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
 }
 
 .user-input {
