@@ -76,7 +76,9 @@ angular.module('nirc')
     socket.on('message', function(d) {
       var ch, event = new ChatEvent(new User(d.from || ''), new User(d.receiver), d.message);
 
-      if (!(ch = Client.channel(event.to.nick))) {
+      if (event.to.nick == Client.me.nick) {
+        ch = Client.statusChannel;
+      } else if (!(ch = Client.channel(event.to.nick))) {
         ch = new Channel(event.to.nick);
         Client.channels.push(ch);
       }
