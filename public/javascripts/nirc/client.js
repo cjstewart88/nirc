@@ -3,21 +3,26 @@ angular.module('nirc')
     var socket = io.connect(null);
 
     var Client = {
+      /* these are the connection params we'lluse when connect() is called. */
       options: {
         server:   'irc.freenode.org',
-        port:      6667,
+        port:     6667,
         nickname: 'nircUser',
         userName: 'Nirc User',
         channels: [],
-        ssl: false,
+        ssl:      false,
         password: null
       },
 
-      connected: false,
-      channels: [],
-      statusChannel: new Channel('status'),
-      activeChannel: null,
-      me: new User(''),
+      connected: false, /* are we currently connected? */
+      channels: [],     /* list of channels we're in. */
+      statusChannel: new Channel('status'), /* psuedo-channel for displaying
+                                             * content that doesn't belong in a
+                                             * regular channel */
+      activeChannel: null, /* the currently selected channel */
+      me: new User(''),    /* our user information. */
+
+      /* -- public interface below -- */
 
       say: function(text) {
         this.socket.emit('command', text);
@@ -35,10 +40,12 @@ angular.module('nirc')
         this.connected = false;
       },
 
+      /* set the active channel to the provided channel object. */
       setActive: function(channel) {
         this.activeChannel = channel;
       },
 
+      /* find a channel, given a name. returns undefined if not found. */
       channel: function(name) {
         if (name == 'status') {
           return this.statusChannel;
@@ -48,20 +55,23 @@ angular.module('nirc')
           return ch.name == name;
         });
       }
-
     };
 
+    /* initially our active channel is the status pane. */
     Client.activeChannel = Client.statusChannel;
 
+
+    /* handle private events from the socket.io connector */
     socket.on('message', function(d) {
-      var event = new ChatEvent(d.from, d.receiver, d.message);
-      var ch;
+      var ch, event = new ChatEvent(d.from, d.receiver, d.message);
+
       if ((ch = Client.channel(event.to))) {
         ch.addEvent(event);
-        console.log(event, 'to', ch);
       } else {
         console.log("couldn't find", event.to);
+        /* perhaps here we spawn a new channel ? */
       }
+
       $rootScope.$apply();
     });
 
@@ -71,9 +81,10 @@ angular.module('nirc')
     });
 
     socket.on('successfullyPartedChannel', function (d) {
-      _.reject(this.channels, function(ch) {
+      Client.channels = _.reject(Client.channels, function(ch) {
         return ch.name == d.channel;
       });
+
       $rootScope.$apply();
     });
 

@@ -64,6 +64,9 @@
     </div>
 
     <ul class="tabbar" ng-controller="TabCtrl">
+      <li class="logo">
+        nIRC
+      </li>
       <li ng-class="{active: client.statusChannel == client.activeChannel}">
         <a href ng-click="client.setActive(client.statusChannel)">status</a>
       </li>

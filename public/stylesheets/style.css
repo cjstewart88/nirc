@@ -119,6 +119,14 @@ html, body, .wrapper, .content {
   float: left;
 }
 
+.tabbar li.logo {
+  display: block;
+  padding: 12px;
+  color: #555;
+  font-weight: bold;
+  text-align: left;
+}
+
 .tabbar li a {
   display: block;
   padding: 12px;
