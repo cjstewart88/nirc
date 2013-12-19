@@ -48,6 +48,7 @@ body {
     }
 
     a {
+      color: #ccc;
       text-decoration: none;
     }
   }
@@ -64,6 +65,13 @@ body {
     color: #FBDE2D;
   }
 
+  .message {
+    a {
+      text-decoration: underline;
+      color: #fff;
+    }
+  }
+
 }
 
 .users {
@@ -73,4 +81,5 @@ body {
 .user-input {
   font-family: Monaco, monospace;
   font-size: 11px;
+  padding-left: 20px;
 }
