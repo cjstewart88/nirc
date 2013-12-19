@@ -20,6 +20,12 @@ Node.js and NPM are required and should be setup before attempting to setup nirc
       $ npm install
 ```
 
+- Build the application:
+
+```
+      $ grunt build
+```
+
 - Start the service:
 
 ```
