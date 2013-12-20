@@ -3,12 +3,12 @@ angular.module('nirc')
     var socket = new Socket(null);
 
     var Client = {
-      /* these are the connection params we'lluse when connect() is called. */
+      /* these are the connection params we'll use when connect() is called. */
       options: {
         server:   'irc.freenode.org',
         port:     6667,
-        nickname: 'nircUser',
-        userName: 'Nirc User',
+        nick:     'nircUser',
+        username: 'Nirc User',
         channels: [],
         ssl:      false,
         password: null
@@ -34,17 +34,14 @@ angular.module('nirc')
         if (text.charAt(0) != '/') {
           /* add our own text to the channel. */
           ch.addEvent(new ChatEvent(this.me, new User(ch.name), text));
-          text = '/msg ' + ch.name + ' ' + text;
+          text = ['/msg', ch.name, text].join(' ');
         }
 
         socket.emit('command', text);
       },
 
       connect: function() {
-        opts = angular.copy(this.options);
-        opts.channels = this.options.channels.join(', ');
-
-        socket.emit('connectToIRC', { options: opts });
+        socket.emit('connect', { options: this.options });
         this.connected = true;
       },
 
@@ -123,54 +120,30 @@ angular.module('nirc')
     /* initially our active channel is the status pane. */
     Client.activeChannel = Client.statusChannel;
 
-    /* handle private events from the socket.io connector */
-    socket.on('message', function(d) {
-      var ch,
-          event = new ChatEvent(
-            new User(d.from || ''),
-            new User(d.receiver),
-            d.message
-          );
+    /* event handlers */
+    var handlers = {
 
-      if (event.to.nick == Client.me.nick) {
-        ch = Client.statusChannel;
-      } else if (!(ch = Client.channel(event.to.nick))) {
-        ch = new Channel(event.to.nick);
-        Client.channels.push(ch);
+    };
+
+    var onUnknown = function(msg) {
+      Client.statusChannel.addEvent(
+        new ChatEvent(
+          msg.from,
+          null,
+          msg.args.join(' '),
+          { type: msg.command }
+        )
+      );
+    };
+
+    socket.on('message', function(msg) {
+      var cmd = msg.command.toLowerCase(),
+          handler;
+
+      if (!(handler = handlers[cmd])) {
+        handler = onUnknown;
       }
-      ch.addEvent(event);
-    });
-
-    socket.on('successfullyJoinedChannel', function(d) {
-      Client.channels.push(new Channel(d.channel));
-    });
-
-    socket.on('successfullyPartedChannel', function(d) {
-      Client.removeChannel(d.channel);
-    });
-
-    socket.on('realNick', function(d) {
-      Client.me = new User(d.nick);
-    });
-
-    socket.on('change_nick', function(d) {
-      Client.me.rename(d.newnick);
-    });
-
-    socket.on('channel_add_nicks', function(d) {
-      var ch;
-      if ((ch = Client.channel(d.channel))) {
-        _.each(d.nicks, function(u) { ch.addUser(new User(u)); });
-      }
-    });
-
-    socket.on('channel_remove_nick', function(d) {
-      var ch;
-      if ((ch = Client.channel(d.channel))) {
-        ch.users = _.reject(ch.users, function(u) {
-          return u.nick == d.nick;
-        });
-      }
+      $rootScope.$apply(function() { handler(msg); });
     });
 
     return Client;
