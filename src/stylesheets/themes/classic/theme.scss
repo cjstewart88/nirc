@@ -20,15 +20,25 @@ body {
     border-bottom: 1px solid #ccc;
   }
 
+  input {
+    font-family: Monaco, monospace;
+    font-size: 11px;
+    padding: 4px;
+  }
+
+  label {
+    padding: 4px 0px;
+  }
+
   input[type=submit] {
-    border: 1px solid #0F262C;
-    background: #1F363C;
+    border: none;
+    background: #000;
     color: #fff;
     padding: 8px;
     cursor: pointer;
     &:hover {
-      border-color: #DBBE0D;
       background: #FBDE2D;
+      color: #000;
     }
   }
 }
