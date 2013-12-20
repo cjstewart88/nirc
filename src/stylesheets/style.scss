@@ -136,6 +136,7 @@ body {
     &.theme-selector {
       padding: 8px;
       float: right;
+      select { margin: 0; padding: 0; }
     }
 
     &:after {
