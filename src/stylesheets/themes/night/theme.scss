@@ -8,28 +8,48 @@ body {
 }
 
 .overlay {
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0.50);
+  box-shadow: 0px 0px 800px #000 inset;
 }
 
 .config {
-  border: 1px solid #555;
+  border: 1px solid #000008;
   background: #303038;
   box-shadow: 0px 0px 12px #000000;
 
   .titlebar {
+    background: #101018;
+    border-bottom: 1px solid #000008;
+  }
+
+  label {
+    padding: 4px 0px;
+
+    &.checbox {
+      padding: 8px 0px;
+    }
+  }
+
+  input {
+    font-family: "Droid Sans Mono", monospace;
+    font-size: 11px;
+    color: #666;
     background: #202028;
-    border-bottom: 1px solid #555;
+    border: 1px solid #101018;
+    padding: 8px;
   }
 
   input[type=submit] {
-    border: 1px solid #101018;
-    background: #202028;
+    border: 1px solid #000008;
+    background: #101018;
     color: #fff;
     padding: 8px;
     cursor: pointer;
+    transition: all 0.25s ease-in-out;
+
     &:hover {
-      border-color: #606068;
-      background: #505058;
+      border-color: #101018;
+      background: #202028;
     }
   }
 }
