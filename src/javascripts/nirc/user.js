@@ -23,5 +23,9 @@ angular.module('nirc')
       }
     };
 
+    User.prototype.toString = function() {
+      return this.nick;
+    };
+
     return User;
   });

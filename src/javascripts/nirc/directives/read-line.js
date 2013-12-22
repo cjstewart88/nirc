@@ -4,11 +4,13 @@ angular.module('nirc')
     return {
       restrict: 'A',
       scope: {
-        readLine: '&'
+        readLine: '&',
+        completeFrom: '=?'
       },
       link: function (scope, element, attrs) {
         var history = [];
         var index   = history.length;
+        var complete;
 
         function addHistory(text) {
           history.push(text);
@@ -27,8 +29,29 @@ angular.module('nirc')
           return history[index] || '';
         }
 
+        function suggestComplete(content) {
+          if (!scope.completeFrom || !content || !content.length) {
+            return null;
+          }
+
+          var guess = _.find(scope.completeFrom, function(item) {
+            return item.toString().indexOf(content) === 0;
+          });
+
+          return guess ? guess.toString() : null;
+        }
+
         element.bind("keydown keypress", function (event) {
           switch(event.which) {
+          case 9:
+            /* tab */
+            var orig = element.val();
+            if ((complete = suggestComplete(orig))) {
+              element.val(complete);
+              element[0].setSelectionRange(orig.length, complete.length);
+            }
+            event.preventDefault();
+            break;
           case 13:
             /* enter */
             scope.$apply(function() {
