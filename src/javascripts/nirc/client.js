@@ -102,6 +102,11 @@ angular.module('nirc')
         return ch.name == d.channel;
       });
 
+      /* if we left the active channel, choose a new active channel. */
+      if (d.channel == Client.activeChannel.name) {
+        Client.activeChannel = Client.channels[0] || Client.statusChannel;
+      }
+
       $rootScope.$apply();
     });
 
