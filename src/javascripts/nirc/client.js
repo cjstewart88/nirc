@@ -1,6 +1,6 @@
 angular.module('nirc')
-  .factory('Client', function($rootScope, Channel, User, ChatEvent) {
-    var socket = io.connect(null);
+  .factory('Client', function($rootScope, Channel, User, ChatEvent, Socket) {
+    var socket = new Socket(null);
 
     var Client = {
       /* these are the connection params we'lluse when connect() is called. */
@@ -56,8 +56,43 @@ angular.module('nirc')
 
       /* set the active channel to the provided channel object. */
       setActive: function(channel) {
+        this.activeChannel.activity = false;
         this.activeChannel = channel;
         this.activeChannel.activity = false;
+      },
+
+      /* move back one channel */
+      previousChannel: function() {
+        if (!this.channels.length) { return; }
+        var index = _.indexOf(this.channels, this.activeChannel);
+        switch(index) {
+        case -1:
+          this.setActive(_.last(this.channels));
+          break;
+        case 0:
+          this.setActive(this.statusChannel);
+          break;
+        default:
+          this.setActive(this.channels[index - 1]);
+          break;
+        }
+      },
+
+      /* move forward one channel */
+      nextChannel: function() {
+        if (!this.channels.length) { return; }
+        var index = _.indexOf(this.channels, this.activeChannel);
+        switch(index) {
+        case -1:
+          this.setActive(this.channels[0]);
+          break;
+        case this.channels.length:
+          this.setActive(this.statusChannel);
+          break;
+        default:
+          this.setActive(this.channels[index + 1]);
+          break;
+        }
       },
 
       /* leave a channel */
@@ -79,7 +114,12 @@ angular.module('nirc')
 
     /* handle private events from the socket.io connector */
     socket.on('message', function(d) {
-      var ch, event = new ChatEvent(new User(d.from || ''), new User(d.receiver), d.message);
+      var ch,
+          event = new ChatEvent(
+            new User(d.from || ''),
+            new User(d.receiver),
+            d.message
+          );
 
       if (event.to.nick == Client.me.nick) {
         ch = Client.statusChannel;
@@ -88,13 +128,10 @@ angular.module('nirc')
         Client.channels.push(ch);
       }
       ch.addEvent(event);
-
-      $rootScope.$apply();
     });
 
     socket.on('successfullyJoinedChannel', function(d) {
       Client.channels.push(new Channel(d.channel));
-      $rootScope.$apply();
     });
 
     socket.on('successfullyPartedChannel', function (d) {
@@ -106,18 +143,14 @@ angular.module('nirc')
       if (d.channel == Client.activeChannel.name) {
         Client.activeChannel = Client.channels[0] || Client.statusChannel;
       }
-
-      $rootScope.$apply();
     });
 
     socket.on('realNick', function(d) {
       Client.me = new User(d.nick);
-      $rootScope.$apply();
     });
 
     socket.on('change_nick', function(d) {
       Client.me.rename(d.newnick);
-      $rootScope.$apply();
     });
 
     socket.on('channel_add_nicks', function(d) {
@@ -125,7 +158,6 @@ angular.module('nirc')
       if ((ch = Client.channel(d.channel))) {
         _.each(d.nicks, function(u) { ch.addUser(new User(u)); });
       }
-      $rootScope.$apply();
     });
 
     socket.on('channel_remove_nick', function(d) {
@@ -135,7 +167,6 @@ angular.module('nirc')
           return u.nick == d.nick;
         });
       }
-      $rootScope.$apply();
     });
 
     return Client;
