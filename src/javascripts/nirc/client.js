@@ -60,6 +60,11 @@ angular.module('nirc')
         this.activeChannel.activity = false;
       },
 
+      /* leave a channel */
+      part: function(channel) {
+        this.say("/part " + channel.name);
+      },
+
       /* find a channel, given a name. returns undefined if not found. */
       channel: function(name) {
         if (name == 'status') {

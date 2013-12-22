@@ -124,8 +124,9 @@ body {
   right: 0;
 
   li {
-    display: block;
-    float: left;
+    display:  block;
+    float:    left;
+    position: relative;
 
     &.logo {
       display: block;
@@ -145,12 +146,20 @@ body {
       clear: both;
     }
 
-    a {
+    a.channel {
       display: block;
       padding: 12px;
       min-width: 80px;
-
     }
 
- }
+    a.close {
+      position: absolute;
+      right: 0;
+      top: 0;
+      background: transparent;
+      padding: 2px;
+      z-index: 1;
+    }
+
+  }
 }

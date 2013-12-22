@@ -51,15 +51,19 @@ body {
     border-right: 1px solid #ccc;
 
     &.active {
-      a {
+      a.channel {
         background: #333;
         color: #fff;
       }
     }
 
-    a {
+    a.channel {
       color: #ccc;
       text-decoration: none;
+    }
+
+    a.close {
+      color: rgba(0, 0, 0, 0.25);
     }
   }
 

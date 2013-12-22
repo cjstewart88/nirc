@@ -61,7 +61,7 @@ body {
   border-bottom: 1px solid rgba(255, 255, 255, 0.25);
   li {
     &.active {
-      a {
+      a.channel {
         background: #303038;
         color: #fff;
         &:hover {
@@ -72,12 +72,20 @@ body {
       border-left: 1px solid  rgba(255, 255, 255, 0.25);
     }
 
-    a {
+    a.channel {
       color: #4682b4;
       text-decoration: none;
       transition: background 0.25s ease-in-out;
       &:hover {
         background: #404048;
+      }
+    }
+
+    a.close {
+      color: #606068;
+      transition: color 0.25s ease-in-out;
+      &:hover {
+        color: #ccc;
       }
     }
   }
