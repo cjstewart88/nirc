@@ -29,6 +29,16 @@ body {
   width: 324px;
   margin: 32px auto;
 
+  @media (max-width: 480px) {
+    width: 100%;
+    margin: 0px;
+  }
+
+  @media (max-width: 720px) {
+    width: auto;
+    margin: 32px;
+  }
+
   .titlebar {
     padding: 8px;
   }
@@ -91,6 +101,12 @@ body {
   overflow: auto;
   margin: 0;
 
+  @media (max-width: 480px) {
+    padding: 4px;
+    padding-top: $tabbarHeight;
+    overflow-wrap: break-word;
+  }
+
   li {
     display: block;
     width: 100%;
@@ -103,6 +119,11 @@ body {
   bottom: 0;
   margin: 0;
   padding: 0;
+
+  @media(max-width: 480px) {
+    display: none;
+  }
+
   top: $tabbarHeight;
   width: $userWidth;
   overflow: auto;
@@ -122,22 +143,40 @@ body {
   position: absolute;
   left: 0;
   right: 0;
+  background: inherit;
 
   li {
     display:  block;
     float:    left;
     position: relative;
+    background: inherit;
+
+    @media (max-width: 480px) {
+      float: none;
+    }
 
     &.logo {
       display: block;
       padding: 12px;
       text-align: left;
+
+      .dropdown-toggle {
+        display: none;
+        @media (max-width: 480px) {
+          display: block;
+          float: right;
+        }
+      }
     }
 
     &.theme-selector {
       padding: 8px;
       float: right;
       select { margin: 0; padding: 0; }
+
+      @media (max-width: 480px) {
+        float: none;
+      }
     }
 
     &:after {
@@ -159,6 +198,10 @@ body {
       background: transparent;
       padding: 2px;
       z-index: 1;
+
+      @media (max-width: 480px) {
+        padding: 12px;
+      }
     }
 
   }

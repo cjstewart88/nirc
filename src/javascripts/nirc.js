@@ -26,6 +26,7 @@ angular.module('nirc', ['ngSanitize'])
   })
 
   .controller('TabCtrl', function($scope) {
+    $scope.expanded = true;
 
     $scope.iconFor = function(ch) {
       return ch.activity && !$scope.isActive(ch) ? 'fa-comment' : 'fa-comment-o';
@@ -37,6 +38,10 @@ angular.module('nirc', ['ngSanitize'])
 
     $scope.setActive = function(ch) {
       return $scope.client.setActive(ch);
+    };
+
+    $scope.toggleExpand = function() {
+      $scope.expanded = !$scope.expanded;
     };
 
   })
