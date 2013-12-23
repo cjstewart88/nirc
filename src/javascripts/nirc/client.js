@@ -86,7 +86,7 @@ angular.module('nirc')
         case -1:
           this.setActive(this.channels[0]);
           break;
-        case this.channels.length:
+        case this.channels.length-1:
           this.setActive(this.statusChannel);
           break;
         default:
@@ -98,6 +98,17 @@ angular.module('nirc')
       /* leave a channel */
       part: function(channel) {
         this.say("/part " + channel.name);
+      },
+
+      /* remove channel from Client.channels */
+      removeChannel: function(channelName) {
+        if (channelName == this.activeChannel.name) {
+          this.previousChannel();
+        }
+
+        this.channels = _.reject(this.channels, function(ch) {
+          return ch.name == channelName;
+        });
       },
 
       /* find a channel, given a name. returns undefined if not found. */
@@ -134,15 +145,8 @@ angular.module('nirc')
       Client.channels.push(new Channel(d.channel));
     });
 
-    socket.on('successfullyPartedChannel', function (d) {
-      Client.channels = _.reject(Client.channels, function(ch) {
-        return ch.name == d.channel;
-      });
-
-      /* if we left the active channel, choose a new active channel. */
-      if (d.channel == Client.activeChannel.name) {
-        Client.activeChannel = Client.channels[0] || Client.statusChannel;
-      }
+    socket.on('successfullyPartedChannel', function(d) {
+      Client.removeChannel(d.channel);
     });
 
     socket.on('realNick', function(d) {

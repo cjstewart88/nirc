@@ -15,12 +15,12 @@ angular.module('nirc', ['ngSanitize'])
      * channels[] array to remove some pain here */
     Mousetrap.bind('command+left', function(e) {
       e.preventDefault();
-      Client.nextChannel();
+      Client.previousChannel();
     });
 
     Mousetrap.bind('command+right', function(e) {
       e.preventDefault();
-      Client.previousChannel();
+      Client.nextChannel();
     });
 
   })
@@ -42,6 +42,15 @@ angular.module('nirc', ['ngSanitize'])
 
     $scope.toggleExpand = function() {
       $scope.expanded = !$scope.expanded;
+    };
+
+    $scope.closeTab = function(ch) {
+      if (ch.name.charAt(0) == '#') {
+        $scope.client.part(ch);
+      }
+      else {
+        $scope.client.removeChannel(ch.name);
+      }
     };
 
   })

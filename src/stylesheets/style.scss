@@ -1,6 +1,6 @@
 $userWidth:    200px;
 $tabbarHeight: 40px;
-$inputHeight:  40px;
+$inputHeight:  30px;
 
 html, body, .wrapper, .content {
   height: 100%;
@@ -15,6 +15,8 @@ body {
   margin: 0;
   padding: 0;
 }
+
+textarea, input { outline: none; }
 
 .overlay {
   position: absolute;
@@ -89,6 +91,7 @@ body {
   right: 0;
   bottom: 0;
   margin: 0;
+  padding: 0 5px;
   height: $inputHeight;
   display: block;
 }
@@ -96,8 +99,8 @@ body {
 .content {
   list-style: none;
   width: 100%;
-  padding: 20px;
-  padding-right: $userWidth + 20px;
+  padding: 5px;
+  padding-right: $userWidth + 5px;
   overflow: auto;
   margin: 0;
 
@@ -116,9 +119,10 @@ body {
 .users {
   position: absolute;
   right: 0;
-  bottom: 0;
+  bottom: $inputHeight;
   margin: 0;
   padding: 0;
+  padding-bottom: 20px;
 
   @media(max-width: 480px) {
     display: none;
@@ -172,6 +176,7 @@ body {
     &.theme-selector {
       padding: 8px;
       float: right;
+      border-right: none;
       select { margin: 0; padding: 0; }
 
       @media (max-width: 480px) {
@@ -186,23 +191,22 @@ body {
     }
 
     a.channel {
-      display: block;
+      display: inline-block;
       padding: 12px;
       min-width: 80px;
     }
 
-    a.close {
-      position: absolute;
-      right: 0;
-      top: 0;
-      background: transparent;
-      padding: 2px;
-      z-index: 1;
+    &.channel-tab {
+      a.channel {
+        margin-right: 25px;
+      }
 
-      @media (max-width: 480px) {
-        padding: 12px;
+      a.close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 12px 12px 12px 0;
       }
     }
-
   }
 }
