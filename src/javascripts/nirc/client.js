@@ -86,7 +86,7 @@ angular.module('nirc')
         case -1:
           this.setActive(this.channels[0]);
           break;
-        case this.channels.length:
+        case this.channels.length-1:
           this.setActive(this.statusChannel);
           break;
         default:

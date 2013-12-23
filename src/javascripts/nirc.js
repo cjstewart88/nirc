@@ -15,12 +15,12 @@ angular.module('nirc', ['ngSanitize'])
      * channels[] array to remove some pain here */
     Mousetrap.bind('command+left', function(e) {
       e.preventDefault();
-      Client.nextChannel();
+      Client.previousChannel();
     });
 
     Mousetrap.bind('command+right', function(e) {
       e.preventDefault();
-      Client.previousChannel();
+      Client.nextChannel();
     });
 
   })
