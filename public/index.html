@@ -36,7 +36,7 @@
         </a>
       </li>
       <li ng-repeat="channel in client.channels" ng-class="{active: isActive(channel)}"
-          ng-show="expanded || isActive(channel)">
+          class="channel-tab" ng-show="expanded || isActive(channel)">
         <a href ng-click="setActive(channel)" class="channel">
           <i class="fa fa-fw" ng-class="iconFor(channel)"></i>
           {{channel.name}}

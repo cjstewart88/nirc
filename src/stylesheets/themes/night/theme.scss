@@ -61,24 +61,22 @@ body {
   border-bottom: 1px solid rgba(255, 255, 255, 0.25);
   li {
     &.active {
+      background: #303038;
       a.channel {
-        background: #303038;
         color: #fff;
-        &:hover {
-          background: #303038;
-        }
       }
       border-right: 1px solid rgba(255, 255, 255, 0.25);
       border-left: 1px solid  rgba(255, 255, 255, 0.25);
+    }
+
+    &:hover {
+      background: #404048;
     }
 
     a.channel {
       color: #4682b4;
       text-decoration: none;
       transition: background 0.25s ease-in-out;
-      &:hover {
-        background: #404048;
-      }
     }
 
     a.close {
@@ -133,7 +131,6 @@ body {
 
 .user-input {
   border: none;
-  padding-left: 20px;
   margin-right: 200px;
   border-top: 1px solid rgba(255, 255, 255, 0.25);
   font-family: "Droid Sans Mono", monospace;
