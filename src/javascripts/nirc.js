@@ -44,6 +44,15 @@ angular.module('nirc', ['ngSanitize'])
       $scope.expanded = !$scope.expanded;
     };
 
+    $scope.closeTab = function(ch) {
+      if (ch.name.charAt(0) == '#') {
+        $scope.client.part(ch);
+      }
+      else {
+        $scope.client.removeChannel(ch.name);
+      }
+    };
+
   })
 
   .controller('UserCtrl', function($scope, Channel) {
