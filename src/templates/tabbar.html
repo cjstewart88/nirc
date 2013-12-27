@@ -1,0 +1,30 @@
+<ul class="tabbar" ng-controller="TabCtrl">
+  <li class="logo">
+    nIRC
+    <a class="dropdown-toggle" href ng-click="toggleExpand()">
+      <i class="fa fa-fw"
+         ng-class="{'fa-caret-down': expanded, 'fa-caret-right': !expanded}"></i>
+    </a>
+  </li>
+  <li ng-class="{active: isActive(client.statusChannel)}"
+      ng-show="expanded || isActive(client.statusChannel)">
+    <a href ng-click="setActive(client.statusChannel)" class="channel">
+      <i class="fa fa-fw" ng-class="iconFor(client.statusChannel)"></i>
+      status
+    </a>
+  </li>
+  <li ng-repeat="channel in client.channels" ng-class="{active: isActive(channel)}"
+      class="channel-tab" ng-show="expanded || isActive(channel)">
+    <a href ng-click="setActive(channel)" class="channel">
+      <i class="fa fa-fw" ng-class="iconFor(channel)"></i>
+      {{channel.name}}
+    </a>
+    <a href ng-click="closeTab(channel)" class="close">
+      <i class="fa fa-fw fa-times"></i>
+    </a>
+  </li>
+  <li class="theme-selector" ng-show="expanded">
+    <select ng-model="search.theme" ng-options="t for t in themes">
+    </select>
+  </li>
+</ul>
