@@ -27,6 +27,10 @@ body {
     background: #fff;
     color: #666;
     border-radius: 2px;
+    &.ng-invalid {
+      background: #ffdddd;
+      border: 1px solid #ffcccc;
+    }
   }
 
   label {
@@ -43,6 +47,11 @@ body {
     &:hover {
       color: #777;
       background: #ffff77;
+    }
+
+    &:disabled {
+      color: #ddd;
+      background: #bbb;
     }
   }
 }

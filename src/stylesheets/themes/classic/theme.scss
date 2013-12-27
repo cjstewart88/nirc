@@ -24,6 +24,11 @@ body {
     font-family: Monaco, monospace;
     font-size: 11px;
     padding: 4px;
+
+    &.ng-invalid {
+      background-color: #ffcccc;
+      border-color: rgba(225, 0, 0, 0.65);
+    }
   }
 
   label {
@@ -39,6 +44,11 @@ body {
     &:hover {
       background: #FBDE2D;
       color: #000;
+    }
+
+    &:disabled {
+      background: rgba(0, 0, 0, 0.50);
+      color: #ccc;
     }
   }
 }

@@ -37,6 +37,11 @@ body {
     background: #202028;
     border: 1px solid #101018;
     padding: 8px;
+
+    &.ng-invalid {
+      background: rgba(255, 0, 0, 0.15);
+    }
+
   }
 
   input[type=submit] {
@@ -50,6 +55,11 @@ body {
     &:hover {
       border-color: #101018;
       background: #202028;
+    }
+
+    &:disabled {
+      background: rgba(0, 0, 0, 0.25);
+      color: #666;
     }
   }
 }
