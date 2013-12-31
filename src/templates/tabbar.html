@@ -24,7 +24,7 @@
     </a>
   </li>
   <li class="theme-selector" ng-show="expanded">
-    <select ng-model="search.theme" ng-options="t for t in themes">
+    <select ng-model="theme" ng-options="t for t in themes" ng-change="setTheme(theme)">
     </select>
   </li>
 </ul>
