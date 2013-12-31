@@ -128,9 +128,9 @@ angular.module('nirc')
     var onUnknown = function(msg) {
       Client.statusChannel.addEvent(
         new ChatEvent(
-          msg.from,
+          msg.prefix,
           null,
-          msg.args.join(' '),
+          msg.params.join(' '),
           { type: msg.command }
         )
       );

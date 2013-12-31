@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "dependencies": {
     "express": "3.4.3",
-    "socket.io": "0.9.16"
+    "socket.io": "0.9.16",
+    "irc-message": "1.0.0"
   },
   "devDependencies": {
     "grunt": "*",
