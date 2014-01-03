@@ -2,7 +2,6 @@
   Dependencies
 */
 var express = require('express'),
-    ejs     = require('ejs'),
     http    = require('http');
 
 /*
@@ -12,12 +11,8 @@ var express = require('express'),
 var app = express();
 
 app.configure(function () {
-  app.engine('html', ejs.renderFile);
-  app.set('view engine', 'html');
-  app.set('views', __dirname + '/views');
   app.use(express.static(__dirname + '/public'));
   app.use(express.favicon(__dirname + '/public/images/favicon.ico'));
-  app.get('/', function(req, res) { res.render('index'); });
 });
 
 /*

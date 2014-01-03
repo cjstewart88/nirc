@@ -1,0 +1,121 @@
+
+body {
+  font-family: Monaco, monospace;
+  font-size:   11px;
+  color: #fff;
+  background: #3F464C;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.config {
+  border: 1px solid #ccc;
+  background: #3F464C;
+  box-shadow: 0px 0px 12px #000000;
+
+  .titlebar {
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+  }
+
+  input {
+    font-family: Monaco, monospace;
+    font-size: 11px;
+    padding: 4px;
+
+    &.ng-invalid {
+      background-color: #ffcccc;
+      border-color: rgba(225, 0, 0, 0.65);
+    }
+  }
+
+  label {
+    padding: 4px 0px;
+  }
+
+  input[type=submit] {
+    border: none;
+    background: #000;
+    color: #fff;
+    padding: 8px;
+    cursor: pointer;
+    &:hover {
+      background: #FBDE2D;
+      color: #000;
+    }
+
+    &:disabled {
+      background: rgba(0, 0, 0, 0.50);
+      color: #ccc;
+    }
+  }
+}
+
+.tabbar {
+  color: #ccc;
+  border-bottom: 1px solid #ccc;
+
+  li {
+    border-right: 1px solid #ccc;
+
+    &.active {
+      background: #333;
+
+      a.channel {
+        color: #fff;
+      }
+    }
+
+    a {
+      color: #ccc;
+      text-decoration: none;
+    }
+
+    a.close:hover {
+      i {
+        color: #DF4848;
+      }
+    }
+  }
+
+}
+
+.content {
+  .timestamp {
+    color: #b0b0b0;
+  }
+
+  .sender {
+    font-weight: bold;
+    color: #FBDE2D;
+  }
+
+  .message {
+    a {
+      text-decoration: underline;
+      color: #fff;
+    }
+  }
+
+}
+
+.users {
+  border-left: 1px solid #ccc;
+  li {
+    a {
+      color: #fff;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.user-input {
+  font-family: Monaco, monospace;
+  font-size: 11px;
+}

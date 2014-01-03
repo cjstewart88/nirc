@@ -1,0 +1,155 @@
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans+Mono);
+
+body {
+  font-family: "Droid Sans Mono", monospace;
+  font-size:   12px;
+  color: #999;
+  background: #303038;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.50);
+  box-shadow: 0px 0px 800px #000 inset;
+}
+
+.config {
+  border: 1px solid #000008;
+  background: #303038;
+  box-shadow: 0px 0px 12px #000000;
+
+  .titlebar {
+    background: #101018;
+    border-bottom: 1px solid #000008;
+  }
+
+  label {
+    padding: 4px 0px;
+
+    &.checbox {
+      padding: 8px 0px;
+    }
+  }
+
+  input {
+    font-family: "Droid Sans Mono", monospace;
+    font-size: 11px;
+    color: #666;
+    background: #202028;
+    border: 1px solid #101018;
+    padding: 8px;
+
+    &.ng-invalid {
+      background: rgba(255, 0, 0, 0.15);
+    }
+
+  }
+
+  input[type=submit] {
+    border: 1px solid #000008;
+    background: #101018;
+    color: #fff;
+    padding: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+
+    &:hover {
+      border-color: #101018;
+      background: #202028;
+    }
+
+    &:disabled {
+      background: rgba(0, 0, 0, 0.25);
+      color: #666;
+    }
+  }
+}
+
+.tabbar {
+  color: #999;
+  background: #202028;
+  height: 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  li {
+    &.active {
+      background: #303038;
+      a.channel {
+        color: #fff;
+      }
+      border-right: 1px solid rgba(255, 255, 255, 0.25);
+      border-left: 1px solid  rgba(255, 255, 255, 0.25);
+    }
+
+    &:hover {
+      background: #404048;
+    }
+
+    a.channel {
+      color: #4682b4;
+      text-decoration: none;
+      transition: background 0.25s ease-in-out;
+    }
+
+    a.close {
+      color: #606068;
+      transition: color 0.25s ease-in-out;
+      &:hover {
+        color: #ccc;
+      }
+    }
+  }
+
+}
+
+.content {
+  .timestamp {
+    color: rgba(255, 255, 255, 0.50);
+  }
+
+  .sender {
+    font-weight: bold;
+    color: #4682b4;
+  }
+
+  .message {
+    a {
+      color: #999;
+      text-decoration: underline;
+      transition: color 0.25s ease-in-out;
+      &:hover {
+        color: #ccc;
+      }
+    }
+  }
+
+}
+
+.users {
+  border-left: 1px solid rgba(255, 255, 255, 0.25);
+
+  li {
+    a {
+      color: #999;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+      text-decoration: none;
+
+      &:hover {
+        color: #ccc;
+      }
+    }
+  }
+}
+
+.user-input {
+  border: none;
+  margin-right: 200px;
+
+  @media (max-width: 480px) {
+    margin-right: 0;
+  }
+
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  font-family: "Droid Sans Mono", monospace;
+  font-size: 11px;
+  background: #303038;
+  color: #999;
+}

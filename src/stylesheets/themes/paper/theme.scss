@@ -1,0 +1,134 @@
+@import url(http://fonts.googleapis.com/css?family=Inconsolata:400,700);
+
+body {
+  font-family: Inconsolata, monospace;
+  font-size:   12px;
+  color: #999;
+  background: #f7f7f7;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.config {
+  border: 1px solid #f0f0f0;
+  background: #f7f7f7;
+  border-radius: 2px;
+  box-shadow: 0px 0px 4px #666;
+
+  .titlebar {
+    font-weight: bold;
+  }
+
+  input {
+    padding: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: #fff;
+    color: #666;
+    border-radius: 2px;
+    &.ng-invalid {
+      background: #ffdddd;
+      border: 1px solid #ffcccc;
+    }
+  }
+
+  label {
+    padding: 4px 0px;
+  }
+
+  input[type=submit] {
+    background: #aaa;
+    color: #fff;
+    padding: 8px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.25s linear;
+    &:hover {
+      color: #777;
+      background: #ffff77;
+    }
+
+    &:disabled {
+      color: #ddd;
+      background: #bbb;
+    }
+  }
+}
+
+.tabbar {
+  color: #999;
+
+  li {
+
+    &.active {
+      a.channel {
+        font-weight: bold;
+        color: #666;
+      }
+    }
+
+    a.channel {
+      color: #ccc;
+      text-decoration: none;
+      transition: color 0.25s ease-in-out;
+      &:hover {
+        color: #999;
+      }
+    }
+
+    a.close {
+      color: #ccc;
+      transition: color 0.25s ease-in-out;
+      &:hover {
+        color: #999;
+      }
+    }
+  }
+
+}
+
+.content {
+  li {
+    padding-bottom: 8px;
+  }
+  .timestamp {
+    color: #999;
+  }
+
+  .sender {
+    font-weight: bold;
+    color: #666;
+  }
+
+  .message {
+    a {
+      text-decoration: underline;
+      color: #666;
+    }
+  }
+
+}
+
+.users {
+  li {
+    a {
+      color: #999;
+      text-decoration: none;
+      transition: color 0.25s ease-in-out;
+
+      &:hover {
+        color: #666;
+      }
+    }
+  }
+}
+
+.user-input {
+  font-family: Inconsolata, monospace;
+  font-size: 12px;
+  background: #f7f7f7;
+  color: #666;
+  border: none;
+  border-top: 1px solid #f0f0f0;
+}

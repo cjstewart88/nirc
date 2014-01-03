@@ -1,0 +1,7 @@
+{
+  "globals": {
+    "angular": false,
+    "_": false,
+    "io": false
+  }
+}

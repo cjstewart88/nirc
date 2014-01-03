@@ -1,0 +1,212 @@
+$userWidth:    200px;
+$tabbarHeight: 40px;
+$inputHeight:  30px;
+
+html, body, .wrapper, .content {
+  height: 100%;
+}
+
+* {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+textarea, input { outline: none; }
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5000;
+}
+
+.config {
+  width: 324px;
+  margin: 32px auto;
+
+  @media (max-width: 480px) {
+    width: 100%;
+    margin: 0px;
+  }
+
+  @media (max-width: 720px) {
+    width: auto;
+    margin: 32px;
+  }
+
+  .titlebar {
+    padding: 8px;
+  }
+
+  form {
+    padding: 8px;
+
+    .control-group {
+      margin: 8px auto;
+    }
+
+    label {
+      display: block;
+    }
+
+    label.checkbox {
+      text-align: left;
+      display: inline-block;
+    }
+
+    input {
+      display: block;
+      margin: 0;
+      width: 100%;
+    }
+
+    input[type=checkbox] {
+      display: inline-block;
+      width: auto;
+    }
+
+    input[type=submit] {
+      display: block;
+      text-align: center;
+      width: 100%;
+    }
+  }
+}
+
+.wrapper {
+  padding-top: $tabbarHeight;
+  padding-bottom: $inputHeight;
+}
+
+.user-input {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 0 5px;
+  height: $inputHeight;
+  display: block;
+}
+
+.content {
+  list-style: none;
+  width: 100%;
+  padding: 5px;
+  padding-right: $userWidth + 5px;
+  overflow: auto;
+  margin: 0;
+
+  @media (max-width: 480px) {
+    padding: 4px;
+    padding-top: $tabbarHeight;
+    overflow-wrap: break-word;
+  }
+
+  li {
+    display: block;
+    width: 100%;
+  }
+}
+
+.users {
+  position: absolute;
+  right: 0;
+  bottom: $inputHeight;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 20px;
+
+  @media(max-width: 480px) {
+    display: none;
+  }
+
+  top: $tabbarHeight;
+  width: $userWidth;
+  overflow: auto;
+  list-style: none;
+  li {
+    a {
+      display: block;
+      padding: 8px;
+    }
+  }
+}
+
+.tabbar {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: inherit;
+
+  li {
+    display:  block;
+    float:    left;
+    position: relative;
+    background: inherit;
+
+    @media (max-width: 480px) {
+      float: none;
+    }
+
+    &.logo {
+      display: block;
+      padding: 12px;
+      text-align: left;
+
+      .dropdown-toggle {
+        display: none;
+        @media (max-width: 480px) {
+          display: block;
+          float: right;
+        }
+      }
+    }
+
+    &.theme-selector {
+      padding: 8px;
+      float: right;
+      border-right: none;
+      select { margin: 0; padding: 0; }
+
+      @media (max-width: 480px) {
+        float: none;
+      }
+    }
+
+    &:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    a.channel {
+      display: inline-block;
+      padding: 12px;
+      min-width: 80px;
+    }
+
+    &.channel-tab {
+      a.channel {
+        margin-right: 25px;
+      }
+
+      a.close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 12px 12px 12px 0;
+      }
+    }
+  }
+}
