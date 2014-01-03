@@ -117,28 +117,43 @@ angular.module('nirc')
           return this.statusChannel;
         }
         return _.find(this.channels, function(ch) { return ch.name == name; });
+      },
+
+      addEvent: function(event) {
+        var ch;
+
+        if (event.to.nick == this.me.nick) {
+          ch = this.statusChannel;
+        } else if (!(ch = this.channel(event.to.nick))) {
+          ch = new Channel(event.to.nick);
+          this.channels.push(ch);
+        }
+
+        ch.addEvent(event);
+
+        if (ch !== this.statusChannel && this.me.mentionedIn(event.message)) {
+          event.mention = true;
+          $rootScope.$broadcast('mention', {
+            channel: ch,
+            event: event,
+            user: this.me
+          });
+        }
       }
     };
 
-    /* initially our active channel is the status pane. */
+    /* Initially our active channel is the status pane. */
     Client.activeChannel = Client.statusChannel;
 
     /* handle private events from the socket.io connector */
     socket.on('message', function(d) {
-      var ch,
-          event = new ChatEvent(
+      var event = new ChatEvent(
             new User(d.from || ''),
             new User(d.receiver),
             d.message
           );
 
-      if (event.to.nick == Client.me.nick) {
-        ch = Client.statusChannel;
-      } else if (!(ch = Client.channel(event.to.nick))) {
-        ch = new Channel(event.to.nick);
-        Client.channels.push(ch);
-      }
-      ch.addEvent(event);
+      Client.addEvent(event);
     });
 
     socket.on('successfullyJoinedChannel', function(d) {

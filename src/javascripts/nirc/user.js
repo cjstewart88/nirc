@@ -27,5 +27,13 @@ angular.module('nirc')
       return this.nick;
     };
 
+    User.prototype.mentionedIn = function(text) {
+      if (!this._mentionRegex) {
+        this._mentionRegex = new RegExp("\\b" + this.nick + "\\b", "i");
+      }
+
+      return !!text.match(this._mentionRegex);
+    };
+
     return User;
   });

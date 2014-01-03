@@ -8,11 +8,9 @@ angular.module('nirc', ['ngSanitize'])
     };
   })
 
-  .controller('MainCtrl', function($scope, Client, Mousetrap) {
+  .controller('MainCtrl', function($scope, Client, Mousetrap, Notification) {
     $scope.client = Client;
 
-    /* these are kind of ugly.  perhaps refactor the statusChannel to be inside the
-     * channels[] array to remove some pain here */
     Mousetrap.bind('command+left', function(e) {
       e.preventDefault();
       Client.previousChannel();
@@ -21,6 +19,20 @@ angular.module('nirc', ['ngSanitize'])
     Mousetrap.bind('command+right', function(e) {
       e.preventDefault();
       Client.nextChannel();
+    });
+
+    $scope.$on('mention', function(ev, mention) {
+      if (mention.channel !== $scope.client.activeChannel) {
+
+        Notification.notify(mention.channel.name, {
+          body: mention.event.from.nick + ": " + mention.event.message,
+          icon: '/images/nirc32.png',
+          timeout: 8000
+        }).then(function() {
+          Client.setActive(mention.channel);
+        });
+
+      }
     });
 
   })
