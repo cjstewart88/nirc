@@ -3,17 +3,6 @@ angular.module('nirc')
     var socket = new Socket(null);
 
     var Client = {
-      /* these are the connection params we'lluse when connect() is called. */
-      options: {
-        server:   'irc.freenode.net',
-        port:     6667,
-        nickname: 'nircUser',
-        userName: 'Nirc User',
-        channels: [],
-        ssl:      false,
-        password: null
-      },
-
       connected: false, /* are we currently connected? */
       channels: [],     /* list of channels we're in. */
       statusChannel: new Channel('status'), /* psuedo-channel for displaying
@@ -40,9 +29,9 @@ angular.module('nirc')
         socket.emit('command', text);
       },
 
-      connect: function() {
-        opts = angular.copy(this.options);
-        opts.channels = this.options.channels.join(', ');
+      connect: function(options) {
+        opts = angular.copy(options);
+        opts.channels = options.channels.join(', ');
 
         socket.emit('connectToIRC', { options: opts });
         this.connected = true;

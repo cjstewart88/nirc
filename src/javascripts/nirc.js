@@ -8,8 +8,14 @@ angular.module('nirc', ['ngSanitize'])
     };
   })
 
-  .controller('MainCtrl', function($scope, Client, Mousetrap, Notification) {
+  .controller('MainCtrl', function($scope, Client, Mousetrap, Notification, Config) {
     $scope.client = Client;
+    $scope.config = Config;
+
+    $scope.connect = function() {
+      $scope.config.save();
+      $scope.client.connect($scope.config);
+    };
 
     Mousetrap.bind('command+left', function(e) {
       e.preventDefault();

@@ -1,48 +1,48 @@
 <div class="config">
   <div class="titlebar">Configuration</div>
 
-  <form ng-submit="client.connect()" name="configForm" novalidate>
+  <form ng-submit="connect()" name="configForm" novalidate>
     <div class="control-group">
       <label for="server">Server:</label>
       <input type="text" name="server" id="server"
-             ng-model="client.options.server" required>
+             ng-model="config.server" required>
     </div>
 
     <div class="control-group">
       <label for="port">Port:</label>
-      <input type="number" name="port" id="port" ng-model="client.options.port"
+      <input type="number" name="port" id="port" ng-model="config.port"
              required>
     </div>
 
     <div class="control-group">
       <label for="nick">Nick:</label>
       <input type="text" name="nick" id="nick"
-             ng-model="client.options.nickname" required>
+             ng-model="config.nickname" required>
     </div>
 
     <div class="control-group">
       <label for="realname">Real Name:</label>
       <input type="text" name="realname" id="realname"
-             ng-model="client.options.userName">
+             ng-model="config.userName">
     </div>
 
     <div class="control-group">
       <label for="channels">Channels:</label>
       <input type="text" name="channels" id="channels"
-             ng-model="client.options.channels" ng-list
+             ng-model="config.channels" ng-list
              placeholder="#channel1, #channel2, #channel3...">
     </div>
 
     <div class="control-group">
       <label for="server_pass">Server Password:</label>
       <input type="text" name="server_pass" id="server_pass"
-             ng-model="client.options.password">
+             ng-model="config.password">
     </div>
 
     <div class="control-group">
       <label class="checkbox" for="ssl">
         <input type="checkbox" name="ssl" id="ssl"
-               ng-model="client.options.ssl"> SSL
+               ng-model="config.ssl"> SSL
       </label>
     </div>
 
