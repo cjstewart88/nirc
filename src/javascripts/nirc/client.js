@@ -5,7 +5,7 @@ angular.module('nirc')
     var Client = {
       /* these are the connection params we'lluse when connect() is called. */
       options: {
-        server:   'irc.freenode.org',
+        server:   'irc.freenode.net',
         port:     6667,
         nickname: 'nircUser',
         userName: 'Nirc User',
