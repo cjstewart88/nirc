@@ -58,9 +58,8 @@ body {
 
 .tabbar {
   color: #999;
-
+  background: #f7f7f7;
   li {
-
     &.active {
       a.channel {
         font-weight: bold;

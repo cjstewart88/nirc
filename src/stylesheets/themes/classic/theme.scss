@@ -56,9 +56,13 @@ body {
 .tabbar {
   color: #ccc;
   border-bottom: 1px solid #ccc;
-
+  background: #3F464C;
   li {
     border-right: 1px solid #ccc;
+
+    @media(max-width: 480px) {
+      border-right: none;
+    }
 
     &.active {
       background: #333;
