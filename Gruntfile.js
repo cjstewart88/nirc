@@ -84,4 +84,5 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', ['ngtemplates', 'sass', 'concat']);
   grunt.registerTask('dist', ['clean', 'build', 'ngmin', 'uglify']);
+  grunt.registerTask('heroku:production', ['dist']);
 };
