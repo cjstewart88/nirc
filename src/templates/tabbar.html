@@ -7,7 +7,7 @@
     </a>
   </li>
   <li ng-class="{active: isActive(client.statusChannel)}"
-      ng-show="expanded || isActive(client.statusChannel)">
+      ng-show="expanded || isActive(client.statusChannel)" class="channel-tab">
     <a href ng-click="setActive(client.statusChannel)" class="channel">
       <i class="fa fa-fw" ng-class="iconFor(client.statusChannel)"></i>
       status

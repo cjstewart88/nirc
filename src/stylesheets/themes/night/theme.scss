@@ -69,7 +69,12 @@ body {
   background: #202028;
   height: 40px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+
   li {
+    &.channel-tab, &.logo {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
     &.active {
       background: #303038;
       a.channel {
@@ -77,6 +82,7 @@ body {
       }
       border-right: 1px solid rgba(255, 255, 255, 0.25);
       border-left: 1px solid  rgba(255, 255, 255, 0.25);
+      border-bottom: none;
     }
 
     &:hover {
