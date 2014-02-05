@@ -26,6 +26,11 @@ angular.module('nirc')
       };
     }
 
+    /* if only a single channel was provided convert to an array */
+    if (typeof(config.channels) == 'string') {
+      config.channels = [config.channels];
+    }
+
     config.channels = config.channels.map(function(chName) {
       return chName[0] != '#' ? '#' + chName : chName;
     });
