@@ -26,15 +26,15 @@
     <div class="wrapper">
       <!-- main content pane -->
       <ul class="content" scroll-glue>
-        <li ng-repeat="event in client.activeChannel.history">
+        <li ng-repeat="event in client.activeChannel.history" ng-class="{mention: event.mention}">
           <span class="timestamp">
             {{event.timestamp | date:'HH:mm:ss'}}
           </span>
           <span class="sender">
             {{event.from.nick}}:
           </span>
-          <span class="message" ng-bind-html="event.message | linky:'_blank'"
-                ng-class="{mention: event.mention}"></span>
+          <span class="message" ng-bind-html="event.message | linky:'_blank'">
+          </span>
         </li>
       </ul>
       <!-- user list -->

@@ -89,7 +89,12 @@ body {
 
 .content {
   li {
-    padding-bottom: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  .mention {
+    background: #fffff0;
   }
   .timestamp {
     color: #999;
