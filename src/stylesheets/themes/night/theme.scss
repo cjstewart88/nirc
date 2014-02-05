@@ -107,6 +107,12 @@ body {
 }
 
 .content {
+  .mention {
+    .message {
+      color: #ddd;
+    }
+  }
+
   .timestamp {
     color: rgba(255, 255, 255, 0.50);
   }
