@@ -1,15 +1,16 @@
 /* jshint browser:true */
 angular.module('nirc')
-  .factory('Config', function() {
+  .factory('Config', function($location) {
+    var search = $location.search();
 
     var config = {
-      server:   'irc.freenode.net',
-      port:     6667,
-      nickname: 'nircUser',
-      userName: 'Nirc User',
-      channels: [],
-      ssl:      false,
-      password: null,
+      server:   search.server || 'irc.freenode.net',
+      port:     search.port ? (Number(search.port) || 6667) : 6667,
+      nickname: search.nick   || 'nircUser',
+      userName: search.name   || 'Nirc User',
+      channels: search.channels || [],
+      ssl:      !!search.ssl    || false,
+      password: search.password || null,
       load: function() {}, /* nop */
       save: function() {}  /* nop */
     };
@@ -25,7 +26,17 @@ angular.module('nirc')
       };
     }
 
-    config.load();
+    config.channels = config.channels.map(function(chName) {
+      return chName[0] != '#' ? '#' + chName : chName;
+    });
+
+    /* only load if no options were passed in as search */
+    var anySet = _.any(['server', 'port', 'nick', 'name', 'ssl', 'password', 'channels'],
+                       function(k) { return (k in search); });
+
+    if (!anySet) {
+      config.load();
+    }
 
     return config;
   });

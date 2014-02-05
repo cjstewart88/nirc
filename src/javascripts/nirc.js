@@ -1,4 +1,7 @@
 angular.module('nirc', ['ngSanitize'])
+  .config(function($locationProvider) {
+    $locationProvider.html5Mode(true);
+  })
   .controller('RootCtrl', function($scope, $location) {
     $scope.themes = ['classic', 'night', 'paper'];
     $scope.theme  = $location.search().theme || $scope.themes[0];
